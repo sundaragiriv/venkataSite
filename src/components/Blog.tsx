@@ -1,9 +1,14 @@
+import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, Clock, ArrowRight } from 'lucide-react';
 
-const Blog = () => {
+interface BlogProps {
+  fullPage?: boolean;
+}
+
+const Blog: React.FC<BlogProps> = ({ fullPage = false }) => {
   const blogPosts = [
     {
       title: 'SAP S/4HANA Migration: Best Practices and Pitfalls to Avoid',
@@ -55,6 +60,80 @@ const Blog = () => {
     }
   ];
 
+  if (fullPage) {
+    // 2-column layout: left = blog detail, right = other blogs
+    const [selected, setSelected] = React.useState(0);
+    return (
+      <section id="blog" className="py-10 bg-muted/30">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Left: Blog detail */}
+            <div className="lg:col-span-2">
+              <Card className="p-8 mb-8">
+                <div className="flex items-center justify-between mb-4">
+                  <Badge variant="secondary" className="text-xs">
+                    {blogPosts[selected].category}
+                  </Badge>
+                  <div className="flex items-center text-xs text-muted-foreground">
+                    <Clock className="h-3 w-3 mr-1" />
+                    {blogPosts[selected].readTime}
+                  </div>
+                </div>
+                <h2 className="text-2xl font-bold text-foreground mb-2">
+                  {blogPosts[selected].title}
+                </h2>
+                <div className="flex flex-wrap gap-1 mb-4">
+                  {blogPosts[selected].tags.map((tag) => (
+                    <Badge key={tag} variant="outline" className="text-xs">
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
+                <div className="flex items-center text-xs text-muted-foreground mb-6">
+                  <Calendar className="h-3 w-3 mr-1" />
+                  {blogPosts[selected].date}
+                </div>
+                <p className="text-base text-muted-foreground mb-6">
+                  {blogPosts[selected].excerpt}
+                </p>
+                <Button variant="outline" size="lg">
+                  Read Full Article
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Card>
+            </div>
+            {/* Right: Other blogs */}
+            <div className="lg:col-span-1">
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold mb-4">Other Blogs</h3>
+                {blogPosts.map((post, idx) => (
+                  <Card
+                    key={idx}
+                    className={`p-4 cursor-pointer border ${selected === idx ? 'border-primary' : ''}`}
+                    onClick={() => setSelected(idx)}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <Badge variant="secondary" className="text-xs">
+                        {post.category}
+                      </Badge>
+                      <div className="flex items-center text-xs text-muted-foreground">
+                        <Clock className="h-3 w-3 mr-1" />
+                        {post.readTime}
+                      </div>
+                    </div>
+                    <h4 className="text-base font-semibold text-foreground">
+                      {post.title}
+                    </h4>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+  // Default: grid view for homepage
   return (
     <section id="blog" className="py-20 bg-muted/30">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -67,7 +146,6 @@ const Blog = () => {
             to help the community learn and grow.
           </p>
         </div>
-
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
           {blogPosts.map((post, index) => (
             <Card key={index} className="p-6 hover:shadow-medium transition-all duration-300 group cursor-pointer">
@@ -81,15 +159,12 @@ const Blog = () => {
                     {post.readTime}
                   </div>
                 </div>
-
                 <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
                   {post.title}
                 </h3>
-
                 <p className="text-sm text-muted-foreground line-clamp-3">
                   {post.excerpt}
                 </p>
-
                 <div className="flex flex-wrap gap-1 mb-4">
                   {post.tags.map((tag) => (
                     <Badge key={tag} variant="outline" className="text-xs">
@@ -97,7 +172,6 @@ const Blog = () => {
                     </Badge>
                   ))}
                 </div>
-
                 <div className="flex items-center justify-between pt-4 border-t">
                   <div className="flex items-center text-xs text-muted-foreground">
                     <Calendar className="h-3 w-3 mr-1" />
@@ -112,12 +186,13 @@ const Blog = () => {
             </Card>
           ))}
         </div>
-
-        <div className="text-center">
-          <Button variant="outline" size="lg">
-            View All Articles
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
+        <div className="flex justify-end">
+          <a href="/techhBlogs">
+            <Button variant="outline" size="lg">
+              View All Tech Blogs
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </a>
         </div>
       </div>
     </section>

@@ -2,7 +2,7 @@ import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import AboutMe from '@/components/About';
 import MyExperience from '@/components/Experience';
-import TechhBlogs from '@/components/Blog';
+import Blog from '@/components/Blog';
 import GetInTouch from '@/components/Contact';
 import Footer from '@/components/Footer';
 
@@ -14,7 +14,7 @@ const Index = () => {
         <Hero />
   <AboutMe />
   <MyExperience />
-  <TechhBlogs />
+  <Blog />
   <GetInTouch />
       </main>
       <Footer />
