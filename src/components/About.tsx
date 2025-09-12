@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
-const About = () => {
+const AboutMe = () => {
   const skills = [
     'SAP S/4HANA', 'SAP SD', 'SAP MM', 'SAP PS', 'Asset Management', 'SAP Integration',
     'SAP Sales & Service V2', 'SAP C4C Sales & Service', 'SAP Commerce Cloud', 'SAP CDC', 'SAP CDP', 'Emarsys', 'Qualtrics',
@@ -37,36 +37,39 @@ const About = () => {
   ];
 
   return (
-    <section id="about" className="py-20 bg-muted/30">
+    <section id="aboutMe" className="py-20 bg-muted/30">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
-            About Me
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            Accomplished SAP Senior Consultant with 23+ years of leadership, architecting, and hands-on experience across global SAP implementations and transformations. Specialized in SAP Customer Experience (CX) Cloud applications, S/4HANA, and advanced integration solutions. Proven success in delivering complex SAP landscapes under RISE with SAP and GROW with SAP programs, including Greenfield, Brownfield, and Selective Data Transition migrations. Trusted advisor for C-level stakeholders on SAP roadmap strategy, capability alignment, and TCO/ROI optimization.
-          </p>
-        </div>
+          <div className="flex flex-col items-center justify-center mb-6">
+            <img src="/assets/profile.jpg" alt="Profile" className="w-32 h-32 rounded-full mb-4 shadow-lg" />
+            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">AboutMe</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Hi, I'm Sundaragiri, a passionate SAP architect and consultant dedicated to helping businesses transform and thrive. My mission is to deliver innovative, practical SAP solutions while sharing knowledge and empowering others in the tech community.
+            </p>
+            <p className="text-md text-muted-foreground max-w-2xl mx-auto mt-2">
+              I believe in a consultative, partnership-driven approach—listening first, then architecting solutions that drive real business value. My journey spans 23+ years, from hands-on delivery to strategic leadership, always focused on excellence, integrity, and continuous learning.
+            </p>
+          </div>
 
         <div className="grid lg:grid-cols-2 gap-12 mb-16">
           <div className="space-y-6">
-            <h3 className="text-2xl font-semibold text-foreground">Professional Summary</h3>
-            <p className="text-muted-foreground">
-              Specialized in SAP CX Cloud, S/4HANA (OTC, SD, MM, Asset Management, Preventive Maintenance, ESM, FSM, Service modules), SAP FSM, C4C, Commerce Cloud, CDC, CDP, Emarsys, Qualtrics, and SAP Integration Suite (CPI, BTP). Extensive experience in architecting and deploying SAP CPI/BTP-based integrations, predictive maintenance, mobile workforce enablement, and AI/ML-driven solutions for customer engagement and analytics.
-            </p>
-            <p className="text-muted-foreground">
-              Certifications: SAP C4C Sales Cloud, SAP C4C Service Cloud, SAP CDC, SAP Commerce Cloud, SAP Marketing Cloud, SAP Qualtrics XM
-            </p>
-            <p className="text-muted-foreground">
-              Education: MBA (Management Information Systems), PG Diploma in Artificial Intelligence and Machine Learning
-            </p>
-            
-            <div className="space-y-3">
-              <h4 className="text-lg font-medium text-foreground">Core Technologies</h4>
+            <h3 className="text-2xl font-semibold text-foreground">My Mission & Values</h3>
+            <ul className="list-disc list-inside text-muted-foreground">
+              <li>Delivering SAP solutions that are innovative, scalable, and tailored to each client.</li>
+              <li>Empowering teams and clients through knowledge sharing and mentorship.</li>
+              <li>Building long-term partnerships based on trust, transparency, and results.</li>
+              <li>Continuous learning and adapting to new technologies and business needs.</li>
+            </ul>
+            <div className="space-y-3 mt-6">
+              <h4 className="text-lg font-medium text-foreground">Core Technologies & Certifications</h4>
               <div className="flex flex-wrap gap-2">
                 {skills.map((skill, idx) => (
                   <Badge variant="secondary" className="mr-1" key={idx}>{skill}</Badge>
                 ))}
+              </div>
+              <div className="mt-2 text-sm text-muted-foreground">
+                <strong>Certifications:</strong> SAP C4C Sales Cloud, SAP C4C Service Cloud, SAP CDC, SAP Commerce Cloud, SAP Marketing Cloud, SAP Qualtrics XM<br />
+                <strong>Education:</strong> MBA (MIS), PG Diploma in AI/ML
               </div>
             </div>
           </div>
@@ -74,15 +77,9 @@ const About = () => {
           <div className="grid sm:grid-cols-2 gap-6">
             {services.map((service, index) => (
               <Card key={index} className="p-6 hover:shadow-medium transition-shadow">
-                <div className="text-primary mb-3">
-                  {service.icon}
-                </div>
-                <h4 className="text-lg font-semibold text-foreground mb-2">
-                  {service.title}
-                </h4>
-                <p className="text-sm text-muted-foreground">
-                  {service.description}
-                </p>
+                <div className="text-primary mb-3">{service.icon}</div>
+                <h4 className="text-lg font-semibold text-foreground mb-2">{service.title}</h4>
+                <p className="text-sm text-muted-foreground">{service.description}</p>
               </Card>
             ))}
           </div>
@@ -90,6 +87,6 @@ const About = () => {
       </div>
     </section>
   );
-};
+}
 
-export default About;
+export default AboutMe;
