@@ -62,15 +62,42 @@ const AboutMe = () => {
             <div className="space-y-3 mt-6">
               <h4 className="text-lg font-medium text-foreground">Core Skills & Certifications</h4>
               <div className="mt-2 text-sm text-muted-foreground">
-                <strong>Certifications:</strong> SAP C4C Sales Cloud, SAP C4C Service Cloud, SAP CDC, SAP Commerce Cloud, SAP Marketing Cloud, SAP Qualtrics XM
+                <strong>Certifications:</strong>
+                <div className="flex flex-wrap gap-2 mt-1">
+                  {['SAP C4C Sales Cloud', 'SAP C4C Service Cloud', 'SAP CDC', 'SAP Commerce Cloud', 'SAP Marketing Cloud', 'SAP Qualtrics XM'].map((cert, idx) => (
+                    <div key={idx} className="bg-primary/10 border border-primary rounded px-3 py-1 text-primary text-xs font-semibold shadow-sm">
+                      {cert}
+                    </div>
+                  ))}
+                </div>
               </div>
               <div className="mt-2 text-sm text-muted-foreground">
-                <strong>Education:</strong> MBA (MIS), PG Diploma in AI/ML
+                <strong>Education:</strong>
+                <div className="flex gap-2 mt-1">
+                  <div className="bg-accent/10 border border-accent rounded px-3 py-1 text-accent text-xs font-semibold shadow-sm">MBA (MIS)</div>
+                  <div className="bg-accent/10 border border-accent rounded px-3 py-1 text-accent text-xs font-semibold shadow-sm">PG Diploma in AI/ML</div>
+                </div>
               </div>
-              <div className="flex flex-wrap gap-2 mt-2">
-                {skills.map((skill, idx) => (
-                  <Badge variant="secondary" className="mr-1" key={idx}>{skill}</Badge>
-                ))}
+              <div className="mt-2">
+                <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-primary/40 scrollbar-track-muted/20 py-2">
+                  <div className="flex gap-3 min-w-max">
+                    {skills.map((skill, idx) => (
+                      <div key={idx} className="bg-background border border-muted rounded-lg px-4 py-2 shadow hover:shadow-lg transition-all duration-200 cursor-pointer text-sm font-medium text-foreground whitespace-nowrap hover:bg-primary/10">
+                        {skill}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="mt-2 text-sm text-muted-foreground">
+                <strong>AI/ML:</strong>
+                <div className="flex flex-wrap gap-2 mt-1">
+                  {['Joule', 'SAP CX AI Toolkit', 'SAP SAC', 'Smart Insights', 'ChatBots', 'Generative AI'].map((ai, idx) => (
+                    <div key={idx} className="bg-blue-900/10 border border-blue-900 rounded px-3 py-1 text-blue-900 text-xs font-semibold shadow-sm">
+                      {ai}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
