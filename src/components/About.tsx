@@ -52,52 +52,62 @@ const AboutMe = () => {
 
         <div className="grid lg:grid-cols-2 gap-12 mb-16">
           <div className="space-y-6">
-            <h3 className="text-2xl font-semibold text-foreground">My Mission & Values</h3>
-            <ul className="list-disc list-inside text-muted-foreground">
-              <li>Delivering SAP solutions that are innovative, scalable, and tailored to each client.</li>
-              <li>Empowering teams and clients through knowledge sharing and mentorship.</li>
-              <li>Building long-term partnerships based on trust, transparency, and results.</li>
-              <li>Continuous learning and adapting to new technologies and business needs.</li>
-            </ul>
             <div className="space-y-3 mt-6">
-              <h4 className="text-lg font-medium text-foreground">Core Skills & Certifications</h4>
-              <div className="mt-2 text-sm text-muted-foreground">
-                <strong>Certifications:</strong>
-                <div className="flex flex-wrap gap-2 mt-1">
-                  {['SAP C4C Sales Cloud', 'SAP C4C Service Cloud', 'SAP CDC', 'SAP Commerce Cloud', 'SAP Marketing Cloud', 'SAP Qualtrics XM'].map((cert, idx) => (
-                    <div key={idx} className="bg-primary/10 border border-primary rounded px-3 py-1 text-primary text-xs font-semibold shadow-sm">
-                      {cert}
-                    </div>
-                  ))}
-                </div>
+              <h4 className="text-lg font-medium text-foreground">Education</h4>
+              <div className="flex gap-2 mt-1">
+                <div className="bg-accent/10 border border-accent rounded px-3 py-1 text-accent text-xs font-semibold shadow-sm">MBA (MIS)</div>
+                <div className="bg-accent/10 border border-accent rounded px-3 py-1 text-accent text-xs font-semibold shadow-sm">PG Diploma in AI/ML</div>
               </div>
-              <div className="mt-2 text-sm text-muted-foreground">
-                <strong>Education:</strong>
-                <div className="flex gap-2 mt-1">
-                  <div className="bg-accent/10 border border-accent rounded px-3 py-1 text-accent text-xs font-semibold shadow-sm">MBA (MIS)</div>
-                  <div className="bg-accent/10 border border-accent rounded px-3 py-1 text-accent text-xs font-semibold shadow-sm">PG Diploma in AI/ML</div>
-                </div>
-              </div>
-              <div className="mt-2">
-                <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-primary/40 scrollbar-track-muted/20 py-2">
-                  <div className="flex gap-3 min-w-max">
-                    {skills.map((skill, idx) => (
-                      <div key={idx} className="bg-background border border-muted rounded-lg px-4 py-2 shadow hover:shadow-lg transition-all duration-200 cursor-pointer text-sm font-medium text-foreground whitespace-nowrap hover:bg-primary/10">
-                        {skill}
-                      </div>
-                    ))}
+              <h4 className="text-lg font-medium text-foreground mt-6">Certifications</h4>
+              <div className="flex flex-wrap gap-2 mt-1">
+                {['SAP C4C Sales Cloud', 'SAP C4C Service Cloud', 'SAP CDC', 'SAP Commerce Cloud', 'SAP Marketing Cloud', 'SAP Qualtrics XM'].map((cert, idx) => (
+                  <div key={idx} className="bg-primary/10 border border-primary rounded px-3 py-1 text-primary text-xs font-semibold shadow-sm">
+                    {cert}
                   </div>
-                </div>
+                ))}
               </div>
-              <div className="mt-2 text-sm text-muted-foreground">
-                <strong>AI/ML:</strong>
-                <div className="flex flex-wrap gap-2 mt-1">
-                  {['Joule', 'SAP CX AI Toolkit', 'SAP SAC', 'Smart Insights', 'ChatBots', 'Generative AI'].map((ai, idx) => (
-                    <div key={idx} className="bg-blue-900/10 border border-blue-900 rounded px-3 py-1 text-blue-900 text-xs font-semibold shadow-sm">
-                      {ai}
-                    </div>
-                  ))}
-                </div>
+              <h4 className="text-lg font-medium text-foreground mt-6">SAP Core Skills</h4>
+              <div className="flex flex-wrap gap-2 mt-1">
+                {[
+                  'SAP S/4HANA (Cloud & On-Premise)',
+                  'SAP Business Technology Platform (BTP)',
+                  'SAP Integration Suite (CPI)',
+                  'SAP Build Apps',
+                  'SAP Build Process Automation',
+                  'SAP Fiori/UI5',
+                  'SAP Analytics Cloud (SAC)',
+                  'SAP AI Core / AI Launchpad',
+                  'SAP Sales & Service Cloud V2',
+                  'SAP Customer Data Platform (CDP)',
+                  'SAP Emarsys',
+                  'SAP Commerce Cloud',
+                  'SAP CPQ (Quote 2.0)',
+                  'ABAP RAP (RESTful Application Programming)',
+                  'SAP Event Mesh'
+                ].map((skill, idx) => (
+                  <div key={idx} className="bg-background border border-muted rounded-lg px-4 py-2 shadow hover:shadow-lg transition-all duration-200 cursor-pointer text-sm font-medium text-foreground whitespace-nowrap hover:bg-primary/10">
+                    {skill}
+                  </div>
+                ))}
+              </div>
+              <h4 className="text-lg font-medium text-foreground mt-6">AI/ML Skills</h4>
+              <div className="flex flex-wrap gap-2 mt-1">
+                {[
+                  'Prompt Engineering (ChatGPT, Claude, etc.)',
+                  'Generative AI (LLMs, RAG, Fine-tuning)',
+                  'Machine Learning (scikit-learn, TensorFlow, PyTorch)',
+                  'LangChain & LLM Orchestration',
+                  'SAP Joule & SAP CX AI Toolkit',
+                  'Vector Databases (FAISS, Pinecone, etc.)',
+                  'Responsible AI / AI Ethics',
+                  'LLMOps / MLOps',
+                  'SAP AI Foundation (on BTP)',
+                  'API-based AI Integrations (OpenAI, Cohere, HuggingFace)'
+                ].map((ai, idx) => (
+                  <div key={idx} className="bg-blue-900/10 border border-blue-900 rounded px-3 py-1 text-blue-900 text-xs font-semibold shadow-sm">
+                    {ai}
+                  </div>
+                ))}
               </div>
             </div>
           </div>
