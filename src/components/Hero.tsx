@@ -1,12 +1,13 @@
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import heroImage from '@/assets/hero-abstract.jpg';
-import { useNavigate } from 'react-router-dom';
-
 const Hero = () => {
-  const navigate = useNavigate();
-  const handleViewWork = () => navigate('/myExperience');
-  const handleRequestResume = () => navigate('/getinTouch?requestResume=true');
+  const handleViewWork = () => {
+    document.getElementById('myExperience')?.scrollIntoView({ behavior: 'smooth' });
+  };
+  const handleRequestResume = () => {
+    document.getElementById('getinTouch')?.scrollIntoView({ behavior: 'smooth' });
+  };
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center bg-background">
       <div className="absolute inset-0 bg-[var(--gradient-hero)] opacity-5"></div>
@@ -15,8 +16,7 @@ const Hero = () => {
           <div className="space-y-6">
             <div className="space-y-4">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
-                SAP Consultant &<br />
-                <span className="text-primary">Knowledge Sharer</span>
+                SAP Expert <span className="text-primary">| AI Enterprise Strategist</span>
               </h1>
               <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl">
                 Experienced SAP professional helping businesses optimize their processes 
@@ -29,7 +29,7 @@ const Hero = () => {
                 View My Work
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <Button variant="outline" size="lg" onClick={handleRequestResume}>
+              <Button size="lg" className="group" style={{ fontSize: '1.125rem', fontWeight: 500 }} onClick={handleRequestResume}>
                 Request Resume
               </Button>
             </div>
