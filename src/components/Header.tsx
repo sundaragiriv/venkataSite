@@ -7,10 +7,10 @@ const Header = () => {
 
   const navItems = [
     { href: '#home', label: 'Home' },
-    { href: '#about', label: 'About' },
-    { href: '#experience', label: 'Experience' },
-    { href: '#blog', label: 'Blog' },
-    { href: '#contact', label: 'Contact' },
+    { href: '#aboutMe', label: 'AboutMe' },
+    { href: '#myExperience', label: 'myExperience' },
+    { href: '#techhBlogs', label: 'techhBlogs' },
+    { href: '#getinTouch', label: 'getinTouch' },
   ];
 
   return (
