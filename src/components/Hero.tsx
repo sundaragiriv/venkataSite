@@ -1,8 +1,12 @@
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Download } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import heroImage from '@/assets/hero-abstract.jpg';
+import { useNavigate } from 'react-router-dom';
 
 const Hero = () => {
+  const navigate = useNavigate();
+  const handleViewWork = () => navigate('/myExperience');
+  const handleRequestResume = () => navigate('/getinTouch?requestResume=true');
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center bg-background">
       <div className="absolute inset-0 bg-[var(--gradient-hero)] opacity-5"></div>
@@ -21,13 +25,12 @@ const Hero = () => {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="group">
+              <Button size="lg" className="group" onClick={handleViewWork}>
                 View My Work
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <Button variant="outline" size="lg">
-                <Download className="mr-2 h-4 w-4" />
-                Download Resume
+              <Button variant="outline" size="lg" onClick={handleRequestResume}>
+                Request Resume
               </Button>
             </div>
 

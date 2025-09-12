@@ -37,7 +37,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <div className="font-medium text-foreground">Email</div>
-                  <div className="text-muted-foreground">consultant@sapexpert.com</div>
+                  <div className="text-muted-foreground">sundaragiriv@gmail.com</div>
                 </div>
               </div>
 
@@ -47,7 +47,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <div className="font-medium text-foreground">Phone</div>
-                  <div className="text-muted-foreground">+1 (555) 123-4567</div>
+                  <div className="text-muted-foreground">+1-610-457-3193</div>
                 </div>
               </div>
 
@@ -63,14 +63,18 @@ const Contact = () => {
             </div>
 
             <div className="flex space-x-4 pt-6">
-              <Button variant="outline" size="sm">
-                <Linkedin className="h-4 w-4 mr-2" />
-                LinkedIn
-              </Button>
-              <Button variant="outline" size="sm">
-                <Github className="h-4 w-4 mr-2" />
-                GitHub
-              </Button>
+              <a href="https://www.linkedin.com/in/sundaragiri" target="_blank" rel="noopener noreferrer">
+                <Button variant="outline" size="sm">
+                  <Linkedin className="h-4 w-4 mr-2" />
+                  LinkedIn
+                </Button>
+              </a>
+              <a href="https://github.com/sundaragiriv" target="_blank" rel="noopener noreferrer">
+                <Button variant="outline" size="sm">
+                  <Github className="h-4 w-4 mr-2" />
+                  GitHub
+                </Button>
+              </a>
             </div>
           </div>
 
@@ -116,6 +120,10 @@ const Contact = () => {
                   placeholder="Tell me about your project or question..."
                   className="min-h-[120px]"
                 />
+              </div>
+              <div className="flex items-center">
+                <input type="checkbox" id="requestResume" name="requestResume" className="mr-2" />
+                <label htmlFor="requestResume" className="text-sm text-foreground">Request Resume</label>
               </div>
 
               <Button type="submit" className="w-full">
