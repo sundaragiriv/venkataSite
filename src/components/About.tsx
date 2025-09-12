@@ -37,31 +37,23 @@ const AboutMe = () => {
   ];
 
   return (
-    <section id="aboutMe" className="pt-8 pb-16 bg-muted/30">
+  <section id="aboutMe" className="pb-16" style={{ background: 'linear-gradient(90deg, #1a1333 0%, #2a1850 100%)' }}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-8">
-          <div className="flex flex-col items-center justify-center mb-2">
+        <div className="text-center mb-2">
+          <div className="flex flex-col items-center justify-center mb-0">
             <img src="/assets/profile.jpg" alt="Consultant" className="w-32 h-32 rounded-full shadow-lg mb-2" />
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Hi, I'm Sundaragiri, a passionate SAP architect and consultant based in <span className="text-primary font-semibold">North Carolina, USA</span>, dedicated to helping businesses transform and thrive. My mission is to deliver innovative, practical SAP solutions while sharing knowledge and empowering others in the tech community.
-            </p>
-            <p className="text-md text-muted-foreground max-w-2xl mx-auto mt-2">
-              I believe in a consultative, partnership-driven approach—listening first, then architecting solutions that drive real business value. My journey spans 23+ years, from hands-on delivery to strategic leadership, always focused on excellence, integrity, and continuous learning.
+              Hi, I'm Sundaragiri, a passionate SAP architect and consultant based in <span className="text-primary font-semibold">North Carolina, USA</span>, dedicated to helping businesses transform and thrive.
             </p>
           </div>
 
         <div className="grid lg:grid-cols-2 gap-12 mb-16">
           <div className="space-y-6">
             <div className="space-y-3 mt-6">
-              <h4 className="text-lg font-medium text-foreground">Education</h4>
-              <div className="flex gap-2 mt-1">
-                <div className="bg-accent/10 border border-accent rounded px-3 py-1 text-accent text-xs font-semibold shadow-sm">MBA (MIS)</div>
-                <div className="bg-accent/10 border border-accent rounded px-3 py-1 text-accent text-xs font-semibold shadow-sm">PG Diploma in AI/ML</div>
-              </div>
               <h4 className="text-lg font-medium text-foreground mt-6">Certifications</h4>
               <div className="flex flex-wrap gap-2 mt-1">
                 {['SAP C4C Sales Cloud', 'SAP C4C Service Cloud', 'SAP CDC', 'SAP Commerce Cloud', 'SAP Marketing Cloud', 'SAP Qualtrics XM'].map((cert, idx) => (
-                  <div key={idx} className="bg-primary/10 border border-primary rounded px-3 py-1 text-primary text-xs font-semibold shadow-sm">
+                  <div key={idx} className="bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-700 border-none rounded px-2 py-1 text-indigo-200 text-xs font-semibold shadow-sm m-1 min-w-[120px] text-center">
                     {cert}
                   </div>
                 ))}
@@ -85,7 +77,7 @@ const AboutMe = () => {
                   'ABAP RAP (RESTful Application Programming)',
                   'SAP Event Mesh'
                 ].map((skill, idx) => (
-                  <div key={idx} className="bg-background border border-muted rounded-lg px-4 py-2 shadow hover:shadow-lg transition-all duration-200 cursor-pointer text-sm font-medium text-foreground whitespace-nowrap hover:bg-primary/10">
+                  <div key={idx} className="bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-700 border-none rounded px-2 py-1 text-indigo-200 text-xs font-semibold shadow-sm m-1 min-w-[180px] text-center">
                     {skill}
                   </div>
                 ))}
@@ -104,10 +96,15 @@ const AboutMe = () => {
                   'SAP AI Foundation (on BTP)',
                   'API-based AI Integrations (OpenAI, Cohere, HuggingFace)'
                 ].map((ai, idx) => (
-                  <div key={idx} className="bg-blue-900/10 border border-blue-900 rounded px-3 py-1 text-blue-900 text-xs font-semibold shadow-sm">
+                  <div key={idx} className="bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-700 border-none rounded px-2 py-1 text-indigo-200 text-xs font-semibold shadow-sm m-1 min-w-[220px] text-center">
                     {ai}
                   </div>
                 ))}
+              </div>
+              <h4 className="text-lg font-medium text-foreground mt-6">Education</h4>
+              <div className="flex gap-2 mt-1">
+                <div className="bg-primary/10 border border-primary rounded px-3 py-1 text-primary text-xs font-semibold shadow-sm">MBA (MIS)</div>
+                <div className="bg-primary/10 border border-primary rounded px-3 py-1 text-primary text-xs font-semibold shadow-sm">PG Diploma in AI/ML</div>
               </div>
             </div>
           </div>
