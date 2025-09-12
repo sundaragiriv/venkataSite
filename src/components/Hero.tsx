@@ -61,7 +61,7 @@ function Hero() {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
             <div className="space-y-4">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight h-20">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight h-20 mb-2 mt-2">
                 <span className={typewriter.color}>{typewriter.text}</span>
                 <span className={typewriter.blink ? 'opacity-100' : 'opacity-0'}>|</span>
               </h1>
@@ -72,27 +72,31 @@ function Hero() {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="group" onClick={handleViewWork}>
+              <Button size="lg" className="group font-semibold text-base" onClick={handleViewWork}>
                 View My Work
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <Button size="lg" className="group" style={{ fontSize: '1.125rem', fontWeight: 500 }} onClick={handleRequestResume}>
+              <Button size="lg" className="group font-semibold text-base" onClick={handleRequestResume}>
                 Request Resume
               </Button>
             </div>
 
             <div className="flex items-center space-x-8 pt-8">
               <div className="text-center">
-                <div className="text-2xl font-bold text-primary">5+</div>
+                <div className="text-2xl font-bold text-primary">22+</div>
                 <div className="text-sm text-muted-foreground">Years Experience</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-primary">50+</div>
+                <div className="text-2xl font-bold text-primary">35+</div>
                 <div className="text-sm text-muted-foreground">Projects Completed</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-primary">20+</div>
-                <div className="text-sm text-muted-foreground">Blog Articles</div>
+                <div className="text-2xl font-bold text-primary">6+</div>
+                <div className="text-sm text-muted-foreground">Global Rollouts</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-primary">40+</div>
+                <div className="text-sm text-muted-foreground">Satisfied Clients</div>
               </div>
             </div>
           </div>
@@ -102,9 +106,10 @@ function Hero() {
               <img 
                 src={heroImage} 
                 alt="Abstract digital art representing modern SAP consulting" 
-                className="w-full h-[500px] object-cover"
+                className="w-full h-[500px] object-cover transition-all duration-700 hover:scale-105"
+                style={{ filter: 'blur(1px) brightness(0.95)' }}
               />
-              <div className="absolute inset-0 bg-[var(--gradient-primary)] opacity-10"></div>
+              <div className="absolute inset-0 bg-gradient-to-tr from-primary/30 via-accent/10 to-background opacity-30 animate-pulse"></div>
             </div>
           </div>
         </div>

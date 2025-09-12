@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
-const Experience = () => {
+const Experience = ({ fullPage = false }) => {
   const experiences = [
     {
       title: 'Sr. SAP CX Architect',
