@@ -18,7 +18,7 @@ const Header = () => {
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0">
-            <h1 className="text-xl font-bold text-primary">SAP Consultant</h1>
+            <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Venkata</h1>
           </div>
           
           {/* Desktop Navigation */}

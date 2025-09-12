@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Download } from 'lucide-react';
-import heroImage from '@/assets/hero-consultant.jpg';
+import heroImage from '@/assets/hero-abstract.jpg';
 
 const Hero = () => {
   return (
@@ -51,7 +51,7 @@ const Hero = () => {
             <div className="relative rounded-2xl overflow-hidden shadow-strong">
               <img 
                 src={heroImage} 
-                alt="Professional SAP Consultant" 
+                alt="Abstract digital art representing modern SAP consulting" 
                 className="w-full h-[500px] object-cover"
               />
               <div className="absolute inset-0 bg-[var(--gradient-primary)] opacity-10"></div>
