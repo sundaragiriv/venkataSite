@@ -40,11 +40,10 @@ const AboutMe = () => {
     <section id="aboutMe" className="py-20 bg-muted/30">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <div className="flex flex-col items-center justify-center mb-6">
-            <img src="/assets/profile.jpg" alt="Profile" className="w-32 h-32 rounded-full mb-4 shadow-lg" />
-            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">AboutMe</h2>
+          <div className="flex flex-col items-center justify-center mb-2">
+            <img src="/assets/profile.jpg" alt="Profile" className="w-32 h-32 rounded-full shadow-lg" />
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Hi, I'm Sundaragiri, a passionate SAP architect and consultant dedicated to helping businesses transform and thrive. My mission is to deliver innovative, practical SAP solutions while sharing knowledge and empowering others in the tech community.
+              Hi, I'm Sundaragiri, a passionate SAP architect and consultant based in <span className="text-primary font-semibold">North Carolina, USA</span>, dedicated to helping businesses transform and thrive. My mission is to deliver innovative, practical SAP solutions while sharing knowledge and empowering others in the tech community.
             </p>
             <p className="text-md text-muted-foreground max-w-2xl mx-auto mt-2">
               I believe in a consultative, partnership-driven approach—listening first, then architecting solutions that drive real business value. My journey spans 23+ years, from hands-on delivery to strategic leadership, always focused on excellence, integrity, and continuous learning.
@@ -61,15 +60,17 @@ const AboutMe = () => {
               <li>Continuous learning and adapting to new technologies and business needs.</li>
             </ul>
             <div className="space-y-3 mt-6">
-              <h4 className="text-lg font-medium text-foreground">Core Technologies & Certifications</h4>
-              <div className="flex flex-wrap gap-2">
+              <h4 className="text-lg font-medium text-foreground">Core Skills & Certifications</h4>
+              <div className="mt-2 text-sm text-muted-foreground">
+                <strong>Certifications:</strong> SAP C4C Sales Cloud, SAP C4C Service Cloud, SAP CDC, SAP Commerce Cloud, SAP Marketing Cloud, SAP Qualtrics XM
+              </div>
+              <div className="mt-2 text-sm text-muted-foreground">
+                <strong>Education:</strong> MBA (MIS), PG Diploma in AI/ML
+              </div>
+              <div className="flex flex-wrap gap-2 mt-2">
                 {skills.map((skill, idx) => (
                   <Badge variant="secondary" className="mr-1" key={idx}>{skill}</Badge>
                 ))}
-              </div>
-              <div className="mt-2 text-sm text-muted-foreground">
-                <strong>Certifications:</strong> SAP C4C Sales Cloud, SAP C4C Service Cloud, SAP CDC, SAP Commerce Cloud, SAP Marketing Cloud, SAP Qualtrics XM<br />
-                <strong>Education:</strong> MBA (MIS), PG Diploma in AI/ML
               </div>
             </div>
           </div>
