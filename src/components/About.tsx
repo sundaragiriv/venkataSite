@@ -37,11 +37,11 @@ const AboutMe = () => {
   ];
 
   return (
-    <section id="aboutMe" className="py-20 bg-muted/30">
+    <section id="aboutMe" className="pt-8 pb-16 bg-muted/30">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <div className="text-center mb-8">
           <div className="flex flex-col items-center justify-center mb-2">
-            <img src="/assets/profile.jpg" alt="Profile" className="w-32 h-32 rounded-full shadow-lg" />
+            <img src="/assets/profile.jpg" alt="Consultant" className="w-32 h-32 rounded-full shadow-lg mb-2" />
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Hi, I'm Sundaragiri, a passionate SAP architect and consultant based in <span className="text-primary font-semibold">North Carolina, USA</span>, dedicated to helping businesses transform and thrive. My mission is to deliver innovative, practical SAP solutions while sharing knowledge and empowering others in the tech community.
             </p>

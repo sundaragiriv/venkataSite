@@ -48,10 +48,10 @@ function useTypewriter(titles, delay = 120) {
 }
 function Hero() {
   const handleViewWork = () => {
-    document.getElementById('myExperience')?.scrollIntoView({ behavior: 'smooth' });
+    window.location.href = '/myExperience';
   };
   const handleRequestResume = () => {
-    document.getElementById('getinTouch')?.scrollIntoView({ behavior: 'smooth' });
+    window.location.href = '/getinTouch';
   };
   const typewriter = useTypewriter(TITLES, 80);
   return (

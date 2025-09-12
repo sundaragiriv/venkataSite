@@ -9,9 +9,9 @@ const Header = () => {
   const navItems = [
     { to: '/', label: 'Home' },
     { to: '/', hash: '#aboutMe', label: 'AboutMe' },
-    { to: '/', hash: '#myExperience', label: 'myExperience' },
+    { to: '/myExperience', label: 'myExperience' },
     { to: '/techhBlogs', label: 'techhBlogs' },
-    { to: '/', hash: '#getinTouch', label: 'getinTouch' },
+    { to: '/getinTouch', label: 'getinTouch' },
   ];
 
   const navigate = useNavigate();
@@ -64,7 +64,7 @@ const Header = () => {
                   <Link
                     key={item.label}
                     to={item.to}
-                    className="text-foreground hover:text-primary px-3 py-2 text-sm font-medium transition-colors"
+                    className="text-foreground hover:text-primary px-3 py-2 text-sm font-medium transition-colors cursor-pointer"
                   >
                     {item.label}
                   </Link>
@@ -102,7 +102,7 @@ const Header = () => {
                   <Link
                     key={item.label}
                     to={item.to}
-                    className="text-foreground hover:text-primary block px-3 py-2 text-base font-medium transition-colors"
+                    className="text-foreground hover:text-primary block px-3 py-2 text-base font-medium transition-colors cursor-pointer"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {item.label}
