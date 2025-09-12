@@ -1,13 +1,59 @@
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import heroImage from '@/assets/hero-abstract.jpg';
-const Hero = () => {
+import React from 'react';
+
+const TITLES = [
+  { text: 'SAP Specialist', color: 'text-primary' },
+  { text: 'AI Enterprise Strategist', color: 'text-accent' },
+  { text: 'AI Prompt Engineer', color: 'text-blue-500' },
+  { text: 'SAP Solution Architect', color: 'text-green-500' },
+  { text: 'Business Transformation Specialist', color: 'text-orange-500' },
+  { text: 'PreSales Specialist', color: 'text-purple-500' },
+  { text: 'Entrepreneur', color: 'text-pink-500' },
+];
+
+function useTypewriter(titles, delay = 120) {
+  const [index, setIndex] = React.useState(0);
+  const [subIndex, setSubIndex] = React.useState(0);
+  const [deleting, setDeleting] = React.useState(false);
+  const [blink, setBlink] = React.useState(true);
+
+  React.useEffect(() => {
+    if (subIndex === titles[index].text.length + 1 && !deleting) {
+      setTimeout(() => setDeleting(true), 1000);
+      return;
+    }
+    if (deleting && subIndex === 0) {
+      setDeleting(false);
+      setIndex((prev) => (prev + 1) % titles.length);
+      return;
+    }
+    const timeout = setTimeout(() => {
+      setSubIndex((prev) => prev + (deleting ? -1 : 1));
+    }, deleting ? delay / 2 : delay);
+    return () => clearTimeout(timeout);
+  }, [subIndex, deleting, index, titles, delay]);
+
+  React.useEffect(() => {
+    const blinkInterval = setInterval(() => setBlink((b) => !b), 500);
+    return () => clearInterval(blinkInterval);
+  }, []);
+
+  return {
+    text: titles[index].text.substring(0, subIndex),
+    color: titles[index].color,
+    blink,
+  };
+}
+function Hero() {
   const handleViewWork = () => {
     document.getElementById('myExperience')?.scrollIntoView({ behavior: 'smooth' });
   };
   const handleRequestResume = () => {
     document.getElementById('getinTouch')?.scrollIntoView({ behavior: 'smooth' });
   };
+  const typewriter = useTypewriter(TITLES, 80);
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center bg-background">
       <div className="absolute inset-0 bg-[var(--gradient-hero)] opacity-5"></div>
@@ -15,8 +61,9 @@ const Hero = () => {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
             <div className="space-y-4">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
-                SAP Expert <span className="text-primary">| AI Enterprise Strategist</span>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight h-20">
+                <span className={typewriter.color}>{typewriter.text}</span>
+                <span className={typewriter.blink ? 'opacity-100' : 'opacity-0'}>|</span>
               </h1>
               <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl">
                 Experienced SAP professional helping businesses optimize their processes 
@@ -64,6 +111,6 @@ const Hero = () => {
       </div>
     </section>
   );
-};
+}
 
 export default Hero;
