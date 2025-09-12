@@ -134,6 +134,7 @@ const Blog: React.FC<BlogProps> = ({ fullPage = false }) => {
     );
   }
   // Default: grid view for homepage
+  const displayedBlogs = blogPosts.slice(0, 3);
   return (
     <section id="blog" className="py-20 bg-muted/30">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -147,7 +148,7 @@ const Blog: React.FC<BlogProps> = ({ fullPage = false }) => {
           </p>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {blogPosts.map((post, index) => (
+          {displayedBlogs.map((post, index) => (
             <Card key={index} className="p-6 hover:shadow-medium transition-all duration-300 group cursor-pointer">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">

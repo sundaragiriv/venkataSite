@@ -146,6 +146,7 @@ const Experience = ({ fullPage = false }) => {
     }
   ];
 
+  const displayedExperiences = fullPage ? experiences : experiences.slice(0, 2);
   return (
     <section id="experience" className="py-20 bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -161,7 +162,7 @@ const Experience = ({ fullPage = false }) => {
 
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {experiences.map((exp, index) => (
+            {displayedExperiences.map((exp, index) => (
               <Card key={index} className="p-8 hover:shadow-medium transition-shadow">
                 <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-6">
                   <div className="flex-1">
