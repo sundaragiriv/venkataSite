@@ -1,3 +1,21 @@
+/* Premium Theme Palette */
+:root {
+  --bg-page: #0D0810;
+  --bg-surface: #12061A;
+  --brand-start: #2E003E;
+  --brand-end: #7C49FF;
+  --accent-cyan: #00E6FF;
+  --accent-magenta: #FF5FC7;
+  --text-primary: #EDE7FF;
+  --text-muted: #BDB0CF;
+  --neutral-gray: #4A4A4A;
+  --card-glow: rgba(124,73,255,0.08);
+}
+
+body {
+  background: var(--bg-page);
+  color: var(--text-primary);
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

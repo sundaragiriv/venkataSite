@@ -3,6 +3,35 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
 const AboutMe = () => {
+  const sapCoreSkills = [
+    'SAP S/4HANA (Cloud & On-Premise)',
+    'SAP Business Technology Platform (BTP)',
+    'SAP Integration Suite (CPI)',
+    'SAP Build Apps',
+    'SAP Build Process Automation',
+    'SAP Fiori/UI5',
+    'SAP Analytics Cloud (SAC)',
+    'SAP AI Core / AI Launchpad',
+    'SAP Sales & Service Cloud V2',
+    'SAP Customer Data Platform (CDP)',
+    'SAP Emarsys',
+    'SAP Commerce Cloud',
+    'SAP CPQ (Quote 2.0)',
+    'SAP Event Mesh'
+  ];
+
+  const aiMlSkills = [
+    'Prompt Engineering (ChatGPT, Claude, etc.)',
+    'Generative AI (LLMs, RAG, Fine-tuning)',
+    'Machine Learning (scikit-learn, TensorFlow, PyTorch)',
+    'LangChain & LLM Orchestration',
+    'SAP Joule & SAP CX AI Toolkit',
+    'Vector Databases (FAISS, Pinecone, etc.)',
+    'Responsible AI / AI Ethics',
+    'LLMOps / MLOps & SLMops',
+    'SAP AI Foundation (on BTP)',
+    'API-based AI Integrations (OpenAI, Cohere, HuggingFace)'
+  ];
   const skills = [
     'SAP S/4HANA', 'SAP SD', 'SAP MM', 'SAP PS', 'Asset Management', 'SAP Integration',
     'SAP Sales & Service V2', 'SAP C4C Sales & Service', 'SAP Commerce Cloud', 'SAP CDC', 'SAP CDP', 'Emarsys', 'Qualtrics',
@@ -33,19 +62,28 @@ const AboutMe = () => {
       icon: <span role="img" aria-label="integration">🔗</span>,
       title: 'Integration & Optimization',
       description: 'Architected secure, scalable integrations and optimized business processes for maximum ROI.'
+    },
+    {
+      icon: <span role="img" aria-label="innovation">🧠</span>,
+      title: 'AI Innovator & GenAI Pioneer',
+      description: 'Driving enterprise adoption of Generative AI, LLMs, and advanced AI/ML solutions for business transformation.'
+    },
+    {
+      icon: <span role="img" aria-label="entrepreneur">🚀</span>,
+      title: 'Entrepreneur',
+      description: 'Founder of Varahi.Ai, CXAllies, and yellowKNot—building next-gen platforms for AI, CX, and digital innovation.'
     }
   ];
 
   return (
   <section id="aboutMe" className="pb-16" style={{ background: 'linear-gradient(90deg, #1a1333 0%, #2a1850 100%)' }}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-2">
-          <div className="flex flex-col items-center justify-center mb-0">
-            <img src="/assets/profile.jpg" alt="Consultant" className="w-32 h-32 rounded-full shadow-lg mb-2" />
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Hi, I'm Sundaragiri, a passionate SAP architect and consultant based in <span className="text-primary font-semibold">North Carolina, USA</span>, dedicated to helping businesses transform and thrive.
-            </p>
-          </div>
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-foreground mb-2 pt-8">About Me</h2>
+          <p className="max-w-2xl mx-auto text-base text-muted-foreground mt-2">
+            Dynamic SAP leader with 23+ years of experience architecting and delivering enterprise S/4HANA and Customer Experience solutions. I design future-ready, cloud-first platforms that blend SAP core processes, CX applications, and AI/ML automation to drive measurable business outcomes.
+          </p>
+        </div>
 
         <div className="grid lg:grid-cols-2 gap-12 mb-16">
           <div className="space-y-6">
@@ -53,50 +91,23 @@ const AboutMe = () => {
               <h4 className="text-lg font-medium text-foreground mt-6">Certifications</h4>
               <div className="flex flex-wrap gap-2 mt-1">
                 {['SAP C4C Sales Cloud', 'SAP C4C Service Cloud', 'SAP CDC', 'SAP Commerce Cloud', 'SAP Marketing Cloud', 'SAP Qualtrics XM'].map((cert, idx) => (
-                  <div key={idx} className="bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-700 border-none rounded px-2 py-1 text-indigo-200 text-xs font-semibold shadow-sm m-1 min-w-[120px] text-center">
+                  <div key={idx} className="bg-gradient-to-r from-purple-900 via-purple-700 to-purple-500 border-none rounded px-2 py-1 text-purple-100 text-xs font-semibold shadow-sm m-1 min-w-[120px] text-center">
                     {cert}
                   </div>
                 ))}
               </div>
               <h4 className="text-lg font-medium text-foreground mt-6">SAP Core Skills</h4>
               <div className="flex flex-wrap gap-2 mt-1">
-                {[
-                  'SAP S/4HANA (Cloud & On-Premise)',
-                  'SAP Business Technology Platform (BTP)',
-                  'SAP Integration Suite (CPI)',
-                  'SAP Build Apps',
-                  'SAP Build Process Automation',
-                  'SAP Fiori/UI5',
-                  'SAP Analytics Cloud (SAC)',
-                  'SAP AI Core / AI Launchpad',
-                  'SAP Sales & Service Cloud V2',
-                  'SAP Customer Data Platform (CDP)',
-                  'SAP Emarsys',
-                  'SAP Commerce Cloud',
-                  'SAP CPQ (Quote 2.0)',
-                  'ABAP RAP (RESTful Application Programming)',
-                  'SAP Event Mesh'
-                ].map((skill, idx) => (
-                  <div key={idx} className="bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-700 border-none rounded px-2 py-1 text-indigo-200 text-xs font-semibold shadow-sm m-1 min-w-[180px] text-center">
+                {sapCoreSkills.map((skill, idx) => (
+                  <div key={idx} className="bg-gradient-to-r from-blue-900 via-blue-700 to-blue-500 border-none rounded px-2 py-1 text-blue-100 text-xs font-semibold shadow-sm m-1 min-w-[180px] text-center">
                     {skill}
                   </div>
                 ))}
               </div>
               <h4 className="text-lg font-medium text-foreground mt-6">AI/ML Skills</h4>
               <div className="flex flex-wrap gap-2 mt-1">
-                {[
-                  'Prompt Engineering (ChatGPT, Claude, etc.)',
-                  'Generative AI (LLMs, RAG, Fine-tuning)',
-                  'Machine Learning (scikit-learn, TensorFlow, PyTorch)',
-                  'LangChain & LLM Orchestration',
-                  'SAP Joule & SAP CX AI Toolkit',
-                  'Vector Databases (FAISS, Pinecone, etc.)',
-                  'Responsible AI / AI Ethics',
-                  'LLMOps / MLOps',
-                  'SAP AI Foundation (on BTP)',
-                  'API-based AI Integrations (OpenAI, Cohere, HuggingFace)'
-                ].map((ai, idx) => (
-                  <div key={idx} className="bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-700 border-none rounded px-2 py-1 text-indigo-200 text-xs font-semibold shadow-sm m-1 min-w-[220px] text-center">
+                {aiMlSkills.map((ai, idx) => (
+                  <div key={idx} className="bg-gradient-to-r from-blue-600 via-blue-400 to-purple-500 border-none rounded px-2 py-1 text-white text-xs font-semibold shadow-sm m-1 min-w-[220px] text-center">
                     {ai}
                   </div>
                 ))}
@@ -120,7 +131,6 @@ const AboutMe = () => {
           </div>
         </div>
       </div>
-    </div>
     </section>
   );
 }
