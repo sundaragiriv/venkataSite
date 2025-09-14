@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import heroImage from '@/assets/hero-abstract.jpg';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import heroAbstract from '@/assets/hero-abstract.jpg';
 import heroConsultant from '@/assets/hero-consultant.jpg';
 import heroAIDoodle1 from '@/assets/hero-ai-doodle-1.jpg';
@@ -54,11 +55,12 @@ function useTypewriter(titles, delay = 120) {
   };
 }
 function Hero() {
+  const navigate = useNavigate();
   const handleViewWork = () => {
-    window.location.href = '/myExperience';
+    navigate('/myExperience');
   };
   const handleRequestResume = () => {
-    window.location.href = '/getinTouch';
+    navigate('/getinTouch');
   };
   const typewriter = useTypewriter(TITLES, 80);
     // Animated shimmer lines, multi-colored dust particles, and network/octagon connection lines
