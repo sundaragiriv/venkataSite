@@ -1,6 +1,12 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import { signals } from "../lib/signals";
+import { Link } from "react-router-dom";
+import { signals } from "../lib/signals";
 
 export default function Home() {
+  const latestSignals = signals.slice(0, 3);
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -75,6 +81,51 @@ export default function Home() {
                 Enter Lab →
               </a>
             </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Latest Signals */}
+      <section className="py-16 bg-slate-50">
+        <div className="container max-w-wrap">
+          <div className="flex items-end justify-between mb-8">
+            <h2 className="text-2xl font-semibold text-brand-ink">Latest Signals</h2>
+            <Link to="/signals" className="text-brand hover:text-brand-light font-medium">
+              See all →
+            </Link>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {latestSignals.map((signal, i) => (
+              <motion.div
+                key={signal.slug}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 * i }}
+              >
+                <Link to={`/signals/${signal.slug}`} className="block bg-white rounded-lg p-6 shadow-soft border border-black/5 hover:shadow-lg transition">
+                  <div className="text-xs text-slate-500 mb-2">{new Date(signal.date).toLocaleDateString()}</div>
+                  <h3 className="text-lg font-semibold text-slate-900 mb-2">{signal.title}</h3>
+                  <div className="text-xs font-medium text-brand mb-2">{signal.tag}</div>
+                  {signal.summary && <p className="text-sm text-slate-600">{signal.summary}</p>}
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* About Teaser */}
+      <section className="py-16">
+        <div className="container max-w-wrap">
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="text-2xl font-semibold text-brand-ink mb-4">About Venkata</h2>
+            <p className="text-slate-600 mb-6">
+              22+ years architecting SAP solutions, leading digital transformations, and exploring the intersection 
+              of ancient wisdom with modern technology. From executive strategy to hands-on implementation.
+            </p>
+            <Link to="/about" className="inline-flex items-center px-6 py-3 bg-brand text-white rounded-lg font-medium hover:brightness-110 transition">
+              Learn More
+            </Link>
           </div>
         </div>
       </section>
