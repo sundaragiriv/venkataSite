@@ -1,0 +1,40 @@
+import { Routes, Route, useLocation } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Signals from "./pages/Signals";
+import SignalPost from "./pages/SignalPost";
+import WorkSlug from "./pages/WorkSlug";
+import Veda from "./pages/Veda";
+import VedaSlug from "./pages/VedaSlug";
+import AI from "./pages/AI";
+import AISlug from "./pages/AISlug";
+
+export default function AppRoutes() {
+  const location = useLocation();
+  
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div 
+        key={location.pathname}
+        initial={{ opacity: 0, y: 8 }} 
+        animate={{ opacity: 1, y: 0 }} 
+        exit={{ opacity: 0, y: -8 }}
+        transition={{ duration: 0.25 }}
+      >
+        <Routes location={location}>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/signals" element={<Signals />} />
+          <Route path="/signals/:slug" element={<SignalPost />} />
+          <Route path="/work/:slug" element={<WorkSlug />} />
+          <Route path="/veda" element={<Veda />} />
+          <Route path="/veda/:slug" element={<VedaSlug />} />
+          <Route path="/ai" element={<AI />} />
+          <Route path="/ai/:slug" element={<AISlug />} />
+          <Route path="*" element={<Home />} />
+        </Routes>
+      </motion.div>
+    </AnimatePresence>
+  );
+}

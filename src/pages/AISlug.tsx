@@ -34,7 +34,8 @@ export default function AISlug() {
         
         <div className="flex gap-2 mb-8">
           {mockPost.tags.map(tag => (
-            <span key={tag} className="text-xs px-2 py-1 bg-brand/10 text-brand rounded">
+            <span key={tag} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs bg-brand/10 text-brand">
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand animate-pulseTag" />
               {tag}
             </span>
           ))}

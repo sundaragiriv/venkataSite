@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { signals, fmt } from "../lib/signals";
+import MotionCard from "../components/MotionCard";
+import { FadeIn } from "../components/FadeIn";
 
 const TAGS = ["All", "Tech", "AI-in-SAP", "Vedic"] as const;
 
@@ -28,13 +30,17 @@ export default function Signals() {
 
       <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {list.map(p => (
-          <Link key={p.slug} to={`/signals/${p.slug}`} className="group rounded-2xl bg-white border border-black/10 p-6 shadow-soft hover:shadow-lg transition">
-            <div className="text-xs text-slate-500">{fmt(p.date)}</div>
-            <h3 className="mt-1 text-lg font-semibold text-slate-900">{p.title}</h3>
-            <div className="mt-1 text-xs font-medium text-brand">{p.tag}</div>
-            {p.summary && <p className="mt-2 text-sm text-slate-600">{p.summary}</p>}
-            <span className="mt-3 inline-flex items-center gap-1 text-sm text-brand">Read →</span>
-          </Link>
+          <FadeIn key={p.slug}>
+            <MotionCard className="p-0">
+              <Link to={`/signals/${p.slug}`} className="block p-6">
+                <div className="text-xs text-slate-500">{fmt(p.date)}</div>
+                <h3 className="mt-1 text-lg font-semibold text-slate-900">{p.title}</h3>
+                <div className="mt-1 text-xs font-medium text-brand">{p.tag}</div>
+                {p.summary && <p className="mt-2 text-sm text-slate-600">{p.summary}</p>}
+                <span className="mt-3 inline-flex items-center gap-1 text-sm text-brand">Read →</span>
+              </Link>
+            </MotionCard>
+          </FadeIn>
         ))}
       </div>
     </section>

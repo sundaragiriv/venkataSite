@@ -11,3 +11,12 @@ body {
     #FFFFFF;
 }
 .prose { max-width: 72ch; }
+
+.btn-accent { background: #0070F2; color: #fff; }
+.link-accent { color: #0070F2; }
+html, body, #root { height: 100%; }
+
+#resume-direct-link[aria-disabled] {
+  opacity: 0.5;
+  pointer-events: none;
+}

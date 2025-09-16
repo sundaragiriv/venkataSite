@@ -1,8 +1,14 @@
 import { ReactNode } from "react";
+import { useLocation } from "react-router-dom";
+import FloatingGlyphs from "./FloatingGlyphs";
 
 export default function Layout({ children }: { children: ReactNode }) {
+  const { pathname } = useLocation();
+  
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col relative">
+      {pathname.startsWith("/veda") && <FloatingGlyphs />}
+      
       <header className="sticky top-0 z-40 bg-white/70 backdrop-blur border-b border-black/5">
         <div className="container max-w-wrap h-14 flex items-center justify-between">
           <a href="/" className="font-semibold tracking-tight text-slate-900">Venkata</a>
@@ -15,7 +21,9 @@ export default function Layout({ children }: { children: ReactNode }) {
           <a href="/contact" className="text-sm px-3 py-1.5 rounded-lg bg-brand text-white font-medium shadow-soft hover:brightness-110 transition">Contact</a>
         </div>
       </header>
+      
       <main className="flex-1">{children}</main>
+      
       <footer className="border-t border-black/5 mt-20">
         <div className="container max-w-wrap py-10 text-sm text-slate-500">© {new Date().getFullYear()} Venkata</div>
       </footer>
