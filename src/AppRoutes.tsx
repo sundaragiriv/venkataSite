@@ -2,6 +2,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import Home from "./pages/Home";
 import About from "./pages/About";
+import Configure from "./pages/Configure";
 import Signals from "./pages/Signals";
 import SignalPost from "./pages/SignalPost";
 import WorkSlug from "./pages/WorkSlug";
@@ -25,6 +26,7 @@ export default function AppRoutes() {
         <Routes location={location}>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
+          <Route path="/configure" element={<Configure />} />
           <Route path="/signals" element={<Signals />} />
           <Route path="/signals/:slug" element={<SignalPost />} />
           <Route path="/work/:slug" element={<WorkSlug />} />

@@ -29,6 +29,11 @@ export default function Home() {
               Bridging enterprise systems with AI innovation through proven blueprints, 
               Vedic wisdom, and hands-on experimentation.
             </p>
+            <div className="flex gap-4 justify-center">
+              <a href="/configure" className="btn-accent px-6 py-3 rounded-lg shadow-soft hover:brightness-110 transition">
+                Try the Configurator
+              </a>
+            </div>
           </FadeIn>
         </div>
       </section>
