@@ -1,11 +1,6 @@
-export type SignalMeta = {
-  slug: string
-  title: string
-  date: string
-  tag: 'Tech' | 'AI-in-SAP' | 'Vedic'
-  summary?: string
-  cover?: string
-}
+import { PostMetaSchema, type PostMeta } from './schema';
+
+export type SignalMeta = PostMeta & { slug: string };
 
 const modules = import.meta.glob('../../content/signals/*.mdx', { eager: true }) as Record<string, any>
 
@@ -20,14 +15,15 @@ export const signals: SignalMeta[] = Object.keys(modules).map((k) => {
   const m = modules[k]
   const slug = k.split('/').pop()!.replace('.mdx', '')
 
-  const fm = (m.frontmatter ?? m.meta ?? {}) as Partial<SignalMeta>
-  return {
-    slug,
-    title: fm.title ?? slug,
-    date: toISO(fm.date),
-    tag: (fm.tag as any) ?? 'Tech',
-    summary: fm.summary ?? '',
-    cover: fm.cover ?? ''
+  try {
+    const validated = PostMetaSchema.parse(m.frontmatter ?? m.meta ?? {})
+    return {
+      ...validated,
+      slug,
+      date: toISO(validated.date),
+    }
+  } catch (error) {
+    throw new Error(`Invalid frontmatter in ${slug}.mdx: ${error}`)
   }
 }).sort((a, b) => (a.date < b.date ? 1 : -1))
 

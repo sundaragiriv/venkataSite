@@ -1,8 +1,8 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
+import { lazy, Suspense } from "react";
 import Home from "./pages/Home";
 import About from "./pages/About";
-import Configure from "./pages/Configure";
 import Signals from "./pages/Signals";
 import SignalPost from "./pages/SignalPost";
 import WorkSlug from "./pages/WorkSlug";
@@ -11,19 +11,24 @@ import VedaSlug from "./pages/VedaSlug";
 import AI from "./pages/AI";
 import AISlug from "./pages/AISlug";
 
+// Lazy load heavy routes
+const Configure = lazy(() => import("./pages/Configure"));
+
 export default function AppRoutes() {
   const location = useLocation();
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   
   return (
     <AnimatePresence mode="wait">
       <motion.div 
         key={location.pathname}
-        initial={{ opacity: 0, y: 8 }} 
+        initial={{ opacity: 0, y: reducedMotion ? 0 : 8 }} 
         animate={{ opacity: 1, y: 0 }} 
-        exit={{ opacity: 0, y: -8 }}
-        transition={{ duration: 0.25 }}
+        exit={{ opacity: 0, y: reducedMotion ? 0 : -8 }}
+        transition={{ duration: reducedMotion ? 0 : 0.25 }}
       >
-        <Routes location={location}>
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+          <Routes location={location}>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/configure" element={<Configure />} />
@@ -35,7 +40,8 @@ export default function AppRoutes() {
           <Route path="/ai" element={<AI />} />
           <Route path="/ai/:slug" element={<AISlug />} />
           <Route path="*" element={<Home />} />
-        </Routes>
+          </Routes>
+        </Suspense>
       </motion.div>
     </AnimatePresence>
   );

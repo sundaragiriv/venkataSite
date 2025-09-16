@@ -5,19 +5,21 @@ import useSpotlight from "../hooks/useSpotlight";
 import AuroraHero from "../components/AuroraHero";
 import MotionCard from "../components/MotionCard";
 import { FadeIn } from "../components/FadeIn";
+import SEO from "../components/SEO";
 
 export default function Home() {
   const latestSignals = signals.slice(0, 3);
   
   // Enable spotlight on desktop with fine pointer and no reduced motion
-  useSpotlight(
-    window.matchMedia("(pointer:fine)").matches && 
-    !window.matchMedia("(prefers-reduced-motion: reduce)").matches
-  );
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const finePointer = window.matchMedia("(pointer:fine)").matches;
+  useSpotlight(finePointer && !reducedMotion);
 
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
+    <>
+      <SEO />
+      <div className="min-h-screen">
+        {/* Hero Section */}
       <section className="relative py-20 overflow-hidden">
         <AuroraHero />
         <div className="container max-w-wrap relative">
@@ -30,7 +32,7 @@ export default function Home() {
               Vedic wisdom, and hands-on experimentation.
             </p>
             <div className="flex gap-4 justify-center">
-              <a href="/configure" className="btn-accent px-6 py-3 rounded-lg shadow-soft hover:brightness-110 transition">
+              <a href="/configure" className="btn-accent px-6 py-3 rounded-lg shadow-soft hover:brightness-110 transition focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2" onMouseEnter={() => import("../pages/Configure")}>
                 Try the Configurator
               </a>
             </div>
@@ -142,6 +144,7 @@ tag: Tech|AI-in-SAP|Vedic
           </FadeIn>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   );
 }

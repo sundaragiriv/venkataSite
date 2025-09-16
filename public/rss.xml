@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Venkata's Signals</title>
+    <link>https://sundaragiriv.github.io/venkataSite/signals</link>
+    <description>Tech, AI-in-SAP, and Vedic wisdom insights</description>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 16 Sep 2025 19:47:09 GMT</lastBuildDate>
+    <item>
+      <title>From Action Profiles to Modern Service V2 Flows</title>
+      <link>https://sundaragiriv.github.io/venkataSite/signals/action-profiles-to-servicev2</link>
+      <description>Reframing triggers as policies with telemetry and guardrails.</description>
+      <pubDate>Sun, 05 Jan 2025 00:00:00 GMT</pubDate>
+      <guid>https://sundaragiriv.github.io/venkataSite/signals/action-profiles-to-servicev2</guid>
+    </item>
+    <item>
+      <title>RAG for CX: Governed Context Inside SAP Flows</title>
+      <link>https://sundaragiriv.github.io/venkataSite/signals/rag-in-cx</link>
+      <description>A practical recipe for adding retrieval to Sales/Service Cloud decisions without chaos.</description>
+      <pubDate>Tue, 07 Jan 2025 00:00:00 GMT</pubDate>
+      <guid>https://sundaragiriv.github.io/venkataSite/signals/rag-in-cx</guid>
+    </item>
+    <item>
+      <title>Ahiṁsā at Work: Designing for Psychological Safety</title>
+      <link>https://sundaragiriv.github.io/venkataSite/signals/vedic-ahimsa</link>
+      <description>Translating a core Vedic principle into modern team dynamics.</description>
+      <pubDate>Mon, 06 Jan 2025 00:00:00 GMT</pubDate>
+      <guid>https://sundaragiriv.github.io/venkataSite/signals/vedic-ahimsa</guid>
+    </item>
+  </channel>
+</rss>

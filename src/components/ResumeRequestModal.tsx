@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 type Props = {
   open: boolean;
@@ -8,11 +8,20 @@ type Props = {
 };
 
 export default function ResumeRequestModal({ open, onClose, resumeHref, emailTo }: Props) {
+  const modalRef = useRef<HTMLDivElement>(null);
+  
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [onClose]);
+  
+  useEffect(() => {
+    if (open && modalRef.current) {
+      const firstInput = modalRef.current.querySelector('input');
+      firstInput?.focus();
+    }
+  }, [open]);
 
   if (!open) return null;
 
@@ -29,16 +38,19 @@ export default function ResumeRequestModal({ open, onClose, resumeHref, emailTo 
     );
     window.open(`mailto:${emailTo}?subject=${subject}&body=${body}`, "_blank");
 
-    // Reveal the download button after the mailto opens
+    // Store approval and reveal download button
+    localStorage.setItem('resume-ok', '1');
     const dl = document.getElementById("resume-direct-link");
     if (dl) dl.removeAttribute("aria-disabled");
+    
+    onClose();
   };
 
   return (
     <div role="dialog" aria-modal="true"
          className="fixed inset-0 z-50 grid place-items-center bg-black/40 p-4"
          onClick={onClose}>
-      <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl"
+      <div ref={modalRef} className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl"
            onClick={(e)=>e.stopPropagation()}>
         <h3 className="text-xl font-semibold text-slate-900">Request résumé</h3>
         <p className="mt-1 text-sm text-slate-600">

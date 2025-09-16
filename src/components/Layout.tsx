@@ -7,6 +7,9 @@ export default function Layout({ children }: { children: ReactNode }) {
   
   return (
     <div className="min-h-screen flex flex-col relative">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-brand text-white px-4 py-2 rounded-lg z-50">
+        Skip to content
+      </a>
       {pathname.startsWith("/veda") && <FloatingGlyphs />}
       
       <header className="sticky top-0 z-40 bg-white/70 backdrop-blur border-b border-black/5">
@@ -14,7 +17,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           <a href="/" className="font-semibold tracking-tight text-slate-900">Venkata</a>
           <nav className="hidden md:flex gap-6 text-sm text-slate-600">
             <a href="/about" className="hover:text-slate-900">About</a>
-            <a href="/configure" className="hover:text-slate-900">Configure</a>
+            <a href="/configure" className="hover:text-slate-900" onMouseEnter={() => import("../pages/Configure")}>Configure</a>
             <a href="/signals" className="hover:text-slate-900">Signals</a>
             <a href="/veda" className="hover:text-slate-900">Vedic Studio</a>
             <a href="/ai" className="hover:text-slate-900">AI Lab</a>
@@ -23,7 +26,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         </div>
       </header>
       
-      <main className="flex-1">{children}</main>
+      <main id="main-content" className="flex-1">{children}</main>
       
       <footer className="border-t border-black/5 mt-20">
         <div className="container max-w-wrap py-10 text-sm text-slate-500">© {new Date().getFullYear()} Venkata</div>

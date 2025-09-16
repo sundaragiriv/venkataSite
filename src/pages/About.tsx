@@ -1,17 +1,47 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FadeIn from "../components/FadeIn";
 import SoftGradient from "../components/SoftGradient";
 import ResumeRequestModal from "../components/ResumeRequestModal";
+import SEO from "../components/SEO";
 
 const VIEWS = ["Exec","Architect","Practitioner"] as const;
 
 export default function About() {
   const [view, setView] = useState<(typeof VIEWS)[number]>("Exec");
   const [open, setOpen] = useState(false);
+  
+  useEffect(() => {
+    // Enable download if previously approved
+    if (localStorage.getItem('resume-ok')) {
+      const dl = document.getElementById("resume-direct-link");
+      if (dl) dl.removeAttribute("aria-disabled");
+    }
+  }, []);
 
   return (
-    <section className="relative container max-w-wrap py-12">
-      <SoftGradient />
+    <>
+      <SEO 
+        title="About Venkata - SAP Architect & AI Pioneer"
+        description="22+ years architecting SAP solutions and AI-powered customer experiences. Executive summary, expertise, and Vedic principles."
+      />
+      <script type="application/ld+json">
+        {JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Person",
+          "name": "Venkata Girivasan",
+          "jobTitle": "SAP CX + AI Architect",
+          "worksFor": {
+            "@type": "Organization",
+            "name": "Argano"
+          },
+          "url": "https://sundaragiriv.github.io/venkataSite",
+          "sameAs": [
+            "https://linkedin.com/in/venkata-girivasan"
+          ]
+        })}
+      </script>
+      <section className="relative container max-w-wrap py-12">
+        <SoftGradient />
 
       <FadeIn>
         <div className="flex items-end justify-between gap-4">
@@ -112,7 +142,8 @@ export default function About() {
         resumeHref="/assets/resume.pdf"
         emailTo="venkatagirivasan@gmail.com"
       />
-    </section>
+      </section>
+    </>
   );
 }
 
