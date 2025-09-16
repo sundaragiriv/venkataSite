@@ -1,8 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { signals } from "../lib/signals";
-import { Link } from "react-router-dom";
-import { signals } from "../lib/signals";
 
 export default function Home() {
   const latestSignals = signals.slice(0, 3);
