@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { signals } from "../lib/signals";
+import { signals, fmt } from "../lib/signals";
 
 export default function Home() {
   const latestSignals = signals.slice(0, 3);
@@ -93,21 +93,32 @@ export default function Home() {
             </Link>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
-            {latestSignals.map((signal, i) => (
-              <motion.div
-                key={signal.slug}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1 * i }}
-              >
-                <Link to={`/signals/${signal.slug}`} className="block bg-white rounded-lg p-6 shadow-soft border border-black/5 hover:shadow-lg transition">
-                  <div className="text-xs text-slate-500 mb-2">{new Date(signal.date).toLocaleDateString()}</div>
-                  <h3 className="text-lg font-semibold text-slate-900 mb-2">{signal.title}</h3>
-                  <div className="text-xs font-medium text-brand mb-2">{signal.tag}</div>
-                  {signal.summary && <p className="text-sm text-slate-600">{signal.summary}</p>}
-                </Link>
-              </motion.div>
-            ))}
+            {signals.length === 0 ? (
+              <div className="rounded-2xl bg-white border border-black/10 p-6 text-slate-600">
+                No posts yet. Add files to <code>content/signals/</code> with front-matter:
+                <pre className="mt-2 text-xs">{`---
+title: …
+date: YYYY-MM-DD
+tag: Tech|AI-in-SAP|Vedic
+---`}</pre>
+              </div>
+            ) : (
+              latestSignals.map((signal, i) => (
+                <motion.div
+                  key={signal.slug}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.1 * i }}
+                >
+                  <Link to={`/signals/${signal.slug}`} className="block bg-white rounded-lg p-6 shadow-soft border border-black/5 hover:shadow-lg transition">
+                    <div className="text-xs text-slate-500 mb-2">{fmt(signal.date)}</div>
+                    <h3 className="text-lg font-semibold text-slate-900 mb-2">{signal.title}</h3>
+                    <div className="text-xs font-medium text-brand mb-2">{signal.tag}</div>
+                    {signal.summary && <p className="text-sm text-slate-600">{signal.summary}</p>}
+                  </Link>
+                </motion.div>
+              ))
+            )}
           </div>
         </div>
       </section>

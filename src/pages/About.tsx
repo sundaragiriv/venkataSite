@@ -42,7 +42,7 @@ export default function About() {
       {view === "Practitioner" && (
         <div className="mt-6 max-w-prose text-slate-700">
           <p>I practice and teach principles from Maharishi Ayurveda and Vedic literature, applying ancient wisdom to modern technology challenges and team dynamics.</p>
-          <p className="mt-3">Read <a href="/veda" className="text-brand underline">Vedic Studio</a> for Shruti & Vichāra articles.</p>
+          <p className="mt-3">Read <a href="/veda" className="text-brand underline">Vedic Studio</a> for Shruti & Vichāra articles and <a href="/ai" className="text-brand underline">AI Lab</a> for technical experiments.</p>
         </div>
       )}
 

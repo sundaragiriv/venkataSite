@@ -1,14 +1,14 @@
 ---
-title: "RAG Patterns for Customer Experience"
-date: "2025-01-10"
+title: "RAG for CX: Governed Context Inside SAP Flows"
+date: "2025-01-07"
 tag: "Tech"
-summary: "Retrieval-augmented generation works best when you control the context, not just the prompt."
+summary: "A practical recipe for adding retrieval to Sales/Service Cloud decisions without chaos."
 ---
 
-**Problem.** Most RAG implementations in CX fail because they retrieve too much irrelevant context or miss critical business rules that should constrain the AI's responses.
+**Problem.** Most RAG implementations in customer experience fail because they retrieve too much irrelevant context or miss critical business rules that should constrain AI responses.
 
-**Solution.** Build retrieval hierarchies: start with customer-specific context (account history, preferences, contracts), then expand to product knowledge, and finally general policies. Each layer should filter and prioritize what gets passed to the next.
+**Recipe.** Build retrieval hierarchies: start with customer-specific context (account history, preferences, contracts), then expand to product knowledge, and finally general policies. Each layer should filter and prioritize what gets passed to the next.
 
-**Implementation:** Use SAP's Customer Data Platform to maintain fresh embeddings of customer interactions, then retrieve in order of relevance and recency. Always include business constraints (pricing rules, service entitlements) as system prompts that can't be overridden.
+**Implementation.** Use SAP's Customer Data Platform to maintain fresh embeddings of customer interactions, then retrieve in order of relevance and recency. Always include business constraints (pricing rules, service entitlements) as system prompts that can't be overridden.
 
-**Benefit:** AI responses become more accurate and business-compliant because they're grounded in the right context at the right granularity.
+**Result.** AI responses become more accurate and business-compliant because they're grounded in the right context at the right granularity.
