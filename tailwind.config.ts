@@ -10,7 +10,7 @@ export default {
   theme: {
     container: { center: true, padding: { DEFAULT: "1rem", lg: "2rem" } },
     extend: {
-      maxWidth: { wrap: "1120px", prose: "72ch" },
+      maxWidth: { wrap: "1120px", wrapWide: "1280px", prose: "72ch" },
       colors: {
         brand: {
           DEFAULT: "#0070F2",

@@ -6,6 +6,7 @@ import AuroraHero from "../components/AuroraHero";
 import MotionCard from "../components/MotionCard";
 import { FadeIn } from "../components/FadeIn";
 import SEO from "../components/SEO";
+import HomeAboutSnapshot from "../sections/HomeAboutSnapshot";
 
 export default function Home() {
   const latestSignals = signals.slice(0, 3);
@@ -86,6 +87,9 @@ export default function Home() {
         </div>
       </section>
 
+      {/* About Venkata Snapshot */}
+      <HomeAboutSnapshot />
+
       {/* Latest Signals */}
       <section className="py-16 bg-slate-50">
         <div className="container max-w-wrap">
@@ -127,23 +131,7 @@ tag: Tech|AI-in-SAP|Vedic
         </div>
       </section>
 
-      {/* About Teaser */}
-      <section className="py-16">
-        <div className="container max-w-wrap">
-          <FadeIn>
-            <div className="max-w-2xl mx-auto text-center">
-              <h2 className="text-2xl font-semibold text-brand-ink mb-4">About Venkata</h2>
-              <p className="text-slate-600 mb-6">
-                22+ years architecting SAP solutions, leading digital transformations, and exploring the intersection 
-                of ancient wisdom with modern technology. From executive strategy to hands-on implementation.
-              </p>
-              <Link to="/about" className="inline-flex items-center px-6 py-3 bg-brand text-white rounded-lg font-medium hover:brightness-110 transition">
-                Learn More
-              </Link>
-            </div>
-          </FadeIn>
-        </div>
-      </section>
+
       </div>
     </>
   );
