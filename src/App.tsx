@@ -4,7 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
-import TechhBlogs from "@/pages/TechhBlogs";
+import TechBlogs from "@/pages/TechBlogs";
 import MyExperiencePage from "@/pages/myExperience";
 import GetInTouchPage from "@/pages/getinTouch";
 import NotFound from "./pages/NotFound";
@@ -19,7 +19,7 @@ const App = () => (
   <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/techhBlogs" element={<TechhBlogs />} />
+          <Route path="/techBlogs" element={<TechBlogs />} />
           <Route path="/myExperience" element={<MyExperiencePage />} />
           <Route path="/getinTouch" element={<GetInTouchPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

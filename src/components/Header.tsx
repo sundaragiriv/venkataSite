@@ -17,10 +17,10 @@ const Header = () => {
 
   const navItems = [
     { to: '/', label: 'Home' },
-    { to: '/', hash: '#aboutMe', label: 'AboutMe' },
-    { to: '/myExperience', label: 'myExperience' },
-    { to: '/techhBlogs', label: 'techhBlogs' },
-    { to: '/getinTouch', label: 'getinTouch' },
+    { to: '/', hash: '#aboutMe', label: 'About Me' },
+    { to: '/myExperience', label: 'My Experience' },
+    { to: '/techBlogs', label: 'Tech Blogs' },
+    { to: '/getinTouch', label: 'Get in Touch' },
   ];
 
   const navigate = useNavigate();
