@@ -1,0 +1,20 @@
+---
+title: "RASP: Retrieval-Augmented SAP Processes"
+summary: "Bring enterprise context to AI decisions inside SAP flows."
+tags: ["AI","SAP","RAG","FSM","Service"]
+pattern:
+  problem: "Agents hallucinate without context."
+  solution: "Inject governed SAP context via retrieval..."
+  antiPatterns: ["Letting LLM call S/4 APIs directly without guardrails"]
+code:
+  language: "pseudo"
+  snippet: "policy: resolve-email → CDC → CDP → route → Service V2..."
+---
+
+**Why it works.** Guardrails + retrieval tame variance while preserving the creative power of LLMs for complex business scenarios.
+
+**Implementation.** Use SAP's Change Data Capture (CDC) to maintain fresh context in vector stores, then retrieve relevant business rules before LLM processing.
+
+**Anti-pattern.** Direct API access without governance leads to data leaks and unpredictable system behavior.
+
+**Example.** Service ticket routing that considers customer history, product configuration, and technician availability through retrieved SAP context.
