@@ -26,6 +26,12 @@ body {
 .link-accent { color: #0070F2; }
 html, body, #root { height: 100%; }
 
+/* Sanskrit font styling */
+.sanskrit-font {
+  font-family: 'Noto Sans Devanagari', 'Siddhanta', serif;
+  font-weight: 500;
+}
+
 /* Enhanced button styles */
 .btn-gradient {
   background: linear-gradient(135deg, #0070F2 0%, #0056cc 100%);
