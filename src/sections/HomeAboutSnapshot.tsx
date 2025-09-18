@@ -5,9 +5,16 @@ import Icons from "../components/IconLibrary";
 function Tile({ to, children }: { to?: string; children: React.ReactNode }) {
   const C: any = to ? Link : "div";
   return (
-    <motion.div whileHover={{ y: -4 }} transition={{ type: "spring", stiffness: 400, damping: 30 }} className="h-full">
-      <C to={to} className="block rounded-2xl bg-white border border-black/10 p-6 shadow-soft hover:shadow-lift h-full flex flex-col">
-        {children}
+    <motion.div 
+      whileHover={{ y: -6, scale: 1.02 }} 
+      transition={{ type: "spring", stiffness: 400, damping: 30 }} 
+      className="h-full"
+    >
+      <C to={to} className="block rounded-2xl card-glow p-6 h-full flex flex-col group">
+        <div className="relative overflow-hidden rounded-xl">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out" />
+          {children}
+        </div>
       </C>
     </motion.div>
   );
@@ -143,13 +150,13 @@ export default function HomeAboutSnapshot() {
       </motion.div>
 
       {/* CTA row */}
-      <div className="mt-8 flex flex-wrap gap-3">
-        <Link to="/about" className="btn-accent px-4 py-2 rounded-lg shadow-soft hover:brightness-110 transition flex items-center gap-2">
-          <Icons.Users className="h-4 w-4" />
+      <div className="mt-8 flex flex-wrap gap-4">
+        <Link to="/about" className="btn-gradient text-white px-6 py-3 rounded-xl font-medium flex items-center gap-2 group">
+          <Icons.Users className="h-4 w-4 group-hover:scale-110 transition-transform" />
           Learn more on About
         </Link>
-        <Link to="/configure" className="px-4 py-2 rounded-lg border border-black/10 hover:bg-black/5 transition flex items-center gap-2">
-          <Icons.Zap className="h-4 w-4" />
+        <Link to="/configure" className="btn-soft text-slate-700 px-6 py-3 rounded-xl font-medium flex items-center gap-2 group">
+          <Icons.Zap className="h-4 w-4 group-hover:scale-110 transition-transform" />
           Try the Configurator
         </Link>
       </div>

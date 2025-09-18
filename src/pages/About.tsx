@@ -125,10 +125,10 @@ export default function About() {
       {/* CTA row */}
       <FadeIn>
         <div className="mt-10 flex flex-wrap items-center gap-3 border-t border-black/10 pt-6">
-          <button onClick={()=>setOpen(true)} className="btn-accent px-4 py-2 rounded-lg shadow-soft hover:brightness-110">
+          <button onClick={()=>setOpen(true)} className="btn-gradient text-white px-6 py-3 rounded-xl font-medium">
             Request résumé & download
           </button>
-          <a id="resume-direct-link" aria-disabled className="px-4 py-2 rounded-lg border border-black/10 text-slate-700 hover:bg-black/5"
+          <a id="resume-direct-link" aria-disabled className="btn-soft px-6 py-3 rounded-xl font-medium text-slate-700"
              href="/assets/resume.pdf" download>
             Download PDF
           </a>

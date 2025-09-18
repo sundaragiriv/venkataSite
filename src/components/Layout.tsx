@@ -25,7 +25,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             <a href="/veda" className="hover:text-slate-900">Vedic Studio</a>
             <a href="/ai" className="hover:text-slate-900">AI Lab</a>
           </nav>
-          <a href="/contact" className="text-sm px-3 py-1.5 rounded-lg bg-brand text-white font-medium shadow-soft hover:brightness-110 transition">Contact</a>
+          <a href="/contact" className="text-sm px-4 py-2 rounded-xl btn-gradient text-white font-medium">Contact</a>
         </div>
       </header>
       

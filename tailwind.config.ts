@@ -28,18 +28,28 @@ export default {
         info: "#3b82f6",
         vedic: "#d97706"
       },
-      boxShadow: { soft: "0 10px 30px rgba(2, 6, 23, 0.08)" },
+      boxShadow: { 
+        soft: "0 10px 30px rgba(2, 6, 23, 0.08)",
+        lift: "0 12px 32px rgba(2,6,23,.12)",
+        glow: "0 0 20px rgba(0, 112, 242, 0.15)",
+        "glow-lg": "0 0 40px rgba(0, 112, 242, 0.2)"
+      },
       keyframes: {
         gradientShift: { "0%,100%": { backgroundPosition: "0% 50%" }, "50%": { backgroundPosition: "100% 50%" } },
         floatSlow: { "0%,100%": { transform: "translateY(0px)" }, "50%": { transform: "translateY(-8px)" } },
-        pulseTag: { "0%,100%": { transform: "scale(1)" }, "50%": { transform: "scale(1.06)" } }
+        pulseTag: { "0%,100%": { transform: "scale(1)" }, "50%": { transform: "scale(1.06)" } },
+        shimmer: { "0%": { transform: "translateX(-100%)" }, "100%": { transform: "translateX(100%)" } },
+        fadeInUp: { "0%": { opacity: "0", transform: "translateY(20px)" }, "100%": { opacity: "1", transform: "translateY(0)" } },
+        glow: { "0%, 100%": { boxShadow: "0 0 20px rgba(0, 112, 242, 0.15)" }, "50%": { boxShadow: "0 0 30px rgba(0, 112, 242, 0.25)" } }
       },
       animation: {
         gradient: "gradientShift 18s ease infinite",
         floatSlow: "floatSlow 8s ease-in-out infinite",
-        pulseTag: "pulseTag 2.6s ease-in-out infinite"
-      },
-      boxShadow: { soft: "0 10px 30px rgba(2, 6, 23, 0.08)", lift: "0 12px 32px rgba(2,6,23,.12)" }
+        pulseTag: "pulseTag 2.6s ease-in-out infinite",
+        shimmer: "shimmer 2s ease-in-out infinite",
+        fadeInUp: "fadeInUp 0.6s ease-out",
+        glow: "glow 3s ease-in-out infinite"
+      }
     }
   },
   plugins: [require("@tailwindcss/typography")],

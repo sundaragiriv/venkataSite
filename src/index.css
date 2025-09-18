@@ -12,14 +12,65 @@ body {
 }
 .prose { max-width: 72ch; }
 
-.btn-accent { background: #0070F2; color: #fff; }
+.btn-accent { 
+  background: linear-gradient(135deg, #0070F2 0%, #0056cc 100%);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(0, 112, 242, 0.3);
+  transition: all 0.3s ease;
+}
+.btn-accent:hover {
+  background: linear-gradient(135deg, #0056cc 0%, #003d99 100%);
+  box-shadow: 0 8px 25px rgba(0, 112, 242, 0.4);
+  transform: translateY(-2px);
+}
 .link-accent { color: #0070F2; }
 html, body, #root { height: 100%; }
 
+/* Enhanced button styles */
+.btn-gradient {
+  background: linear-gradient(135deg, #0070F2 0%, #0056cc 100%);
+  box-shadow: 0 4px 15px rgba(0, 112, 242, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-gradient:hover {
+  background: linear-gradient(135deg, #0056cc 0%, #003d99 100%);
+  box-shadow: 0 8px 25px rgba(0, 112, 242, 0.4);
+  transform: translateY(-2px);
+}
+
+.btn-soft {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.9) 100%);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-soft:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(248, 250, 252, 1) 100%);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.card-glow {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-glow:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15), 0 0 20px rgba(0, 112, 242, 0.1);
+  transform: translateY(-4px);
+}
+
 /* Focus styles */
 a:focus, button:focus, input:focus, textarea:focus, select:focus {
-  outline: 2px solid #0070F2;
-  outline-offset: 2px;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 112, 242, 0.3);
+  transition: box-shadow 0.2s ease;
 }
 
 /* Screen reader only */
