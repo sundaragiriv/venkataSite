@@ -20,7 +20,7 @@ export function BrandLogo({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
 export function BrandTagline() {
   return (
     <div className="text-sm text-slate-600 font-medium">
-      SAP CX Architect • AI Pioneer • Vedic Wisdom
+      SAP CX Architect • SAP AI Expert • Joule Integration • Vedic Leadership
     </div>
   );
 }
