@@ -5,13 +5,20 @@
     <link>https://sundaragiriv.github.io/venkataSite/signals</link>
     <description>Tech, AI-in-SAP, and Vedic wisdom insights</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 16 Sep 2025 20:23:13 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 18 Sep 2025 22:00:05 GMT</lastBuildDate>
     <item>
       <title>From Action Profiles to Modern Service V2 Flows</title>
       <link>https://sundaragiriv.github.io/venkataSite/signals/action-profiles-to-servicev2</link>
       <description>Reframing triggers as policies with telemetry and guardrails.</description>
       <pubDate>Sun, 05 Jan 2025 00:00:00 GMT</pubDate>
       <guid>https://sundaragiriv.github.io/venkataSite/signals/action-profiles-to-servicev2</guid>
+    </item>
+    <item>
+      <title>CX Modernization: Telemetry-First Architecture</title>
+      <link>https://sundaragiriv.github.io/venkataSite/signals/cx-modernization-telemetry</link>
+      <description>Why measuring outcomes from day one transforms SAP CX implementations from cost centers to profit drivers.</description>
+      <pubDate>Tue, 10 Dec 2024 00:00:00 GMT</pubDate>
+      <guid>https://sundaragiriv.github.io/venkataSite/signals/cx-modernization-telemetry</guid>
     </item>
     <item>
       <title>RAG for CX: Governed Context Inside SAP Flows</title>
@@ -21,11 +28,39 @@
       <guid>https://sundaragiriv.github.io/venkataSite/signals/rag-in-cx</guid>
     </item>
     <item>
+      <title>SAP AI Governance: Beyond the Buzzword Bingo</title>
+      <link>https://sundaragiriv.github.io/venkataSite/signals/sap-ai-governance-framework</link>
+      <description>A practical framework for governing AI in SAP landscapes without killing innovation or creating compliance nightmares.</description>
+      <pubDate>Wed, 18 Dec 2024 00:00:00 GMT</pubDate>
+      <guid>https://sundaragiriv.github.io/venkataSite/signals/sap-ai-governance-framework</guid>
+    </item>
+    <item>
+      <title>SAP AI Integration Patterns: Beyond the Hype</title>
+      <link>https://sundaragiriv.github.io/venkataSite/signals/sap-ai-integration-patterns</link>
+      <description>Practical patterns for integrating AI into SAP landscapes without breaking existing processes or budgets.</description>
+      <pubDate>Sun, 15 Dec 2024 00:00:00 GMT</pubDate>
+      <guid>https://sundaragiriv.github.io/venkataSite/signals/sap-ai-integration-patterns</guid>
+    </item>
+    <item>
+      <title>SAP Performance: The 80/20 Rule for Sub-Second Response Times</title>
+      <link>https://sundaragiriv.github.io/venkataSite/signals/sap-performance-optimization</link>
+      <description>Focus on these 20% of optimizations that deliver 80% of SAP performance improvements. Real-world techniques that actually work.</description>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 GMT</pubDate>
+      <guid>https://sundaragiriv.github.io/venkataSite/signals/sap-performance-optimization</guid>
+    </item>
+    <item>
       <title>Ahiṁsā at Work: Designing for Psychological Safety</title>
       <link>https://sundaragiriv.github.io/venkataSite/signals/vedic-ahimsa</link>
       <description>Translating a core Vedic principle into modern team dynamics.</description>
       <pubDate>Mon, 06 Jan 2025 00:00:00 GMT</pubDate>
       <guid>https://sundaragiriv.github.io/venkataSite/signals/vedic-ahimsa</guid>
+    </item>
+    <item>
+      <title>Vedic Wisdom for Modern SAP Teams: The Dharma of Code</title>
+      <link>https://sundaragiriv.github.io/venkataSite/signals/vedic-wisdom-modern-teams</link>
+      <description>How ancient Sanskrit principles create psychological safety and honest telemetry in modern SAP implementations.</description>
+      <pubDate>Fri, 20 Dec 2024 00:00:00 GMT</pubDate>
+      <guid>https://sundaragiriv.github.io/venkataSite/signals/vedic-wisdom-modern-teams</guid>
     </item>
   </channel>
 </rss>

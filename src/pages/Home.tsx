@@ -7,6 +7,7 @@ import MotionCard from "../components/MotionCard";
 import { FadeIn } from "../components/FadeIn";
 import SEO from "../components/SEO";
 import HomeAboutSnapshot from "../sections/HomeAboutSnapshot";
+import { BrandTagline } from "../components/Brand";
 
 export default function Home() {
   const latestSignals = signals.slice(0, 3);
@@ -25,7 +26,10 @@ export default function Home() {
         <AuroraHero />
         <div className="container max-w-wrap relative">
           <FadeIn className="text-center max-w-3xl mx-auto">
-            <h1 className="text-5xl font-bold text-brand-ink mb-6">
+            <div className="mb-4">
+              <BrandTagline />
+            </div>
+            <h1 className="text-5xl font-bold bg-gradient-to-r from-slate-900 via-brand-700 to-slate-900 bg-clip-text text-transparent mb-6">
               SAP Architect & AI Pioneer
             </h1>
             <p className="text-xl text-slate-600 mb-8">

@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import Icons from "../components/IconLibrary";
 
 function Tile({ to, children }: { to?: string; children: React.ReactNode }) {
   const C: any = to ? Link : "div";
@@ -44,10 +45,14 @@ function Arrow({ children }: { children: React.ReactNode }) {
 export default function HomeAboutSnapshot() {
   return (
     <section className="relative container max-w-wrap 2xl:max-w-wrapWide py-16">
-      <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">About Venkata (Snapshot)</h2>
-      <p className="mt-2 text-slate-600 max-w-prose">
-        Architecting SAP CX & AI systems with measurable outcomes and Vedic clarity.
-      </p>
+      <div className="text-center md:text-left">
+        <h2 className="text-2xl md:text-3xl font-semibold tracking-tight bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
+          About Venkata (Snapshot)
+        </h2>
+        <p className="mt-3 text-lg text-slate-600 max-w-prose">
+          Architecting SAP CX & AI systems with measurable outcomes and Vedic clarity.
+        </p>
+      </div>
 
       <motion.div
         className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3"
@@ -59,16 +64,27 @@ export default function HomeAboutSnapshot() {
         {/* Role & Focus */}
         <motion.div variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } }}>
           <Tile to="/about">
-            <h3 className="text-lg font-semibold">SAP Solution & AI Architect</h3>
-            <p className="mt-1 text-sm text-slate-600">
-              Blueprints that ship. Telemetry-first. AI with guardrails.
-            </p>
+            <div className="flex items-start gap-3">
+              <div className="p-2 rounded-lg bg-brand/10">
+                <Icons.Target className="h-5 w-5 text-brand" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold">SAP Solution & AI Architect</h3>
+                <p className="mt-1 text-sm text-slate-600">
+                  Blueprints that ship. Telemetry-first. AI with guardrails.
+                </p>
+              </div>
+            </div>
           </Tile>
         </motion.div>
 
         {/* Metrics */}
         <motion.div variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } }}>
           <Tile>
+            <div className="flex items-center gap-2 mb-3">
+              <Icons.Award className="h-4 w-4 text-brand" />
+              <Label>Impact metrics</Label>
+            </div>
             <ul className="grid grid-cols-3 gap-3 text-center">
               <Stat k="Programs" v="40+" />
               <Stat k="Cycle time ↓" v="60%" />
@@ -80,7 +96,10 @@ export default function HomeAboutSnapshot() {
         {/* Systems */}
         <motion.div variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } }}>
           <Tile to="/work">
-            <Label>Systems I build</Label>
+            <div className="flex items-center gap-2 mb-2">
+              <Icons.Layers className="h-4 w-4 text-brand" />
+              <Label>Systems I build</Label>
+            </div>
             <ChipBar items={["Sales V2", "Service V2", "CPQ", "FSM", "CPI/BTP", "CDC/CDP"]} />
           </Tile>
         </motion.div>
@@ -88,7 +107,10 @@ export default function HomeAboutSnapshot() {
         {/* AI patterns */}
         <motion.div variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } }}>
           <Tile to="/ai">
-            <Label>AI in SAP</Label>
+            <div className="flex items-center gap-2 mb-2">
+              <Icons.Brain className="h-4 w-4 text-brand" />
+              <Label>AI in SAP</Label>
+            </div>
             <ChipBar items={["RAG", "Policy guards", "HITL", "Eval/Drift"]} />
           </Tile>
         </motion.div>
@@ -96,7 +118,10 @@ export default function HomeAboutSnapshot() {
         {/* Recent case */}
         <motion.div variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } }}>
           <Tile to="/work/cpq">
-            <Label>Recent case</Label>
+            <div className="flex items-center gap-2 mb-2">
+              <Icons.TrendingUp className="h-4 w-4 text-green-600" />
+              <Label>Recent case</Label>
+            </div>
             <p className="text-sm text-slate-700">
               Sales Cloud V2 + CPQ — quote time ↓60% with governed pricing.
             </p>
@@ -107,7 +132,10 @@ export default function HomeAboutSnapshot() {
         {/* Vedic principle */}
         <motion.div variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } }}>
           <Tile to="/veda">
-            <Label>Vedic principle</Label>
+            <div className="flex items-center gap-2 mb-2">
+              <Icons.Lightbulb className="h-4 w-4 text-amber-600" />
+              <Label>Vedic principle</Label>
+            </div>
             <p className="text-sm">"ahiṁsā prathamā dharmaḥ"—psychological safety → honest telemetry.</p>
             <Arrow>Explore Vedic Studio</Arrow>
           </Tile>
@@ -116,10 +144,12 @@ export default function HomeAboutSnapshot() {
 
       {/* CTA row */}
       <div className="mt-8 flex flex-wrap gap-3">
-        <Link to="/about" className="btn-accent px-4 py-2 rounded-lg shadow-soft">
+        <Link to="/about" className="btn-accent px-4 py-2 rounded-lg shadow-soft hover:brightness-110 transition flex items-center gap-2">
+          <Icons.Users className="h-4 w-4" />
           Learn more on About
         </Link>
-        <Link to="/configure" className="px-4 py-2 rounded-lg border border-black/10 hover:bg-black/5">
+        <Link to="/configure" className="px-4 py-2 rounded-lg border border-black/10 hover:bg-black/5 transition flex items-center gap-2">
+          <Icons.Zap className="h-4 w-4" />
           Try the Configurator
         </Link>
       </div>

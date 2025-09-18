@@ -14,9 +14,19 @@ export default {
       colors: {
         brand: {
           DEFAULT: "#0070F2",
+          50: "#eff6ff",
+          100: "#dbeafe",
+          500: "#0070F2",
+          600: "#0056cc",
+          700: "#003d99",
+          900: "#1e3a8a",
           light: "#4DB1FF",
           ink: "#0F172A"
-        }
+        },
+        success: "#10b981",
+        warning: "#f59e0b",
+        info: "#3b82f6",
+        vedic: "#d97706"
       },
       boxShadow: { soft: "0 10px 30px rgba(2, 6, 23, 0.08)" },
       keyframes: {

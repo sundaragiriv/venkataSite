@@ -11,8 +11,8 @@ interface SEOProps {
 }
 
 export default function SEO({
-  title = 'Venkata - SAP Architect & AI Pioneer',
-  description = 'SAP CX architect specializing in Sales/Service Cloud V2, AI integration, and Vedic wisdom for modern teams.',
+  title = 'Venkata - SAP CX Architect & AI Pioneer | Enterprise Solutions Expert',
+  description = 'Leading SAP CX architect with 22+ years experience. Specializing in Sales/Service Cloud V2, AI integration, BTP, and Vedic wisdom for high-performing teams. Proven track record with Fortune 500 clients.',
   type = 'website',
   image = '/assets/og-image.jpg',
   url = 'https://sundaragiriv.github.io/venkataSite',
@@ -44,6 +44,11 @@ export default function SEO({
       {type === 'article' && author && (
         <meta property="article:author" content={author} />
       )}
+      
+      {/* Additional SEO */}
+      <meta name="keywords" content="SAP CX, SAP Architect, Sales Cloud V2, Service Cloud V2, SAP AI, BTP Integration, SAP Consultant, Enterprise Architecture, Vedic Wisdom, SAP Performance" />
+      <meta name="robots" content="index, follow" />
+      <link rel="canonical" href={url} />
     </Helmet>
   );
 }
