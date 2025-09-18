@@ -68,7 +68,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             </div>
           </div>
           <div className="border-t border-black/10 mt-8 pt-8 text-sm text-slate-500">
-            © {new Date().getFullYear()} Venkata Girivasan. All rights reserved.
+            © {new Date().getFullYear()} Venkata Sundaragiri. All rights reserved.
           </div>
         </div>
       </footer>

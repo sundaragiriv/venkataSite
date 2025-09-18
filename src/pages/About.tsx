@@ -28,7 +28,7 @@ export default function About() {
         {JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Person",
-          "name": "Venkata Girivasan",
+          "name": "Venkata Sundaragiri",
           "jobTitle": "SAP CX + AI Architect",
           "worksFor": {
             "@type": "Organization",
@@ -164,10 +164,15 @@ function Pill({ children }:{children:React.ReactNode}) {
 
 function Stats() {
   return (
-    <div className="mt-6 grid gap-6 md:grid-cols-3">
+    <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       <Stat k="Programs led" v="40+" />
       <Stat k="Cycle time ↓" v="60%" />
       <Stat k="Integrations shipped" v="100+" />
+      <Stat k="Revenue impact" v="$50M+" />
+      <Stat k="Team members guided" v="200+" />
+      <Stat k="Fortune 500 clients" v="15+" />
+      <Stat k="Years experience" v="22+" />
+      <Stat k="AI models deployed" v="25+" />
     </div>
   );
 }

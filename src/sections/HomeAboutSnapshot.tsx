@@ -5,8 +5,8 @@ import Icons from "../components/IconLibrary";
 function Tile({ to, children }: { to?: string; children: React.ReactNode }) {
   const C: any = to ? Link : "div";
   return (
-    <motion.div whileHover={{ y: -4 }} transition={{ type: "spring", stiffness: 400, damping: 30 }}>
-      <C to={to} className="block rounded-2xl bg-white border border-black/10 p-6 shadow-soft hover:shadow-lift">
+    <motion.div whileHover={{ y: -4 }} transition={{ type: "spring", stiffness: 400, damping: 30 }} className="h-full">
+      <C to={to} className="block rounded-2xl bg-white border border-black/10 p-6 shadow-soft hover:shadow-lift h-full flex flex-col">
         {children}
       </C>
     </motion.div>

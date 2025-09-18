@@ -17,7 +17,7 @@ export default function SEO({
   image = '/assets/og-image.jpg',
   url = 'https://sundaragiriv.github.io/venkataSite',
   publishedTime,
-  author = 'Venkata Girivasan'
+  author = 'Venkata Sundaragiri'
 }: SEOProps) {
   return (
     <Helmet>
