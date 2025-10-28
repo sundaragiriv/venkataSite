@@ -20,7 +20,6 @@ export default function Layout({ children }: { children: ReactNode }) {
           </a>
           <nav className="hidden md:flex gap-6 text-sm text-slate-600">
             <a href="/about" className="hover:text-slate-900">About</a>
-            <a href="/configure" className="hover:text-slate-900" onMouseEnter={() => import("../pages/Configure")}>Configure</a>
             <a href="/signals" className="hover:text-slate-900">Signals</a>
             <a href="/veda" className="hover:text-slate-900">Vedic Studio</a>
             <a href="/ai" className="hover:text-slate-900">AI Lab</a>
@@ -55,7 +54,6 @@ export default function Layout({ children }: { children: ReactNode }) {
                 <li><a href="/signals" className="hover:text-brand">Signals</a></li>
                 <li><a href="/veda" className="hover:text-brand">Vedic Studio</a></li>
                 <li><a href="/ai" className="hover:text-brand">AI Lab</a></li>
-                <li><a href="/configure" className="hover:text-brand">Configurator</a></li>
               </ul>
             </div>
             <div>

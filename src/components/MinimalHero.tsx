@@ -11,7 +11,12 @@ export default function MinimalHero() {
       <div className="absolute bottom-20 left-20 w-24 h-24 rounded-full bg-gradient-to-br from-yellow-100 to-yellow-200 opacity-40 animate-pulse" style={{ animationDelay: '1s' }} />
       
       {/* AI Neural Network SVG Background */}
-      <svg className="absolute inset-0 w-full h-full opacity-5 pointer-events-none" viewBox="0 0 800 400">
+      <svg 
+        className="absolute inset-0 w-full h-full opacity-5 pointer-events-none" 
+        viewBox="0 0 800 400"
+        role="img"
+        aria-label="Decorative neural network pattern"
+      >
         <defs>
           <pattern id="neural" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
             <circle cx="40" cy="40" r="2" fill="var(--brand-blue)" opacity="0.3" />

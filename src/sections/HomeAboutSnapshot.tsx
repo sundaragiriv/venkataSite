@@ -155,10 +155,6 @@ export default function HomeAboutSnapshot() {
           <Icons.Users className="h-4 w-4 group-hover:scale-110 transition-transform" />
           Learn more on About
         </Link>
-        <Link to="/configure" className="btn-soft text-slate-700 px-6 py-3 rounded-xl font-medium flex items-center gap-2 group">
-          <Icons.Zap className="h-4 w-4 group-hover:scale-110 transition-transform" />
-          Try the Configurator
-        </Link>
       </div>
     </section>
   );

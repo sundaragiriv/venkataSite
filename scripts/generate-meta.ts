@@ -5,7 +5,6 @@ import { join } from 'path';
 const routes = [
   '/',
   '/about',
-  '/configure', 
   '/signals',
   '/veda',
   '/ai'
