@@ -18,6 +18,9 @@ export default function AI() {
             <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent mb-4">
               AI Lab
             </h1>
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+              Experimental playbook: code/mini-projects, reproducible patterns, ML experiments, Joule integrations and how-tos. Hands-on, technical, replicable.
+            </p>
             <p className="text-xl text-slate-600 max-w-3xl mx-auto">
               AI patterns for SAP environments. Principles, anti-patterns, and hands-on experiments with enterprise context.
             </p>

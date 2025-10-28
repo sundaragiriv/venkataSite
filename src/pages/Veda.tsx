@@ -18,6 +18,9 @@ export default function Veda() {
             <h1 className="text-4xl font-bold bg-gradient-to-r from-vedic to-amber-600 bg-clip-text text-transparent mb-4">
               Vedic Studio
             </h1>
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+              Deep essays and resources that translate Vedic wisdom into leadership, practice, and team tools. Long-form, evergreen, learning-focused.
+            </p>
             <p className="text-xl text-slate-600 max-w-3xl mx-auto">
               Ancient wisdom for modern teams. Sanskrit verses with transliteration, audio, and practical applications for leadership and technology.
             </p>

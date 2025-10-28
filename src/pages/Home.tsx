@@ -62,11 +62,15 @@ tag: Tech|AI-in-SAP|Vedic
                           <div className="flex items-center justify-between mb-2">
                             <div className="text-xs text-slate-500">{fmt(signal.date)}</div>
                             <div className={`text-xs font-medium px-2 py-1 rounded-full ${
-                              signal.tag === 'Tech' ? 'bg-blue-100 text-blue-700' :
-                              signal.tag === 'AI-in-SAP' ? 'bg-purple-100 text-purple-700' :
-                              signal.tag === 'Vedic' ? 'bg-amber-100 text-amber-700' :
+                              signal.primary === 'SAP' ? 'bg-blue-100 text-blue-700' :
+                              signal.primary === 'AI-ML' ? 'bg-purple-100 text-purple-700' :
+                              signal.primary === 'Dharma' ? 'bg-amber-100 text-amber-700' :
                               'bg-gray-100 text-gray-700'
-                            }`}>{signal.tag}</div>
+                            }`}>
+                              {signal.primary === 'SAP' ? 'SAP' :
+                               signal.primary === 'AI-ML' ? 'AI/ML' :
+                               signal.primary === 'Dharma' ? 'Dharma' : signal.primary}
+                            </div>
                           </div>
                           <h3 className="text-lg font-semibold text-slate-900 mb-2 group-hover:text-brand-600 transition-colors">{signal.title}</h3>
                           {signal.summary && <p className="text-sm text-slate-600 line-clamp-2">{signal.summary}</p>}
