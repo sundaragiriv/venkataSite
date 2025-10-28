@@ -4,7 +4,7 @@ import { signals, fmt } from "../lib/signals";
 import MotionCard from "../components/MotionCard";
 import { FadeIn } from "../components/FadeIn";
 
-const TAGS = ["All", "AI-in-SAP", "SAP-Architecture", "Vedic", "Tech"] as const;
+const TAGS = ["All", "SAP-Architecture", "AI-in-SAP", "Vedic", "Tech"] as const;
 
 export default function Signals() {
   const [tag, setTag] = useState<(typeof TAGS)[number]>("All");
