@@ -1,29 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-html, body, #root { height: 100%; }
+:root {
+  /* Brand Colors - Blue + Turmeric + SAP Style */
+  --brand-blue: #0B66FF;
+  --brand-deep: #0D3B7F;
+  --accent-turmeric: #FFC107;
+  --bg-dark: #0D0810;
+  --text-light: #EDE7FF;
+  --muted: #BDB0CF;
+  --card-glow: rgba(11,102,255,0.06);
+  
+  /* SAP-style gradients */
+  --gradient-brand: linear-gradient(90deg, var(--brand-deep), var(--brand-blue), var(--accent-turmeric));
+  --gradient-subtle: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-deep) 100%);
+}
+
+html, body, #root { 
+  height: 100%; 
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
 body {
   color: theme(colors.brand.ink);
   background:
-    radial-gradient(800px 400px at 90% -10%, rgba(77,177,255,0.10), transparent 60%),
-    radial-gradient(800px 400px at -10% 10%, rgba(0,112,242,0.10), transparent 60%),
+    radial-gradient(800px 400px at 90% -10%, rgba(11,102,255,0.08), transparent 60%),
+    radial-gradient(800px 400px at -10% 10%, rgba(13,59,127,0.06), transparent 60%),
     #FFFFFF;
 }
 .prose { max-width: 72ch; }
 
-.btn-accent { 
-  background: linear-gradient(135deg, #0070F2 0%, #0056cc 100%);
+/* SAP-style Brand Utilities */
+.btn-gradient { 
+  background: var(--gradient-subtle);
   color: #fff;
-  box-shadow: 0 4px 15px rgba(0, 112, 242, 0.3);
+  box-shadow: 0 4px 15px rgba(11, 102, 255, 0.25);
   transition: all 0.3s ease;
+  border-radius: 12px;
+  font-weight: 600;
 }
-.btn-accent:hover {
-  background: linear-gradient(135deg, #0056cc 0%, #003d99 100%);
-  box-shadow: 0 8px 25px rgba(0, 112, 242, 0.4);
+.btn-gradient:hover {
+  background: var(--gradient-brand);
+  box-shadow: 0 8px 25px rgba(11, 102, 255, 0.35);
   transform: translateY(-2px);
 }
-.link-accent { color: #0070F2; }
+
+.btn-soft {
+  background: rgba(11, 102, 255, 0.06);
+  color: var(--brand-deep);
+  border: 1px solid rgba(11, 102, 255, 0.12);
+  transition: all 0.3s ease;
+  border-radius: 12px;
+  font-weight: 500;
+}
+.btn-soft:hover {
+  background: rgba(11, 102, 255, 0.1);
+  border-color: rgba(11, 102, 255, 0.2);
+}
+
+.accent-turmeric { color: var(--accent-turmeric); }
+.link-accent { color: var(--brand-blue); }
+.card-glow { 
+  box-shadow: 0 8px 32px var(--card-glow);
+  border: 1px solid rgba(11, 102, 255, 0.08);
+}
+
+/* AI Visual Elements */
+.ai-glyph {
+  background: var(--gradient-brand);
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  display: inline-block;
+  position: relative;
+}
+.ai-glyph::before {
+  content: '⚡';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 12px;
+}
 html, body, #root { height: 100%; }
 
 /* Sanskrit font styling */

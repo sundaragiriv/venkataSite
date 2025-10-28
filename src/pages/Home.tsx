@@ -1,13 +1,12 @@
-import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { signals, fmt } from "../lib/signals";
 import useSpotlight from "../hooks/useSpotlight";
-import AuroraHero from "../components/AuroraHero";
 import MotionCard from "../components/MotionCard";
 import { FadeIn } from "../components/FadeIn";
 import SEO from "../components/SEO";
-import HomeAboutSnapshot from "../sections/HomeAboutSnapshot";
-import { BrandTagline } from "../components/Brand";
+import MinimalHero from "../components/MinimalHero";
+import AboutSnapshot from "../components/AboutSnapshot";
+import FeaturedCaseStudy from "../components/FeaturedCaseStudy";
 
 export default function Home() {
   const latestSignals = signals.slice(0, 3);
@@ -22,33 +21,7 @@ export default function Home() {
       <SEO />
       <div className="min-h-screen">
         {/* Hero Section */}
-        <section className="relative py-20 overflow-hidden">
-          <AuroraHero />
-          <div className="container max-w-wrap relative">
-            <FadeIn className="text-center max-w-3xl mx-auto">
-              <div className="mb-4">
-                <BrandTagline />
-              </div>
-              <h1 className="text-5xl font-bold bg-gradient-to-r from-slate-900 via-brand-700 to-slate-900 bg-clip-text text-transparent mb-6">
-                SAP Architect & AI Pioneer
-              </h1>
-              <p className="text-xl text-slate-600 mb-8">
-                Bridging enterprise systems with AI innovation through proven blueprints, 
-                Vedic wisdom, and hands-on experimentation.
-              </p>
-              <div className="flex gap-4 justify-center">
-                <a href="/configure" className="btn-gradient text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-glow-lg hover:shadow-glow group" onMouseEnter={() => import("../pages/Configure")}>
-                  <span className="flex items-center gap-2">
-                    Try the Configurator
-                    <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                    </svg>
-                  </span>
-                </a>
-              </div>
-            </FadeIn>
-          </div>
-        </section>
+        <MinimalHero />
 
         {/* Three Sections */}
         <section className="py-16">
@@ -127,7 +100,10 @@ export default function Home() {
         </section>
 
         {/* About Venkata Snapshot */}
-        <HomeAboutSnapshot />
+        <AboutSnapshot />
+
+        {/* Featured Case Study */}
+        <FeaturedCaseStudy />
 
         {/* Latest Signals */}
         <section className="py-16 bg-slate-50">
@@ -153,7 +129,7 @@ tag: Tech|AI-in-SAP|Vedic
                   </div>
                 </FadeIn>
               ) : (
-                latestSignals.map((signal, i) => (
+                latestSignals.map((signal) => (
                   <FadeIn key={signal.slug}>
                     <MotionCard className="p-0 card-glow group overflow-hidden">
                       <Link to={`/signals/${signal.slug}`} className="block p-6 relative">

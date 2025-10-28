@@ -1,0 +1,14 @@
+---
+title: "Signal — Predictive Dispatch"
+date: "2025-01-10"
+tag: "Tech"
+summary: "Using SAP FSM telemetry and ML to predict service disruptions before they escalate."
+---
+
+**The Pattern.** Most field service organizations react to disruptions instead of preventing them. By combining SAP Field Service Management (FSM) event streams with predictive analytics, we can identify potential service failures 2-4 hours before they impact customers.
+
+**Implementation.** Stream FSM work order data, technician location updates, and asset telemetry into a lightweight ML model. Look for patterns: delayed arrivals + specific asset types + weather conditions = high probability of SLA breach. When the model flags a risk above 70%, automatically dispatch backup resources or proactively communicate with affected customers.
+
+**Measured Impact.** Early implementations show 35% reduction in emergency dispatches and 22% improvement in first-time fix rates. The key is starting with clean telemetry—garbage data produces garbage predictions.
+
+**Action Item.** Audit your FSM event quality. If technician check-ins are inconsistent or asset status updates are manual, fix the data pipeline before adding ML layers.

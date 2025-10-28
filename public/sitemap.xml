@@ -1,85 +1,97 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://sundaragiriv.github.io/venkataSite/</loc>
+    <loc>https://venkata.info/</loc>
     <lastmod>2025-10-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://sundaragiriv.github.io/venkataSite/about</loc>
+    <loc>https://venkata.info/about</loc>
     <lastmod>2025-10-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://sundaragiriv.github.io/venkataSite/configure</loc>
+    <loc>https://venkata.info/configure</loc>
     <lastmod>2025-10-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://sundaragiriv.github.io/venkataSite/signals</loc>
+    <loc>https://venkata.info/signals</loc>
     <lastmod>2025-10-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://sundaragiriv.github.io/venkataSite/veda</loc>
+    <loc>https://venkata.info/veda</loc>
     <lastmod>2025-10-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://sundaragiriv.github.io/venkataSite/ai</loc>
+    <loc>https://venkata.info/ai</loc>
     <lastmod>2025-10-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://sundaragiriv.github.io/venkataSite/signals/action-profiles-to-servicev2</loc>
+    <loc>https://venkata.info/signals/action-profiles-to-servicev2</loc>
     <lastmod>2025-10-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://sundaragiriv.github.io/venkataSite/signals/cx-modernization-telemetry</loc>
+    <loc>https://venkata.info/signals/ai-driven-cx-sap-joule-ml-toolkit</loc>
     <lastmod>2025-10-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://sundaragiriv.github.io/venkataSite/signals/rag-in-cx</loc>
+    <loc>https://venkata.info/signals/cx-modernization-telemetry</loc>
     <lastmod>2025-10-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://sundaragiriv.github.io/venkataSite/signals/sap-ai-governance-framework</loc>
+    <loc>https://venkata.info/signals/predictive-dispatch</loc>
     <lastmod>2025-10-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://sundaragiriv.github.io/venkataSite/signals/sap-ai-integration-patterns</loc>
+    <loc>https://venkata.info/signals/rag-in-cx</loc>
     <lastmod>2025-10-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://sundaragiriv.github.io/venkataSite/signals/sap-performance-optimization</loc>
+    <loc>https://venkata.info/signals/sap-ai-governance-framework</loc>
     <lastmod>2025-10-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://sundaragiriv.github.io/venkataSite/signals/vedic-ahimsa</loc>
+    <loc>https://venkata.info/signals/sap-ai-integration-patterns</loc>
     <lastmod>2025-10-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://sundaragiriv.github.io/venkataSite/signals/vedic-wisdom-modern-teams</loc>
+    <loc>https://venkata.info/signals/sap-performance-optimization</loc>
+    <lastmod>2025-10-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://venkata.info/signals/vedic-ahimsa</loc>
+    <lastmod>2025-10-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://venkata.info/signals/vedic-wisdom-modern-teams</loc>
     <lastmod>2025-10-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
