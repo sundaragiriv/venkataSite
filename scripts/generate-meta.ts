@@ -11,7 +11,7 @@ const routes = [
   '/ai'
 ];
 
-const baseUrl = 'https://sundaragiriv.github.io/venkataSite';
+const baseUrl = 'https://venkata.info';
 
 // Add signal posts
 try {
