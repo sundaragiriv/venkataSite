@@ -144,7 +144,7 @@ export default function HomeAboutSnapshot() {
               <Label>Vedic principle</Label>
             </div>
             <p className="text-sm">"ahiṁsā prathamā dharmaḥ"—psychological safety → honest telemetry.</p>
-            <Arrow>Explore Vedic Studio</Arrow>
+            <Arrow>Explore Dharmic Wisdom</Arrow>
           </Tile>
         </motion.div>
       </motion.div>

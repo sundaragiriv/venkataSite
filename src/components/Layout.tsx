@@ -21,8 +21,8 @@ export default function Layout({ children }: { children: ReactNode }) {
           <nav className="hidden md:flex gap-6 text-sm text-slate-600">
             <a href="/about" className="hover:text-slate-900">About</a>
             <a href="/signals" className="hover:text-slate-900">Signals</a>
-            <a href="/veda" className="hover:text-slate-900">Vedic Studio</a>
             <a href="/ai" className="hover:text-slate-900">AI Lab</a>
+            <a href="/veda" className="hover:text-slate-900">Dharmic Wisdom</a>
           </nav>
           <a href="/contact" className="text-sm px-4 py-2 rounded-xl btn-gradient text-white font-medium">Contact</a>
         </div>
@@ -52,8 +52,8 @@ export default function Layout({ children }: { children: ReactNode }) {
               <h4 className="font-semibold text-slate-900 mb-3">Content</h4>
               <ul className="space-y-2 text-sm text-slate-600">
                 <li><a href="/signals" className="hover:text-brand">Signals</a></li>
-                <li><a href="/veda" className="hover:text-brand">Vedic Studio</a></li>
                 <li><a href="/ai" className="hover:text-brand">AI Lab</a></li>
+                <li><a href="/veda" className="hover:text-brand">Dharmic Wisdom</a></li>
               </ul>
             </div>
             <div>

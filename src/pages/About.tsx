@@ -116,7 +116,7 @@ export default function About() {
           </FadeIn>
           <FadeIn>
             <div className="rounded-2xl border border-black/10 p-6 bg-white shadow-soft">
-              Explore <a href="/veda" className="link-accent underline">Vedic Studio</a> for Shruti (verse+audio) and Vichāra (essay) entries.
+              Explore <a href="/veda" className="link-accent underline">Dharmic Wisdom</a> for Shruti (verse+audio) and Vichāra (essay) entries.
             </div>
           </FadeIn>
         </>

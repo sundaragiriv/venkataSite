@@ -93,7 +93,7 @@ export default function MinimalHero() {
             </Link>
           </motion.div>
 
-          {/* Vedic Studio */}
+          {/* Dharmic Wisdom */}
           <motion.div 
             className="group bg-white/80 backdrop-blur-sm rounded-2xl p-8 card-glow hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
             whileHover={{ scale: 1.02 }}
@@ -104,7 +104,7 @@ export default function MinimalHero() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-slate-900">Vedic Studio</h3>
+              <h3 className="text-xl font-semibold text-slate-900">Dharmic Wisdom</h3>
             </div>
             <p className="text-slate-600 mb-6">Ancient wisdom principles applied to modern team dynamics and leadership.</p>
             <Link to="/veda" className="text-amber-600 font-medium inline-flex items-center gap-2 group-hover:gap-3 transition-all">

@@ -13,7 +13,7 @@ export default function VedaSlug() {
         <h1 className="text-3xl font-bold text-slate-900 mb-4">Vedic Entry Not Found</h1>
         <p className="text-slate-600 mb-6">The Vedic entry you're looking for doesn't exist.</p>
         <a href="/veda" className="btn-gradient text-white px-6 py-3 rounded-xl font-medium">
-          Back to Vedic Studio
+          Back to Dharmic Wisdom
         </a>
       </div>
     );
@@ -22,7 +22,7 @@ export default function VedaSlug() {
   return (
     <>
       <SEO 
-        title={`${post.title} - Vedic Studio`}
+        title={`${post.title} - Dharmic Wisdom`}
         description={post.summary || `${post.title} - Ancient wisdom for modern teams`}
         type="article"
         publishedTime={post.date}
@@ -32,7 +32,7 @@ export default function VedaSlug() {
           <div className="mb-8">
             <div className="flex items-center gap-4 mb-6">
               <a href="/veda" className="text-vedic hover:text-amber-700 font-medium">
-                ← Back to Vedic Studio
+                ← Back to Dharmic Wisdom
               </a>
               {post.audio && (
                 <div className="flex items-center gap-2 text-vedic">

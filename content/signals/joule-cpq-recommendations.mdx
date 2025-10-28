@@ -1,0 +1,11 @@
+---
+title: "Signal — Joule Recommendations for CPQ"
+date: "2025-11-10"
+primary: "AI-ML"
+secondary: ["Joule", "Recommendations"]
+summary: "Quick prototype integrated Joule inference into CPQ for personalized upsell recommendations during quote creation."
+---
+
+Quick result: a short prototype that called a Joule inference endpoint during the CPQ flow produced contextual upsell suggestions. In a controlled internal test, inclusion of a single, relevant upsell increased add-on attach rate by ~12% and shortened seller decision time by ~6 seconds on average. The prototype used cached signals and a simple confidence threshold so the UI only showed high-probability recommendations.
+
+Prototype details & minimal integration notes → /ai/joule-cpq-proto

@@ -9,14 +9,14 @@ export default function Veda() {
   return (
     <>
       <SEO 
-        title="Vedic Studio - Ancient Wisdom for Modern Teams"
+        title="Dharmic Wisdom - Ancient Wisdom for Modern Teams"
         description="Sanskrit verses with transliteration, audio, and practical applications for leadership, meditation, and team dynamics in modern technology environments."
       />
       <div className="container max-w-wrap py-12">
         <FadeIn>
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold bg-gradient-to-r from-vedic to-amber-600 bg-clip-text text-transparent mb-4">
-              Vedic Studio
+              Dharmic Wisdom
             </h1>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
               Deep essays and resources that translate Vedic wisdom into leadership, practice, and team tools. Long-form, evergreen, learning-focused.
