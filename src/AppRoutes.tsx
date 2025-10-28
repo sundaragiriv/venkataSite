@@ -11,6 +11,9 @@ import VedaSlug from "./pages/VedaSlug";
 import AI from "./pages/AI";
 import AISlug from "./pages/AISlug";
 
+// Lazy load heavy routes
+const Configure = lazy(() => import("./pages/Configure"));
+
 export default function AppRoutes() {
   const location = useLocation();
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -28,6 +31,7 @@ export default function AppRoutes() {
           <Routes location={location}>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
+          <Route path="/configure" element={<Configure />} />
           <Route path="/signals" element={<Signals />} />
           <Route path="/signals/:slug" element={<SignalPost />} />
           <Route path="/work/:slug" element={<WorkSlug />} />
