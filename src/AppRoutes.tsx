@@ -1,6 +1,6 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { lazy, Suspense } from "react";
+import { Suspense } from "react";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Signals from "./pages/Signals";
@@ -10,9 +10,6 @@ import Veda from "./pages/Veda";
 import VedaSlug from "./pages/VedaSlug";
 import AI from "./pages/AI";
 import AISlug from "./pages/AISlug";
-
-// Lazy load heavy routes
-const Configure = lazy(() => import("./pages/Configure"));
 
 export default function AppRoutes() {
   const location = useLocation();
@@ -31,7 +28,6 @@ export default function AppRoutes() {
           <Routes location={location}>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route path="/configure" element={<Configure />} />
           <Route path="/signals" element={<Signals />} />
           <Route path="/signals/:slug" element={<SignalPost />} />
           <Route path="/work/:slug" element={<WorkSlug />} />
