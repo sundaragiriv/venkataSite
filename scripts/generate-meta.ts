@@ -6,6 +6,7 @@ const routes = [
   '/',
   '/about',
   '/signals',
+  '/blueprints',
   '/veda',
   '/ai'
 ];
@@ -21,6 +22,17 @@ try {
   });
 } catch (e) {
   console.log('No signals directory found');
+}
+
+// Add blueprint posts
+try {
+  const blueprintFiles = readdirSync('content/blueprints').filter(f => f.endsWith('.mdx'));
+  blueprintFiles.forEach(file => {
+    const slug = file.replace('.mdx', '');
+    routes.push(`/blueprints/${slug}`);
+  });
+} catch (e) {
+  console.log('No blueprints directory found');
 }
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
