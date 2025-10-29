@@ -5,11 +5,11 @@ import MotionCard from "../components/MotionCard";
 import { FadeIn } from "../components/FadeIn";
 import SEO from "../components/SEO";
 
-const PRIMARY_CATEGORIES = ["All", "AI-ML", "SAP", "Dharma"] as const;
+const PRIMARY_CATEGORIES = ["All", "AI/ML", "SAP", "Dharma"] as const;
 
 const SECONDARY_TAGS = {
   "SAP": ["CX", "S4HANA", "FSM", "CPQ", "Integration"],
-  "AI-ML": ["Joule", "MLOps", "Recommendations", "Analytics"],
+  "AI/ML": ["Joule", "MLOps", "Recommendations", "Analytics"],
   "Dharma": ["Veda", "Practice", "Reflections", "Rituals"]
 } as const;
 
@@ -53,8 +53,11 @@ export default function Blueprints() {
       <section className="container max-w-wrap py-12">
         <h1 className="text-3xl md:text-4xl font-semibold tracking-tight">Blueprints</h1>
         <p className="mt-2 text-slate-600 max-w-prose">
-          One-page architecture blueprints with measurable outcomes. Each blueprint includes implementation guides, 
-          technical diagrams, and downloadable PDFs for your reference.
+          One-page architecture blueprints focused on <strong>SAP & AI/ML technical playbooks</strong> with measurable outcomes. 
+          Each blueprint includes implementation guides, technical diagrams, and downloadable PDFs for your reference.
+        </p>
+        <p className="mt-2 text-sm text-slate-500">
+          Note: Dharma team practice guides may be better suited for the <Link to="/veda" className="text-brand hover:underline">Vedic Studio</Link> section.
         </p>
 
         {/* Primary Category Filters */}
@@ -67,10 +70,7 @@ export default function Blueprints() {
                   ? "bg-gradient-to-r from-brand to-brand-light text-white shadow-md" 
                   : "border border-black/10 text-slate-700 hover:bg-slate-50 hover:border-brand/30"
               }`}>
-              {primary === "All" ? "All" :
-               primary === "AI-ML" ? "AI/ML" :
-               primary === "SAP" ? "SAP" :
-               primary === "Dharma" ? "Dharma" : primary}
+              {primary}
             </button>
           ))}
         </div>

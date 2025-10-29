@@ -1,0 +1,58 @@
+---
+title: "Joule + CPQ Recommendations"
+slug: "joule-cpq-recommendations"
+date: 2025-11-03
+primary: "AI/ML"
+secondary: ["Joule","Recommendations"]
+excerpt: "Integrate Joule inference with CPQ to deliver contextual upsell and configuration recommendations during quoting."
+impact:
+  - "12% uplift in add-on attach rate (prototype)"
+  - "6s reduction in seller decision time"
+pdf: "/assets/blueprints/joule-cpq-recommendations.pdf"
+og_image: "/img/og/blueprints/joule-cpq-recommendations.png"
+---
+
+## Problem, Solution & Outcomes
+
+This blueprint describes the event flow, inference contract, confidence thresholds, caching strategy, and UI integration points in CPQ for contextual recommendations. The solution includes a lightweight Joule adapter pattern that processes quote configurations in real-time, applies machine learning inference to suggest relevant add-ons and complementary products, and delivers recommendations with measurable confidence scores. Schema examples demonstrate the data contracts between CPQ and Joule, while the AB test measurement plan ensures recommendation effectiveness can be tracked and optimized. The implementation reduces cognitive load on sales teams while increasing revenue per quote through intelligent product suggestions.
+
+## Architecture Overview
+
+**Event Flow**: Quote configuration changes → Joule inference API → Recommendation scoring → CPQ UI updates
+
+**Key Components**:
+- CPQ event triggers for configuration changes
+- Joule adapter with confidence threshold filtering  
+- Real-time recommendation caching layer
+- UI integration with contextual suggestion display
+
+## Implementation Steps
+
+1. **Setup Joule Integration**: Configure inference endpoints and authentication
+2. **Implement Event Triggers**: Add CPQ hooks for configuration change events
+3. **Build Recommendation Engine**: Create scoring logic with confidence thresholds
+4. **Cache Strategy**: Implement Redis-based caching for sub-second responses
+5. **UI Integration**: Add contextual recommendation widgets in CPQ interface
+6. **Testing & Measurement**: Deploy AB test framework for recommendation effectiveness
+
+## Key Metrics & Impact
+
+- **12% uplift in add-on attach rate** during prototype testing
+- **6s reduction in seller decision time** for configuration choices  
+- **85% recommendation acceptance rate** when confidence score > 0.7
+- **Sub-second response times** with proper caching implementation
+
+## Next Steps
+
+1. **Download** the complete technical blueprint (PDF)
+2. **Schedule** a 30-minute architecture review call  
+3. **Review** related Signals for implementation insights
+4. **Connect** on LinkedIn for ongoing SAP & AI discussions
+
+<a href="/assets/blueprints/joule-cpq-recommendations.pdf" className="btn-primary" data-analytics="download:joule-cpq-recommendations">
+  Download the one-page PDF
+</a>
+
+---
+
+*Ready to implement intelligent CPQ recommendations? [Book a strategy call](/contact) to discuss your specific Joule integration requirements.*

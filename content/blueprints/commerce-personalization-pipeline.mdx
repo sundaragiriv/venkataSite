@@ -1,0 +1,64 @@
+---
+title: "Personalized Commerce Pipeline (CDC → Recommendations)"
+slug: "commerce-personalization-pipeline"
+date: 2025-11-03
+primary: "AI/ML"
+secondary: ["Recommendations","Analytics"]
+excerpt: "CDP event streaming into a recommendations engine with Joule inference and experiment-driven personalization for Commerce."
+impact:
+  - "30% lift in CTR for personalized offers (pilot)"
+  - "20% lift in conversion in targeted segments"
+pdf: "/assets/blueprints/commerce-personalization-pipeline.pdf"
+og_image: "/img/og/blueprints/commerce-personalization-pipeline.png"
+---
+
+## Problem, Solution & Outcomes
+
+This blueprint demonstrates event collection through CDC, customer segmentation via CDP, model inference using Joule, and personalization delivery to Commerce Cloud. The solution addresses the challenge of delivering relevant product recommendations at scale by creating a real-time pipeline from customer behavior to personalized experiences. The architecture includes comprehensive data contracts between systems, a cold-start strategy for new customers without purchase history, and an experiment framework for continuous optimization. Implementation phases guide teams from MVP deployment through full-scale rollout with measurable business impact.
+
+## Architecture Overview
+
+**Data Flow**: Customer Events (CDC) → Segmentation (CDP) → ML Inference (Joule) → Personalized Delivery (Commerce)
+
+**Key Components**:
+- Real-time event streaming from multiple touchpoints
+- Customer segmentation engine with behavioral clustering
+- Joule-powered recommendation inference with confidence scoring
+- A/B testing framework for continuous optimization
+
+## Implementation Steps
+
+1. **Event Collection Setup**: Configure CDC for comprehensive customer behavior tracking
+2. **Segmentation Engine**: Implement CDP-based customer clustering and profile enrichment  
+3. **Model Integration**: Connect Joule inference APIs for recommendation generation
+4. **Commerce Integration**: Build personalization delivery layer for storefront
+5. **Experiment Framework**: Deploy A/B testing infrastructure for recommendation optimization
+6. **Cold-Start Strategy**: Implement fallback recommendations for new customers
+
+## Key Metrics & Impact
+
+- **30% lift in CTR** for personalized offers during pilot testing
+- **20% lift in conversion** within targeted customer segments
+- **Real-time processing** of 10K+ events per minute at scale
+- **Cold-start coverage** achieving 95% recommendation availability
+
+## Implementation Phases
+
+**Phase 1**: MVP with basic behavioral segmentation and Joule integration
+**Phase 2**: Advanced ML models with multi-dimensional customer profiling  
+**Phase 3**: Real-time optimization with dynamic experiment allocation
+
+## Next Steps
+
+1. **Download** the complete technical blueprint (PDF)
+2. **Schedule** a 30-minute architecture review call  
+3. **Review** related Signals for implementation insights
+4. **Connect** on LinkedIn for ongoing SAP & AI discussions
+
+<a href="/assets/blueprints/commerce-personalization-pipeline.pdf" className="btn-primary" data-analytics="download:commerce-personalization-pipeline">
+  Download the one-page PDF
+</a>
+
+---
+
+*Ready to build your personalization pipeline? [Book a strategy call](/contact) to discuss your specific Commerce and CDP integration needs.*
