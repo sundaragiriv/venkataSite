@@ -1,0 +1,85 @@
+---
+title: "Sales Cloud + CPQ Blueprint"
+slug: "cpq-blueprint"
+date: "2025-11-03"
+primary: "SAP"
+secondary: ["CPQ","CX"]
+excerpt: "One-page blueprint: CPQ integrated with Sales Cloud — 60% faster quotes, 90% error reduction."
+impact:
+  - "60% faster quote-to-order"
+  - "90% reduction in configuration errors" 
+  - "3 weeks faster sales onboarding"
+authors: ["Venkata Sundaragiri"]
+pdf: "/assets/blueprints/cpq-blueprint.pdf"
+og_image: "/img/og/blueprints/cpq-blueprint.png"
+related_signals: ["predictive-dispatch", "joule-cpq-recommendations"]
+---
+
+## Problem
+
+Sales teams were spending hours on manual pricing rules and complex configuration, causing long quote cycles and errors that impacted revenue and customer satisfaction.
+
+## Solution Overview
+
+Integrated Sales Cloud V2 with CPQ using BTP for orchestration and Joule for recommendations. The architecture includes event streaming, CPI adapters and a small inference endpoint for upsell recommendations.
+
+**Key Components:**
+- Sales Cloud V2 with persona-driven workflows
+- CPQ pricing engine with automated rules
+- BTP integration layer for data orchestration  
+- Joule inference endpoint for intelligent upsells
+- Real-time analytics dashboard for quote performance
+
+## Architecture Diagram
+
+*[Architecture diagram would be inserted here]*
+
+## Implementation Steps
+
+1. **Assessment & Planning** (Week 1-2)
+   - Current state analysis of sales processes
+   - Pricing rule inventory and complexity mapping
+   - Integration touchpoint identification
+
+2. **Core Integration** (Week 3-6) 
+   - Sales Cloud V2 configuration and persona setup
+   - CPQ pricing engine implementation
+   - BTP middleware and CPI adapters
+
+3. **AI Enhancement** (Week 7-8)
+   - Joule endpoint configuration for recommendations
+   - ML model training on historical sales data
+   - A/B testing framework for upsell optimization
+
+4. **Go-Live & Optimization** (Week 9-12)
+   - Pilot rollout with select sales teams
+   - Performance monitoring and KPI tracking
+   - Iterative improvements based on user feedback
+
+## Measurable Outcomes
+
+- **Quote-to-order time reduced by 60%** — from 4.2 days to 1.7 days average
+- **Configuration error rate reduced by 90%** — from 12% to 1.2% error rate
+- **Seller onboarding time reduced by 3 weeks** — streamlined training process
+- **Upsell attachment improved by 23%** — via intelligent Joule recommendations
+- **Customer satisfaction up 15%** — faster, more accurate quotes
+
+## Risks & Mitigations
+
+- **Data Quality**: Implement data validation rules and cleansing workflows
+- **User Adoption**: Comprehensive training program and change management
+- **Integration Complexity**: Phased rollout approach with thorough testing
+- **Performance**: Load testing and scaling strategies for peak usage
+
+## Next Steps
+
+1. **Download** the complete technical blueprint (PDF)
+2. **Schedule** a 30-minute architecture review call  
+3. **Review** related Signals for implementation insights
+4. **Connect** on LinkedIn for ongoing SAP & AI discussions
+
+[Download the one-page PDF](/assets/blueprints/cpq-blueprint.pdf){.btn-primary data-analytics="download:cpq-blueprint"}
+
+---
+
+*Ready to accelerate your SAP CPQ implementation? [Book a strategy call](/contact) to discuss your specific requirements and timeline.*

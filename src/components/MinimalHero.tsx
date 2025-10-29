@@ -49,7 +49,7 @@ export default function MinimalHero() {
           
           {/* Primary CTAs */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-            <Link to="/work" className="btn-gradient text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-glow-lg hover:shadow-glow inline-flex items-center gap-2">
+            <Link to="/blueprints" className="btn-gradient text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-glow-lg hover:shadow-glow inline-flex items-center gap-2">
               Explore Blueprints
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />

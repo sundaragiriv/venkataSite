@@ -44,8 +44,38 @@ export default function About() {
         <SoftGradient />
 
       <FadeIn>
-        <div className="flex items-end justify-between gap-4">
-          <h1 className="text-4xl md:text-5xl font-semibold tracking-tight">About Venkata</h1>
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-semibold tracking-tight mb-4">About Venkata</h1>
+          <div className="text-lg text-brand font-medium mb-6">
+            SAP Architect • AI Pioneer • Joule Integrator
+          </div>
+          <p className="max-w-4xl mx-auto text-slate-600 leading-relaxed">
+            22+ years delivering large-scale SAP and AI transformations across Utilities, High Tech, Manufacturing, CPG and Retail. I design outcome-driven architectures that fuse S/4HANA core processes with next-gen CX and AI — from Quote-to-Cash and Field Service to real-time personalization and predictive maintenance. My work focuses on measurable business outcomes: faster time-to-value, higher automation, fewer exceptions, and resilient, cloud-ready platforms that scale.
+          </p>
+        </div>
+        
+        {/* Credibility Badges */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+          <div className="text-center p-4 rounded-lg bg-slate-50">
+            <div className="font-semibold text-brand-600">23+ Years</div>
+            <div className="text-sm text-slate-600">Enterprise SAP & CX leadership</div>
+          </div>
+          <div className="text-center p-4 rounded-lg bg-slate-50">
+            <div className="font-semibold text-brand-600">35+ Projects</div>
+            <div className="text-sm text-slate-600">Global programs & integrations</div>
+          </div>
+          <div className="text-center p-4 rounded-lg bg-slate-50">
+            <div className="font-semibold text-brand-600">6+ Global Rollouts</div>
+            <div className="text-sm text-slate-600">Zero major downtime</div>
+          </div>
+          <div className="text-center p-4 rounded-lg bg-slate-50">
+            <div className="font-semibold text-brand-600">40+ Clients</div>
+            <div className="text-sm text-slate-600">Measurable improvements</div>
+          </div>
+        </div>
+
+        <div className="flex items-end justify-between gap-4 mb-6">
+          <h2 className="text-2xl font-semibold">Core Expertise</h2>
           <div className="flex gap-2">
             {VIEWS.map(v => (
               <button key={v} onClick={()=>setView(v)}
@@ -55,10 +85,6 @@ export default function About() {
             ))}
           </div>
         </div>
-        <p className="mt-3 max-w-prose text-slate-600">
-          22+ years architecting SAP solutions and AI-powered customer experiences. I design
-          <strong> clear blueprints</strong>, lead <strong>measurable programs</strong>, and translate <strong>Vedic wisdom</strong> into modern team practice.
-        </p>
       </FadeIn>
 
       {/* EXEC VIEW — metrics + narrative */}
@@ -77,22 +103,98 @@ export default function About() {
         </>
       )}
 
-      {/* ARCHITECT VIEW — expertise grid + timeline */}
+      {/* ARCHITECT VIEW — detailed expertise tiles */}
       {view==="Architect" && (
         <>
           <FadeIn>
-            <Section title="Expertise">
-              <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3 text-slate-700">
-                <Pill>Sales/Service Cloud V2</Pill>
-                <Pill>CPQ · pricing governance</Pill>
-                <Pill>FSM · mobile & scheduling</Pill>
-                <Pill>CPI/BTP integrations</Pill>
-                <Pill>CDC/CDP identity & segmentation</Pill>
-                <Pill>AI patterns: RAG, policy guards</Pill>
-                <Pill>Telemetry & A/B for CX</Pill>
-                <Pill>Event-driven architectures</Pill>
-              </div>
-            </Section>
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              <ExpertiseTile 
+                title="SAP S/4HANA (Cloud & On-Prem)" 
+                description="Program architecture, Selective Data Transition, and greenfield/brownfield delivery."
+                isHighlight={true}
+              />
+              <ExpertiseTile 
+                title="Sales & Service Cloud (V2)" 
+                description="Modern sales/service processes with persona-driven journeys and SLA automation."
+              />
+              <ExpertiseTile 
+                title="SAP CPQ & Quote-to-Cash" 
+                description="End-to-end quoting, pricing engine integration, and 60% faster quote throughput."
+                isHighlight={true}
+              />
+              <ExpertiseTile 
+                title="Field Service Management (FSM)" 
+                description="Predictive dispatch, appointment optimization, and first-time-fix improvements."
+              />
+              <ExpertiseTile 
+                title="Commerce Cloud & CDC/CDP" 
+                description="Personalization pipelines, customer data unification, and commerce personalization."
+              />
+              <ExpertiseTile 
+                title="SAP BTP & Integration (CPI)" 
+                description="Hybrid architectures, secure event streams and middleware patterns for scale."
+              />
+              <ExpertiseTile 
+                title="AI in CX (Joule | Inference Patterns)" 
+                description="Real-time recommendations, Joule adapters, and ML operationalization for CX."
+                isHighlight={true}
+              />
+              <ExpertiseTile 
+                title="Machine Learning & MLOps" 
+                description="Production ML pipelines, model monitoring, and reproducible experiments."
+              />
+              <ExpertiseTile 
+                title="CX Analytics & Insights" 
+                description="Behavioral analytics, KPI dashboards, and outcome-driven experimentation."
+              />
+              <ExpertiseTile 
+                title="SAP Commerce / Experience Optimization" 
+                description="A/B experiments, offers engine, and conversion lift playbooks."
+              />
+              <ExpertiseTile 
+                title="Enterprise Architecture & Cloud Strategy" 
+                description="Multi-cloud resiliency, cost optimization and long-term roadmaps."
+              />
+              <ExpertiseTile 
+                title="Integration & Automation (RPA / API)" 
+                description="Event-driven design, process automation and low-latency integrations."
+              />
+              <ExpertiseTile 
+                title="Vedic Leadership & Team Practices" 
+                description="Conscious leadership routines, team coherence practices, and sustainable performance."
+              />
+              <ExpertiseTile 
+                title="Delivery & Governance" 
+                description="Program P&L, stakeholder governance, release management and quality gates."
+              />
+            </div>
+            
+            {/* Selected Impact */}
+            <div className="mt-8 p-6 rounded-2xl border border-black/10 bg-gradient-to-r from-slate-50 to-white">
+              <h3 className="font-semibold text-slate-900 mb-2">Selected Impact</h3>
+              <p className="text-slate-700">
+                Led an S/4HANA + CPQ integration that cut quote-to-order time by 60%, reduced configuration errors by 90%, and accelerated sales onboarding by 3 weeks.
+              </p>
+            </div>
+
+            {/* CTAs */}
+            <div className="mt-8 flex flex-col sm:flex-row gap-4">
+              <a 
+                href="/assets/blueprints/venkata-blueprint.pdf" 
+                className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-brand text-white font-medium hover:bg-brand-light transition-colors"
+                title="One-page blueprint: architecture, integrations, and quick wins."
+                data-analytics="download:venkata-blueprint"
+              >
+                Download one-page Blueprint (PDF)
+              </a>
+              <a 
+                href="/contact" 
+                className="inline-flex items-center justify-center px-6 py-3 rounded-xl border border-brand text-brand font-medium hover:bg-brand/5 transition-colors"
+                title="30 minutes: technical roadmap, timeline, and measurable KPIs."
+              >
+                Book a 30-min Strategy Call
+              </a>
+            </div>
           </FadeIn>
           <FadeIn>
             <Section title="Career Snapshot">
@@ -148,6 +250,39 @@ export default function About() {
 }
 
 /* --- Small building blocks --- */
+
+function ExpertiseTile({ title, description, isHighlight = false }: { 
+  title: string; 
+  description: string; 
+  isHighlight?: boolean;
+}) {
+  return (
+    <div 
+      className={`p-4 rounded-lg border transition-all hover:shadow-sm cursor-pointer group ${
+        isHighlight 
+          ? 'border-l-4 border-l-accent-turmeric bg-white' 
+          : 'border-black/10 bg-slate-50 hover:bg-white'
+      }`}
+      role="button"
+      aria-label={`${title} — ${description}`}
+      title={description}
+    >
+      <h3 className="font-semibold text-slate-900 mb-2 group-hover:text-brand-600 transition-colors">
+        {title}
+      </h3>
+      <p className="text-sm text-slate-600 leading-relaxed">
+        {description}
+      </p>
+      {isHighlight && (
+        <div className="mt-2">
+          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-accent-turmeric/10 text-accent-turmeric">
+            Top Expertise
+          </span>
+        </div>
+      )}
+    </div>
+  );
+}
 
 function Section({ title, children }:{ title:string; children:React.ReactNode }) {
   return (

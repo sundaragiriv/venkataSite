@@ -10,6 +10,8 @@ import Veda from "./pages/Veda";
 import VedaSlug from "./pages/VedaSlug";
 import AI from "./pages/AI";
 import AISlug from "./pages/AISlug";
+import Blueprints from "./pages/Blueprints";
+import BlueprintSlug from "./pages/BlueprintSlug";
 
 export default function AppRoutes() {
   const location = useLocation();
@@ -30,6 +32,8 @@ export default function AppRoutes() {
           <Route path="/about" element={<About />} />
           <Route path="/signals" element={<Signals />} />
           <Route path="/signals/:slug" element={<SignalPost />} />
+          <Route path="/blueprints" element={<Blueprints />} />
+          <Route path="/blueprints/:slug" element={<BlueprintSlug />} />
           <Route path="/work/:slug" element={<WorkSlug />} />
           <Route path="/veda" element={<Veda />} />
           <Route path="/veda/:slug" element={<VedaSlug />} />
