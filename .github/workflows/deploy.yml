@@ -27,7 +27,7 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Add CNAME and setup files
+      - name: Prepare deployment files
         run: |
           cp dist/index.html dist/404.html
           touch dist/.nojekyll
