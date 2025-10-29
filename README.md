@@ -1,8 +1,11 @@
-# Welcome to your Lovable project
+# Venkata Sundaragiri - SAP Architect & AI Pioneer
 
 ## Project info
 
-**URL**: https://lovable.dev/projects/160933a6-3c76-4f75-8cbc-ccca3b22ecc1
+Professional website showcasing SAP architecture expertise, AI integration patterns, and practical blueprints for enterprise transformation.
+
+**Live Site**: https://venkata.info
+**Repository**: https://github.com/sundaragiriv/venkataSite
 
 ## How can I edit this code?
 
