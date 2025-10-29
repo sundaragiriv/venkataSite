@@ -1,32 +1,44 @@
-name: Build and deploy to GitHub Pages
+name: Build and Deploy to gh-pages
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js 18
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "18"
+          node-version: '20'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Build site
+      - name: Build
         run: npm run build
+
+      - name: Add CNAME and setup files
+        run: |
+          cp dist/index.html dist/404.html
+          touch dist/.nojekyll
+          echo "venkata.info" > dist/CNAME
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          force_orphan: true
 
       - name: Upload artifact for GitHub Pages
         uses: actions/upload-pages-artifact@v3
