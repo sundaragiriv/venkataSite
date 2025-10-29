@@ -5,62 +5,7 @@
     <link>https://venkata.info/signals</link>
     <description>Tech, AI-in-SAP, and Vedic wisdom insights</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 28 Oct 2025 19:44:45 GMT</lastBuildDate>
-    <item>
-      <title>From Action Profiles to Modern Service V2 Flows</title>
-      <link>https://venkata.info/signals/action-profiles-to-servicev2</link>
-      <description>Reframing triggers as policies with telemetry and guardrails.</description>
-      <pubDate>Sun, 05 Jan 2025 00:00:00 GMT</pubDate>
-      <guid>https://venkata.info/signals/action-profiles-to-servicev2</guid>
-    </item>
-    <item>
-      <title>CX Modernization: Telemetry-First Architecture</title>
-      <link>https://venkata.info/signals/cx-modernization-telemetry</link>
-      <description>Why measuring outcomes from day one transforms SAP CX implementations from cost centers to profit drivers.</description>
-      <pubDate>Tue, 10 Dec 2024 00:00:00 GMT</pubDate>
-      <guid>https://venkata.info/signals/cx-modernization-telemetry</guid>
-    </item>
-    <item>
-      <title>RAG for CX: Governed Context Inside SAP Flows</title>
-      <link>https://venkata.info/signals/rag-in-cx</link>
-      <description>A practical recipe for adding retrieval to Sales/Service Cloud decisions without chaos.</description>
-      <pubDate>Tue, 07 Jan 2025 00:00:00 GMT</pubDate>
-      <guid>https://venkata.info/signals/rag-in-cx</guid>
-    </item>
-    <item>
-      <title>SAP AI Governance: Beyond the Buzzword Bingo</title>
-      <link>https://venkata.info/signals/sap-ai-governance-framework</link>
-      <description>A practical framework for governing AI in SAP landscapes without killing innovation or creating compliance nightmares.</description>
-      <pubDate>Wed, 18 Dec 2024 00:00:00 GMT</pubDate>
-      <guid>https://venkata.info/signals/sap-ai-governance-framework</guid>
-    </item>
-    <item>
-      <title>SAP AI Integration Patterns: Beyond the Hype</title>
-      <link>https://venkata.info/signals/sap-ai-integration-patterns</link>
-      <description>Practical patterns for integrating AI into SAP landscapes without breaking existing processes or budgets.</description>
-      <pubDate>Sun, 15 Dec 2024 00:00:00 GMT</pubDate>
-      <guid>https://venkata.info/signals/sap-ai-integration-patterns</guid>
-    </item>
-    <item>
-      <title>SAP Performance: The 80/20 Rule for Sub-Second Response Times</title>
-      <link>https://venkata.info/signals/sap-performance-optimization</link>
-      <description>Focus on these 20% of optimizations that deliver 80% of SAP performance improvements. Real-world techniques that actually work.</description>
-      <pubDate>Thu, 12 Dec 2024 00:00:00 GMT</pubDate>
-      <guid>https://venkata.info/signals/sap-performance-optimization</guid>
-    </item>
-    <item>
-      <title>Ahiṁsā at Work: Designing for Psychological Safety</title>
-      <link>https://venkata.info/signals/vedic-ahimsa</link>
-      <description>Translating a core Vedic principle into modern team dynamics.</description>
-      <pubDate>Mon, 06 Jan 2025 00:00:00 GMT</pubDate>
-      <guid>https://venkata.info/signals/vedic-ahimsa</guid>
-    </item>
-    <item>
-      <title>Vedic Wisdom for Modern SAP Teams: The Dharma of Code</title>
-      <link>https://venkata.info/signals/vedic-wisdom-modern-teams</link>
-      <description>How ancient Sanskrit principles create psychological safety and honest telemetry in modern SAP implementations.</description>
-      <pubDate>Fri, 20 Dec 2024 00:00:00 GMT</pubDate>
-      <guid>https://venkata.info/signals/vedic-wisdom-modern-teams</guid>
-    </item>
+    <lastBuildDate>Wed, 29 Oct 2025 13:53:20 GMT</lastBuildDate>
+
   </channel>
 </rss>
