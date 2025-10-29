@@ -88,10 +88,10 @@ export default function Signals() {
       <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {list.map(p => (
           <FadeIn key={p.slug}>
-            <MotionCard className="p-0">
-              <Link to={`/signals/${p.slug}`} className="block p-6">
+            <MotionCard className="p-0 h-full">
+              <Link to={`/signals/${p.slug}`} className="flex flex-col h-full p-6">
                 <div className="text-xs text-slate-500">{fmt(p.date)}</div>
-                <h3 className="mt-1 text-lg font-semibold text-slate-900">{p.title}</h3>
+                <h3 className="mt-1 text-lg font-semibold text-slate-900 leading-tight">{p.title}</h3>
                 <div className="mt-1 flex items-center gap-2 text-xs">
                   <span className="font-medium text-brand">
                     {p.primary === "AI-ML" ? "AI/ML" :
@@ -107,7 +107,9 @@ export default function Signals() {
                     </>
                   )}
                 </div>
-                {p.summary && <p className="mt-2 text-sm text-slate-600">{p.summary}</p>}
+                <div className="flex-1 mt-2">
+                  {p.summary && <p className="text-sm text-slate-600 line-clamp-3">{p.summary}</p>}
+                </div>
                 <span className="mt-3 inline-flex items-center gap-1 text-sm text-brand">Read →</span>
               </Link>
             </MotionCard>
