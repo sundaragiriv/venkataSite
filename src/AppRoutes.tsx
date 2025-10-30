@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Suspense } from "react";
 import Home from "./pages/Home";
 import About from "./pages/About";
+import Contact from "./pages/Contact";
 import Signals from "./pages/Signals";
 import SignalPost from "./pages/SignalPost";
 import WorkSlug from "./pages/WorkSlug";
@@ -30,6 +31,7 @@ export default function AppRoutes() {
           <Routes location={location}>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/signals" element={<Signals />} />
           <Route path="/signals/:slug" element={<SignalPost />} />
           <Route path="/blueprints" element={<Blueprints />} />

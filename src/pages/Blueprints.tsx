@@ -57,7 +57,7 @@ export default function Blueprints() {
           Each blueprint includes implementation guides, technical diagrams, and downloadable PDFs for your reference.
         </p>
         <p className="mt-2 text-sm text-slate-500">
-          Note: Dharma team practice guides may be better suited for the <Link to="/veda" className="text-brand hover:underline">Vedic Studio</Link> section.
+          Note: Dharma team practice guides may be better suited for the <Link to="/veda" className="text-brand hover:underline">Vedic Wisdom</Link> section.
         </p>
 
         {/* Primary Category Filters */}

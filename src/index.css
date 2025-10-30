@@ -4,18 +4,28 @@
 @tailwind utilities;
 
 :root {
+  /* SAP-inspired Brand Colors */
+  --sap-blue: #0070F3;
+  --sap-dark-blue: #0056CC;
+  --sap-light-blue: #E6F3FF;
+  --turmeric-yellow: #F59E0B;
+  --turmeric-light: #FEF3C7;
+  --turmeric-dark: #D97706;
+  --turmeric-accent: #FBBF24;
+  
   /* Brand Colors - Blue + Turmeric + SAP Style */
-  --brand-blue: #0B66FF;
-  --brand-deep: #0D3B7F;
-  --accent-turmeric: #FFC107;
+  --brand-blue: var(--sap-blue);
+  --brand-deep: var(--sap-dark-blue);
+  --accent-turmeric: var(--turmeric-yellow);
   --bg-dark: #0D0810;
   --text-light: #EDE7FF;
   --muted: #BDB0CF;
-  --card-glow: rgba(11,102,255,0.06);
+  --card-glow: rgba(0,112,243,0.06);
   
   /* SAP-style gradients */
-  --gradient-brand: linear-gradient(90deg, var(--brand-deep), var(--brand-blue), var(--accent-turmeric));
+  --gradient-brand: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-deep) 100%);
   --gradient-subtle: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-deep) 100%);
+  --gradient-turmeric: linear-gradient(135deg, var(--turmeric-yellow) 0%, var(--turmeric-dark) 100%);
 }
 
 html, body, #root { 
@@ -23,10 +33,11 @@ html, body, #root {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 body {
-  color: theme(colors.brand.ink);
+  color: #1e293b;
   background:
-    radial-gradient(800px 400px at 90% -10%, rgba(11,102,255,0.08), transparent 60%),
-    radial-gradient(800px 400px at -10% 10%, rgba(13,59,127,0.06), transparent 60%),
+    radial-gradient(800px 400px at 90% -10%, rgba(0,112,243,0.08), transparent 60%),
+    radial-gradient(800px 400px at -10% 10%, rgba(0,86,204,0.06), transparent 60%),
+    radial-gradient(400px 200px at 50% 100%, rgba(245,158,11,0.03), transparent 50%),
     #FFFFFF;
 }
 .prose { max-width: 72ch; }
@@ -35,35 +46,61 @@ body {
 .btn-gradient { 
   background: var(--gradient-subtle);
   color: #fff;
-  box-shadow: 0 4px 15px rgba(11, 102, 255, 0.25);
+  box-shadow: 0 4px 15px rgba(0, 112, 243, 0.25);
   transition: all 0.3s ease;
   border-radius: 12px;
   font-weight: 600;
 }
 .btn-gradient:hover {
   background: var(--gradient-brand);
-  box-shadow: 0 8px 25px rgba(11, 102, 255, 0.35);
+  box-shadow: 0 8px 25px rgba(0, 112, 243, 0.35);
   transform: translateY(-2px);
 }
 
 .btn-soft {
-  background: rgba(11, 102, 255, 0.06);
+  background: rgba(0, 112, 243, 0.06);
   color: var(--brand-deep);
-  border: 1px solid rgba(11, 102, 255, 0.12);
+  border: 1px solid rgba(0, 112, 243, 0.12);
   transition: all 0.3s ease;
   border-radius: 12px;
   font-weight: 500;
 }
 .btn-soft:hover {
-  background: rgba(11, 102, 255, 0.1);
-  border-color: rgba(11, 102, 255, 0.2);
+  background: rgba(0, 112, 243, 0.1);
+  border-color: rgba(0, 112, 243, 0.2);
 }
 
 .accent-turmeric { color: var(--accent-turmeric); }
 .link-accent { color: var(--brand-blue); }
 .card-glow { 
   box-shadow: 0 8px 32px var(--card-glow);
-  border: 1px solid rgba(11, 102, 255, 0.08);
+  border: 1px solid rgba(0, 112, 243, 0.08);
+}
+
+/* Turmeric accent utilities */
+.accent-turmeric-bg { background: var(--turmeric-light); }
+.accent-turmeric-border { border-color: var(--turmeric-yellow); }
+.turmeric-gradient { background: var(--gradient-turmeric); }
+.sap-theme-card {
+  background: #ffffff;
+  border: 1px solid rgba(0, 112, 243, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 112, 243, 0.08);
+}
+.sap-theme-card:hover {
+  background: #fefce8;
+  border-color: rgba(245, 158, 11, 0.3);
+  box-shadow: 0 8px 30px rgba(0, 112, 243, 0.12);
+  transform: translateY(-2px);
+}
+
+/* Yellow hover accents */
+.yellow-hover:hover {
+  background-color: #fef3c7;
+  border-color: #f59e0b;
+}
+.turmeric-highlight {
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
 }
 
 /* AI Visual Elements */

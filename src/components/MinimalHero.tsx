@@ -34,13 +34,9 @@ export default function MinimalHero() {
 
       <div className="container mx-auto px-6 relative z-10">
         <FadeIn className="text-center max-w-4xl mx-auto">
-          {/* Neural Glyph + Title */}
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <div className="ai-glyph"></div>
-            <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-slate-900 via-blue-700 to-slate-900 bg-clip-text text-transparent">
-              SAP Architect & AI Pioneer
-            </h1>
-          </div>
+          <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-slate-900 via-blue-700 to-slate-900 bg-clip-text text-transparent mb-6">
+            SAP Architect & AI Pioneer
+          </h1>
           
           <p className="text-xl text-slate-600 mb-8 leading-relaxed">
             Designing enterprise S/4HANA and AI-powered CX that scale. 
