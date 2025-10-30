@@ -4,6 +4,8 @@ date: "2024-11-03"
 primary: "SAP"
 secondary: ["FSM"]
 summary: "Pilot cut emergency dispatches by 18% using ticket history + simple ML classifier integrated into FSM."
+related_blueprint: "/blueprints/predictive-dispatch-fsm"
+pdf: "/assets/blueprints/predictive-dispatch-fsm.pdf"
 ---
 
 Pilot insight: a two-week pilot using ticket history + basic feature engineering fed into a lightweight classifier produced an 18% reduction in emergency dispatches and a 22% improvement in first-time-fix rates. The stack was intentionally minimal: event ingestion from tickets, light pre-processing, a Joule-hosted inference endpoint, and a small rule layer in FSM that surfaced flagged cases to dispatch planners.

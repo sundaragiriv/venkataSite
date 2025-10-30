@@ -1,11 +1,18 @@
 import { useParams, Link } from "react-router-dom";
+import { MDXProvider } from "@mdx-js/react";
 import { blueprints, fmt } from "../lib/blueprints";
 import SEO from "../components/SEO";
 import { FadeIn } from "../components/FadeIn";
 
+const modules = import.meta.glob("../../content/blueprints/*.mdx", { eager: true }) as Record<string, any>;
+
 export default function BlueprintSlug() {
   const { slug } = useParams();
   const blueprint = blueprints.find(p => p.slug === slug);
+  
+  const key = `../../content/blueprints/${slug}.mdx`;
+  const module = modules[key];
+  const BlueprintContent = module?.default;
 
   if (!blueprint) {
     return (
@@ -65,16 +72,19 @@ export default function BlueprintSlug() {
                 </div>
               </header>
 
-              {/* Blueprint Content would be rendered here from MDX */}
+              {/* Blueprint Content */}
               <div className="prose prose-slate max-w-none">
-                {/* MDX content will be inserted here by the build system */}
-                <div className="bg-slate-50 p-6 rounded-lg">
-                  <p className="text-slate-600 mb-0">
-                    <em>Blueprint content would be rendered here from the MDX file. 
-                    This includes the full implementation guide, architecture diagrams, 
-                    and detailed steps.</em>
-                  </p>
-                </div>
+                {BlueprintContent ? (
+                  <MDXProvider>
+                    <BlueprintContent />
+                  </MDXProvider>
+                ) : (
+                  <div className="bg-slate-50 p-6 rounded-lg">
+                    <p className="text-slate-600 mb-0">
+                      <em>Blueprint content not found.</em>
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
 

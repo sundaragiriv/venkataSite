@@ -7,9 +7,9 @@ const BlueprintMetaSchema = z.object({
   primary: z.enum(["AI/ML", "SAP", "Dharma"]),
   secondary: z.array(z.enum([
     // SAP secondary tags
-    "CX", "S4HANA", "FSM", "CPQ", "Integration",
+    "CX", "S4HANA", "FSM", "CPQ", "Integration", "Performance", "CDC",
     // AI/ML secondary tags  
-    "Joule", "MLOps", "Recommendations", "Analytics",
+    "Joule", "MLOps", "Recommendations", "Analytics", "Commerce", "BTP", "IoT", "Predictive",
     // Dharma secondary tags
     "Veda", "Practice", "Reflections", "Rituals"
   ])).max(3).optional(),

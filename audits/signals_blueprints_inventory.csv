@@ -1,0 +1,15 @@
+signal_file,signal_slug,primary,related_blueprint,blueprint_exists,pdf_exists,status
+action-profiles-to-servicev2.mdx,action-profiles-to-servicev2,SAP,action-profiles-servicev2-migration,Y,N,NEEDS_PDF
+ai-driven-cx-sap-joule-ml-toolkit.mdx,ai-driven-cx-sap-joule-ml-toolkit,AI-ML,cx-ai-toolkit-implementation,Y,N,DRAFT
+commerce-personalization-pilot.mdx,commerce-personalization-pilot,SAP,commerce-personalization-pipeline,Y,N,NEEDS_COMPLETE
+cx-modernization-telemetry.mdx,cx-modernization-telemetry,SAP,cx-telemetry-architecture,Y,N,DRAFT
+joule-cpq-recommendations.mdx,joule-cpq-recommendations,AI-ML,joule-cpq-recommendations,Y,N,OK
+predictive-dispatch-pilot.mdx,predictive-dispatch-pilot,SAP,predictive-dispatch-fsm,Y,N,NEEDS_COMPLETE
+predictive-dispatch.mdx,predictive-dispatch,SAP,predictive-dispatch-fsm,Y,N,NEEDS_COMPLETE
+rag-in-cx.mdx,rag-in-cx,AI-ML,,N,N,NEEDS_BLUEPRINT
+sap-ai-governance-framework.mdx,sap-ai-governance-framework,AI-ML,sap-ai-governance,Y,N,DRAFT
+sap-ai-integration-patterns.mdx,sap-ai-integration-patterns,AI-ML,sap-ai-integration-patterns,Y,N,DRAFT
+sap-performance-optimization.mdx,sap-performance-optimization,SAP,,N,N,NEEDS_BLUEPRINT
+vedic-ahimsa.mdx,vedic-ahimsa,Dharma,,N,N,NEEDS_BLUEPRINT
+vedic-micropractice-focus.mdx,vedic-micropractice-focus,Dharma,sprint-micropractice,Y,N,OK
+vedic-wisdom-modern-teams.mdx,vedic-wisdom-modern-teams,Dharma,,N,N,NEEDS_BLUEPRINT

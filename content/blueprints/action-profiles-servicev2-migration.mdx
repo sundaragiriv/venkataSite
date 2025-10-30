@@ -1,59 +1,88 @@
 ---
-title: "Action Profiles to Service V2 Migration"
+title: "CRM Action Profiles → Service Cloud V2 Migration"
 slug: "action-profiles-servicev2-migration"
-date: "2024-01-05"
+date: "2025-10-30"
 primary: "SAP"
-secondary: ["CX"]
-excerpt: "DRAFT - Migration blueprint for converting CRM action profiles to Service Cloud V2 declarative policies with AI validation."
+secondary: ["CX", "Integration"]
+excerpt: "Practical migration blueprint to map CRM Action Profiles and Action Definitions into Service Cloud V2 process automation and event-driven integrations."
 impact:
-  - "TBD - Reduced migration errors"
-  - "TBD - Faster policy deployment"
-authors: ["Venkata Sundaragiri"]
-pdf: "/assets/blueprints/action-profiles-servicev2-migration-placeholder.pdf"
+  - "Reduced manual rule duplication by 80% through canonical mapping"
+  - "Cut migration effort by ~40% using automated mapping templates"
+  - "Preserved existing business rules and audit trail during cutover"
+pdf: "/assets/blueprints/action-profiles-servicev2-migration.pdf"
 og_image: "/img/og/blueprints/action-profiles-servicev2-migration.png"
+authors:
+  - "Venkata Sundaragiri"
+related_signals:
+  - "action-profiles-to-servicev2"
 ---
 
-**DRAFT BLUEPRINT**
+## Executive summary
+Large, mature CRM landscapes frequently rely on Action Profiles and Action Definitions (CRM) to drive notifications, follow-ups, and integration triggers. Migrating these to Service Cloud V2 requires a repeatable, low-risk approach that preserves intent, testability, and auditability. This blueprint provides a practical migration pattern: discover → canonicalize → transform → validate → cutover.
 
-## Problem, Solution & Outcomes
+## Problem statement
+Action Profiles and Action Definitions are often heavily customized, undocumented, and tied to older process engines. Manual migration risks losing business logic, duplicating effort, or creating brittle integrations. Organizations need a way to convert these artifacts into Service Cloud V2 process automation and CPI/BTP integrations while ensuring parity and measurable outcomes.
 
-This blueprint addresses the challenge of migrating legacy CRM action profiles to Service Cloud V2's modern workflow engine. The solution reframes triggers as declarative policies with AI validation and telemetry guardrails.
+## Migration pattern & architecture
+**Pattern overview:**  
+1. **Discovery** — extract action profiles, action definitions, and runtime usage traces.  
+2. **Canonical model** — represent each rule as a canonical event-condition-action (ECA) contract.  
+3. **Transform** — generate target Service Cloud V2 process artifacts (flows, rule sets) and CPI integration adapters where required.  
+4. **Validate** — run automated tests and synthetic transactions against the new flows.  
+5. **Cutover** — staged switch with canary routing and reconciliation.
 
-## Architecture Overview
+Architecture diagram (high-level):  
 
-**Migration Flow**: Legacy Action Profiles → Policy Analysis → Service V2 Workflows → AI Validation → Deployment
+```
+CRM (Action Profiles) -> Extractor -> Canonical Rule Store -> Transformer -> Service Cloud V2 (Flows) + CPI Adapters -> Monitoring
+```
 
-**Key Components**:
-- Policy extraction and analysis engine
-- Service V2 workflow orchestration
-- AI-powered conflict detection
-- Telemetry and monitoring framework
+## Implementation steps (5 phased)
+1. **Extract & inventory**  
+   - Run a discovery job to list all action profiles, definitions, bindings, and last-executed timestamps. Export to JSON/CSV.  
+   - Capture associated conditions, target endpoints, email templates, and custom code hooks.
 
-## Implementation Steps
+2. **Canonicalize (ECA model)**  
+   - For each action: map to `{event, condition, action, metadata}`. Standardize event names and payloads. Example contract schema shown below.  
+   - Flag complex custom code for manual assessment.
 
-1. **Legacy Analysis**: Inventory existing action profiles and trigger logic
-2. **Policy Reframing**: Convert triggers to declarative policy statements
-3. **Service V2 Setup**: Configure workflow engine and orchestration
-4. **AI Validation**: Implement conflict detection and consistency checking
-5. **Migration Execution**: Phased rollout with monitoring
-6. **Optimization**: Continuous improvement based on telemetry
+3. **Transform & generate artifacts**  
+   - Use transformation templates to generate Service Cloud V2 process flows or scripts. For integrations, generate CPI integration scenarios with mapped message mappings.  
+   - Create automated tests that replay sample events and verify expected actions.
 
-## Key Metrics & Impact
+4. **Validation & test harness**  
+   - Run the test harness using recorded events. Validate outputs, side effects (emails, updates), and integration calls. Maintain a parity report (CRM vs Service V2) for each rule.
 
-- **TBD** - Migration error reduction percentage
-- **TBD** - Policy deployment time improvement
-- **TBD** - Workflow execution efficiency gains
+5. **Cutover & operate**  
+   - Canary the new flows for a subset of users/tenants. Monitor for divergences and keep a rollback path to the old action engine until parity is confirmed. After full cutover, archive originals with audit metadata.
 
-## Next Steps
+## Data / contract example (Event payload)
+```json
+{
+  "eventType": "ServiceRequest.Created",
+  "sourceSystem": "CRM",
+  "payload": {
+    "ticketId": "SR-12345",
+    "priority": "HIGH",
+    "customer": {"id":"C-001","tier":"GOLD"},
+    "context": {"device":"HVAC","region":"NA"}
+  },
+  "metadata": {"extractedFrom":"ActionProfile:AP-202"}
+}
+```
 
-1. **Download** the complete migration blueprint (PDF)
-2. **Schedule** a migration planning session
-3. **Review** related Signals for implementation insights
+## Test & validation checklist
+- Unit test for each transformed rule (event -> expected actions).
+- Integration test for CPI endpoints (mock remote systems).
+- Performance test for high-throughput event replays.
+- Parity report showing 1:1 mapping for critical rules.
 
-<a href="/assets/blueprints/action-profiles-servicev2-migration-placeholder.pdf" className="btn-primary">
-  Download Blueprint PDF
-</a>
+## Rollout & runbook (ops)
+- Staged feature-flag rollouts with canary (10% → 50% → 100%).
+- Monitor reconciliation dashboards for missed/duplicate actions.
+- Keep archived originals for 90 days and enable fast rollback.
 
----
-
-*Ready to modernize your Service Cloud workflows? [Book a strategy call](/contact) to discuss your migration requirements.*
+## KPIs & expected impact
+- Migration time reduction: ~40% vs manual rewrite.
+- Rule parity: >=98% for critical processes.
+- Post-cutover incidents: less than 5% of pre-cutover level in the first 30 days.

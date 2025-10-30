@@ -1,6 +1,10 @@
 import { PostMetaSchema, type PostMeta } from './schema';
 
-export type SignalMeta = PostMeta & { slug: string };
+export type SignalMeta = PostMeta & { 
+  slug: string; 
+  needs_review?: boolean;
+  legacy_primary?: string;
+};
 
 const modules = import.meta.glob('../../content/signals/*.mdx', { eager: true }) as Record<string, any>
 
@@ -11,19 +15,48 @@ function toISO(d?: string) {
   return Number.isFinite(t) ? new Date(t).toISOString() : ''
 }
 
+function mapLegacyPrimary(primary: string): string {
+  const mapping: Record<string, string> = {
+    'Tech': 'AI-ML',
+    'AI-in-SAP': 'AI-ML', 
+    'AI/ML': 'AI-ML',
+    'Vedic': 'Dharma',
+    'SAP-Architecture': 'SAP'
+  };
+  return mapping[primary] || primary;
+}
+
 export const signals: SignalMeta[] = Object.keys(modules).map((k) => {
   const m = modules[k]
   const slug = k.split('/').pop()!.replace('.mdx', '')
 
   try {
-    const validated = PostMetaSchema.parse(m.frontmatter ?? m.meta ?? {})
+    const rawMeta = m.frontmatter ?? m.meta ?? {}
+    const mappedPrimary = mapLegacyPrimary(rawMeta.primary)
+    
+    const validated = PostMetaSchema.parse({
+      ...rawMeta,
+      primary: mappedPrimary
+    })
+    
     return {
       ...validated,
       slug,
       date: toISO(validated.date),
+      legacy_primary: rawMeta.primary !== mappedPrimary ? rawMeta.primary : undefined
     }
   } catch (error) {
-    throw new Error(`Invalid frontmatter in ${slug}.mdx: ${error}`)
+    console.warn(`Invalid frontmatter in ${slug}.mdx: ${error}`)
+    const rawMeta = m.frontmatter ?? m.meta ?? {}
+    return {
+      title: rawMeta.title || slug,
+      date: toISO(rawMeta.date) || new Date().toISOString(),
+      primary: 'Uncategorized',
+      secondary: Array.isArray(rawMeta.secondary) ? rawMeta.secondary : [],
+      summary: rawMeta.summary || 'No summary available',
+      slug,
+      needs_review: true
+    }
   }
 }).sort((a, b) => (a.date < b.date ? 1 : -1))
 

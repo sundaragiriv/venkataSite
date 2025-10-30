@@ -1,65 +1,54 @@
 ---
-title: "Predictive Dispatch — FSM"
+title: "Predictive Dispatch FSM"
 slug: "predictive-dispatch-fsm"
-date: 2025-11-03
-primary: "SAP"
-secondary: ["FSM","Integration"]
-excerpt: "Predictive dispatch using ticket history + ML models integrated with SAP FSM to optimize first-time-fix and reduce emergency trips."
+date: "2024-12-15"
+primary: "AI/ML"
+secondary: ["FSM", "IoT", "Predictive"]
+excerpt: "ML-powered field service dispatch optimization using SAP FSM, IoT telemetry, and predictive analytics for emergency reduction and first-time-fix improvement."
 impact:
-  - "18% reduction in emergency dispatches (pilot)"
-  - "22% improvement in first-time-fix rate"
+  - "12-25% emergency dispatch reduction"
+  - "20% FTF improvement"
+  - "Dispatch latency reduction"
 authors: ["Venkata Sundaragiri"]
+related_signals: ["fsm-predictive-maintenance", "iot-asset-monitoring"]
 pdf: "/assets/blueprints/predictive-dispatch-fsm.pdf"
-og_image: "/img/og/blueprints/predictive-dispatch-fsm.png"
+og_image: "/assets/blueprints/predictive-dispatch-fsm-og.jpg"
 ---
 
-## Problem, Solution & Outcomes
+# Predictive Dispatch FSM
 
-This blueprint details data sources including ticket history and IoT sensor data, feature engineering for predictive models, model hosting through Joule infrastructure, and FSM integration patterns using CPI and event-driven architecture. The solution addresses the challenge of reactive field service by implementing predictive dispatch that analyzes historical patterns, equipment telemetry, and technician expertise to optimize service assignments. The operational playbook guides teams from pilot deployment through enterprise scaling with comprehensive measurement frameworks. Implementation results show significant improvements in first-time-fix rates and reduction in costly emergency dispatch scenarios.
+## Problem
 
-## Architecture Overview
+Operations teams face high emergency dispatch volume and low first-time-fix (FTF) rates. Root causes include poor triage, missing contextual signals, and reactive scheduling.
 
-**Data Flow**: Service History + IoT Data → Feature Engineering → ML Models (Joule) → FSM Integration (CPI) → Optimized Dispatch
+## Solution Pattern
 
-**Key Components**:
-- Historical service data warehouse with equipment telemetry
-- Feature engineering pipeline for predictive model inputs
-- Joule-hosted ML models for dispatch optimization
-- Event-driven integration with FSM using CPI connectors
+Ingest ticket history, asset telemetry (IoT), and environmental signals to predict dispatch urgency and required skills. Use a lightweight classifier to score tickets and map to FSM dispatch profiles.
 
-## Implementation Steps
+## Implementation Steps (5)
 
-1. **Data Source Integration**: Connect service history, IoT sensors, and technician profile data
-2. **Feature Engineering**: Build predictive features from historical patterns and equipment data
-3. **Model Development**: Train dispatch optimization models using Joule ML infrastructure  
-4. **FSM Integration**: Implement CPI-based event-driven integration with field service management
-5. **Pilot Deployment**: Launch with controlled technician group and specific equipment types
-6. **Scaling Strategy**: Expand across regions with performance monitoring and optimization
+### 1. Aggregate historical tickets + IoT feature set
 
-## Key Metrics & Impact
+Aggregate historical tickets + IoT feature set; create a labeled dataset for emergency vs. non-emergency.
 
-- **18% reduction in emergency dispatches** achieved during pilot implementation
-- **22% improvement in first-time-fix rate** through better technician-task matching
-- **Average 4.2 hours saved** per field service route optimization
-- **95% prediction accuracy** for equipment failure probability within 30-day window
+### 2. Feature engineering
 
-## Operational Playbook
+Feature engineering: last-reported severity, asset age, failure rate, customer SLA tier.
 
-**Pilot Phase**: Select 2-3 high-volume equipment types and experienced technician cohort
-**Scaling Phase**: Gradual rollout with region-by-region performance measurement
-**Optimization**: Continuous model retraining with feedback loop integration
+### 3. Train classification model
 
-## Next Steps
+Train classification model; deploy behind Joule or a small inference service with confidence scores.
 
-1. **Download** the complete technical blueprint (PDF)
-2. **Schedule** a 30-minute architecture review call  
-3. **Review** related Signals for implementation insights
-4. **Connect** on LinkedIn for ongoing SAP & AI discussions
+### 4. Integrate with SAP FSM via CPI
 
-<a href="/assets/blueprints/predictive-dispatch-fsm.pdf" className="btn-primary" data-analytics="download:predictive-dispatch-fsm">
-  Download the one-page PDF
-</a>
+Integrate with SAP FSM via CPI: predicted priority → create/update work order → recommended skillset in work order notes.
 
----
+### 5. Pilot on subset of regions
 
-*Ready to implement predictive field service? [Book a strategy call](/contact) to discuss your specific FSM and IoT integration requirements.*
+Pilot on subset of regions and monitor emergency dispatch reduction and FTF.
+
+## KPIs
+
+- Emergency dispatch reduction (target 12–25% in pilot)
+- FTF improvement (target +20%)
+- Dispatch latency reduction (time from ticket to scheduled visit)

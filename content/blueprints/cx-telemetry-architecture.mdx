@@ -1,60 +1,74 @@
 ---
-title: "CX Telemetry-First Architecture"
+title: "Telemetry-First CX Architecture"
 slug: "cx-telemetry-architecture"
-date: "2024-12-10"
+date: "2025-10-30"
 primary: "SAP"
 secondary: ["CX", "Analytics"]
-excerpt: "DRAFT - Architecture blueprint for implementing telemetry-first design in SAP CX implementations with real-time KPI tracking."
+excerpt: "Design pattern and checklist for telemetry-first customer experience platforms, enabling real-time analytics, event-driven automation, and ML-ready data streams."
 impact:
-  - "33% reduction in case resolution time"
-  - "80% reduction in SLA breaches"
-authors: ["Venkata Sundaragiri"]
-pdf: "/assets/blueprints/cx-telemetry-architecture-placeholder.pdf"
+  - "Improve incident detection time by 60% with event-driven alerts"
+  - "Enable ML pipelines with consistent, enriched event streams"
+  - "Reduce time-to-insight through standardized telemetry schema"
+pdf: "/assets/blueprints/cx-telemetry-architecture.pdf"
 og_image: "/img/og/blueprints/cx-telemetry-architecture.png"
+authors:
+  - "Venkata Sundaragiri"
+related_signals:
+  - "cx-modernization-telemetry"
 ---
 
-**DRAFT BLUEPRINT**
+## Executive summary
+A telemetry-first approach turns operational noise into actionable signals. For CX platforms this means instrumenting customer interactions end-to-end: UI, middleware (CPI/BTP), commerce events, and support tickets. This blueprint gives an event taxonomy, recommended schema, ingestion pattern, and governance checklist for building ML-ready telemetry.
 
-## Problem, Solution & Outcomes
+## Problem statement
+Many CX programs are blind to the rich event data emitted across channels and systems. Data fragmentation prevents rapid detection of experience degradation and hinders ML experiments. A telemetry-first architecture standardizes events, enforces schemas, and creates reliable pipelines for analytics and inference.
 
-This blueprint transforms SAP CX implementations from deployment-focused to outcome-driven by implementing telemetry-first architecture. Measure business impact from day one with real-time KPI tracking and feedback loops.
+## Architecture & event flow
+**Core components**
+- **Event producers**: Commerce Cloud, Service Cloud, web/mobile UX, third-party partners.  
+- **Ingestion layer**: Kafka/Kinesis or BTP Event Mesh; schema registry (Avro/JSON Schema).  
+- **Enrichment/feature layer**: BTP processing, joins to customer master (CDC), and enrichment services.  
+- **Storage & analytics**: cold store (data lake) + hot store (OLAP) + feature store for ML.  
+- **Consumer layer**: dashboards, Joule inference, analytics jobs, alerts.
 
-## Architecture Overview
+Event flow diagram (high-level):  
 
-**Data Flow**: SAP Events → CDC → Event Hub → Analytics → Dashboards → ML Insights → Process Optimization
+```
+Producer -> Event Mesh (schema validated) -> Enricher -> Feature Store / Data Lake -> Consumers (Analytics / ML / Alerts)
+```
 
-**Key Components**:
-- Event streaming infrastructure
-- Real-time analytics layer
-- KPI dashboard framework
-- ML-powered insights engine
+## Event taxonomy & recommended schema (example)
+**Core event types**
+- `interaction.view` — page/product view  
+- `cart.change` — item added/removed  
+- `checkout.order` — order placed  
+- `support.ticket` — new ticket or update  
+- `recommendation.view` — personalization impression
 
-## Implementation Steps
+**Minimal JSON schema example**
+```json
+{
+  "eventType":"interaction.view",
+  "timestamp":"2025-10-30T12:00:00Z",
+  "user": {"id":"U-123", "segment":"lapsed"},
+  "payload": {"pageId":"SKU-001","referrer":"email"},
+  "meta": {"source":"commerce", "env":"prod"}
+}
+```
 
-1. **KPI Definition**: Establish 3-5 baseline measurements
-2. **Event Streaming**: Wire SAP events to analytics layer
-3. **Dashboard Creation**: Build real-time monitoring
-4. **Feedback Loops**: Connect metrics to development priorities
-5. **ML Integration**: Add predictive insights
-6. **Process Optimization**: Continuous improvement cycles
+## Implementation steps (6)
+1. **Define event taxonomy & schema registry** — decide canonical event types and schemas; register them in a schema registry.
+2. **Instrument producers** — update Commerce and Service Cloud adapters, web SDKs, and middleware to publish validated events.
+3. **Implement ingestion & enrichment** — use Event Mesh + BTP processors to enrich events (customer master, product metadata).
+4. **Feature store integration** — materialize commonly used features for ML experimentation.
+5. **Analytic surfaces & alerts** — dashboards, anomaly detectors, and real-time alerts for business KPIs.
+6. **Governance & retention** — schema versioning, PII handling, retention policies.
 
-## Key Metrics & Impact
+## Monitoring & ops
+- Track event delivery SLA, schema error rates, and consumer lag.
+- Implement automated schema compatibility checks on deploy.
+- Provide replay & reprocessing tools for backfills.
 
-- **48-hour case resolution** (from 72-hour baseline)
-- **3% SLA breaches** (from 15% baseline)
-- **Real-time visibility** into CX performance
-- **Data-driven optimization** cycles
-
-## Next Steps
-
-1. **Download** the complete architecture blueprint (PDF)
-2. **Schedule** a telemetry planning session
-3. **Review** related Signals for implementation insights
-
-<a href="/assets/blueprints/cx-telemetry-architecture-placeholder.pdf" className="btn-primary">
-  Download Blueprint PDF
-</a>
-
----
-
-*Ready to implement telemetry-first CX? [Book a strategy call](/contact) to discuss your measurement strategy.*
+## Pilot plan & KPIs
+- Pilot: instrument 3 producer sources (web, commerce, support) → ingest into event mesh → route to analytics & Joule.
+- KPIs: schema validation failure under 1%, event end-to-end latency under 1s, event coverage over 90% for targeted flows.
