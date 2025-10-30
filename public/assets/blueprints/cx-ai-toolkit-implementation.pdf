@@ -23,6 +23,7 @@ endobj
 /Resources <<
 /Font <<
 /F1 5 0 R
+/F2 6 0 R
 >>
 >>
 >>
@@ -30,22 +31,69 @@ endobj
 
 4 0 obj
 <<
-/Length 200
+/Length 1100
 >>
 stream
 BT
-/F1 18 Tf
+/F2 16 Tf
 50 750 Td
-(CX AI Toolkit — Joule & ML Implementation Patterns) Tj
+(CX AI Toolkit — Joule & ML for Case Routing) Tj
+0 -25 Td
+/F1 10 Tf
+(Practical patterns to add low-latency, explainable ML inference via Joule) Tj
+0 -12 Td
+(to SAP CX for reliable case routing and automation.) Tj
+
 0 -30 Td
-/F1 12 Tf
-(Implementation blueprint for integrating Joule-hosted) Tj
+/F2 12 Tf
+(Problem) Tj
 0 -15 Td
-(inference, model orchestration, and rules into SAP CX) Tj
+/F1 10 Tf
+(Contact centers struggle to scale routing and prioritization. Heavy AI projects) Tj
+0 -12 Td
+(are slow; rules-only systems miss subtleties.) Tj
+
+0 -25 Td
+/F2 12 Tf
+(Solution) Tj
 0 -15 Td
-(case-routing and automation.) Tj
-0 -30 Td
-(By Venkata Sundaragiri) Tj
+/F1 10 Tf
+(A toolkit of small, focused models executed via Joule endpoints with clear) Tj
+0 -12 Td
+(inference contracts, confidence-driven decisioning, and robust fallbacks.) Tj
+
+0 -25 Td
+/F2 12 Tf
+(5-step Implementation) Tj
+0 -15 Td
+/F1 10 Tf
+(1. Scope 1–2 high-value intents and gather labeled examples) Tj
+0 -12 Td
+(2. Train lightweight models and create inference contract) Tj
+0 -12 Td
+(3. Expose models via Joule with explainability and confidence scores) Tj
+0 -12 Td
+(4. Implement Decision Engine blending model output with business rules) Tj
+0 -12 Td
+(5. Pilot, measure routing accuracy and SLA improvements) Tj
+
+0 -25 Td
+/F2 12 Tf
+(Key KPIs) Tj
+0 -15 Td
+/F1 10 Tf
+(• Routing automation rate for pilot intents: aim 40–60%) Tj
+0 -12 Td
+(• SLA adherence improvement: target +15–25%) Tj
+0 -12 Td
+(• Inference latency (95th percentile): under 250ms) Tj
+
+0 -25 Td
+/F2 12 Tf
+(Contact) Tj
+0 -15 Td
+/F1 10 Tf
+(Email: sundaragiriv@gmail.com) Tj
 ET
 endstream
 endobj
@@ -58,19 +106,28 @@ endobj
 >>
 endobj
 
+6 0 obj
+<<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica-Bold
+>>
+endobj
+
 xref
-0 6
+0 7
 0000000000 65535 f 
 0000000009 00000 n 
 0000000058 00000 n 
 0000000115 00000 n 
-0000000274 00000 n 
-0000000526 00000 n 
+0000000284 00000 n 
+0000001436 00000 n 
+0000001503 00000 n 
 trailer
 <<
-/Size 6
+/Size 7
 /Root 1 0 R
 >>
 startxref
-593
+1575
 %%EOF

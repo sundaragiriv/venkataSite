@@ -17,13 +17,13 @@ related_signals:
   - "cx-modernization-telemetry"
 ---
 
-## Executive summary
+## Executive Summary
 A telemetry-first approach turns operational noise into actionable signals. For CX platforms this means instrumenting customer interactions end-to-end: UI, middleware (CPI/BTP), commerce events, and support tickets. This blueprint gives an event taxonomy, recommended schema, ingestion pattern, and governance checklist for building ML-ready telemetry.
 
-## Problem statement
+## Problem Statement
 Many CX programs are blind to the rich event data emitted across channels and systems. Data fragmentation prevents rapid detection of experience degradation and hinders ML experiments. A telemetry-first architecture standardizes events, enforces schemas, and creates reliable pipelines for analytics and inference.
 
-## Architecture & event flow
+## Architecture & Event Flow
 **Core components**
 - **Event producers**: Commerce Cloud, Service Cloud, web/mobile UX, third-party partners.  
 - **Ingestion layer**: Kafka/Kinesis or BTP Event Mesh; schema registry (Avro/JSON Schema).  
@@ -37,7 +37,7 @@ Event flow diagram (high-level):
 Producer -> Event Mesh (schema validated) -> Enricher -> Feature Store / Data Lake -> Consumers (Analytics / ML / Alerts)
 ```
 
-## Event taxonomy & recommended schema (example)
+## Event Schema Example
 **Core event types**
 - `interaction.view` — page/product view  
 - `cart.change` — item added/removed  
@@ -56,7 +56,7 @@ Producer -> Event Mesh (schema validated) -> Enricher -> Feature Store / Data La
 }
 ```
 
-## Implementation steps (6)
+## Implementation Steps
 1. **Define event taxonomy & schema registry** — decide canonical event types and schemas; register them in a schema registry.
 2. **Instrument producers** — update Commerce and Service Cloud adapters, web SDKs, and middleware to publish validated events.
 3. **Implement ingestion & enrichment** — use Event Mesh + BTP processors to enrich events (customer master, product metadata).
@@ -64,11 +64,11 @@ Producer -> Event Mesh (schema validated) -> Enricher -> Feature Store / Data La
 5. **Analytic surfaces & alerts** — dashboards, anomaly detectors, and real-time alerts for business KPIs.
 6. **Governance & retention** — schema versioning, PII handling, retention policies.
 
-## Monitoring & ops
+## Monitoring & Operations
 - Track event delivery SLA, schema error rates, and consumer lag.
 - Implement automated schema compatibility checks on deploy.
 - Provide replay & reprocessing tools for backfills.
 
-## Pilot plan & KPIs
+## Pilot Plan & KPIs
 - Pilot: instrument 3 producer sources (web, commerce, support) → ingest into event mesh → route to analytics & Joule.
 - KPIs: schema validation failure under 1%, event end-to-end latency under 1s, event coverage over 90% for targeted flows.

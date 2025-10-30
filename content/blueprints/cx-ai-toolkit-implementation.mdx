@@ -18,13 +18,13 @@ related_signals:
   - "rag-in-cx"
 ---
 
-## Executive summary
+## Executive Summary
 This blueprint defines a practical, production-ready implementation of AI-driven CX tooling for case routing, intent classification, and Joule-based inference in SAP CX landscapes. It balances model simplicity, observability, and robust fallback behavior to ensure enterprise readiness.
 
-## Problem statement
+## Problem Statement
 Case routing and classification in large contact centers is time-consuming, inconsistent, and often dependent on manual rules. Pure rules-based systems lack scale; monolithic ML projects are heavy. The CX AI Toolkit approach uses small, focused models + Joule inference to deliver predictable, measurable improvements and clear operational boundaries.
 
-## Toolkit architecture & components
+## Architecture & Components
 **Components**
 - **Ingest layer**: events, transcripts, and message metadata from Service Cloud / Messaging channels.  
 - **Feature service**: ephemeral feature assembly via BTP microservice + feature store for heavier features.  
@@ -39,7 +39,7 @@ Architecture pattern (high-level):
 Service Cloud -> Ingest -> Feature Service -> Joule (inference) -> Decision Engine -> Service Cloud (assign work)
 ```
 
-## Implementation steps (7)
+## Implementation Steps
 1. **Define scoped use-cases** — e.g., triage inbound cases by intent (billing, outage, returns). Start with 1–2 high-value intents.  
 2. **Collect labeled data** — sample transcripts and past routing decisions. Label at scale using a small labeling sprint.  
 3. **Train minimal models** — intent classifier (text), priority scorer (tabular), using lightweight architectures for speed.  
@@ -48,7 +48,7 @@ Service Cloud -> Ingest -> Feature Service -> Joule (inference) -> Decision Engi
 6. **Rules & fallbacks** — implement a decision table that uses model confidence to choose model-driven route or fallback to business rule.  
 7. **Operate & iterate** — telemetry-driven retraining cadence, drift detection, and A/B experiments.
 
-## Example inference contract
+## Inference Contract Example
 ```json
 {
   "requestId":"uuid-xxxxx",
@@ -63,17 +63,17 @@ Service Cloud -> Ingest -> Feature Service -> Joule (inference) -> Decision Engi
 }
 ```
 
-## Pilot plan & evaluation
+## Pilot Plan & Evaluation
 - Pilot scope: 2 intent categories, 4-week duration, live A/B or shadow mode.
 - Metrics: routing accuracy, SLA compliance, mean handle time (MHT), successful resolution % within SLA.
 - Acceptance: over 10% SLA improvement or over 20% reduction in manual routing overhead.
 
-## Ops & governance
+## Operations & Governance
 - Implement model versioning and automatic rollback when drift/latency breaches defined thresholds.
 - Store inference logs for 30–90 days for audit & training.
 - Implement throttling and circuit-breakers to protect service endpoints.
 
-## KPIs & expected outcomes
+## KPIs & Expected Outcomes
 - Routing automation rate: aim for 40–60% of inbound cases for pilot intents.
 - SLA improvement target: +15–25% for routed cases.
 - Latency: 95th percentile inference under 250ms.

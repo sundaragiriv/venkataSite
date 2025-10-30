@@ -17,13 +17,13 @@ related_signals:
   - "action-profiles-to-servicev2"
 ---
 
-## Executive summary
+## Executive Summary
 Large, mature CRM landscapes frequently rely on Action Profiles and Action Definitions (CRM) to drive notifications, follow-ups, and integration triggers. Migrating these to Service Cloud V2 requires a repeatable, low-risk approach that preserves intent, testability, and auditability. This blueprint provides a practical migration pattern: discover → canonicalize → transform → validate → cutover.
 
-## Problem statement
+## Problem Statement
 Action Profiles and Action Definitions are often heavily customized, undocumented, and tied to older process engines. Manual migration risks losing business logic, duplicating effort, or creating brittle integrations. Organizations need a way to convert these artifacts into Service Cloud V2 process automation and CPI/BTP integrations while ensuring parity and measurable outcomes.
 
-## Migration pattern & architecture
+## Migration Pattern & Architecture
 **Pattern overview:**  
 1. **Discovery** — extract action profiles, action definitions, and runtime usage traces.  
 2. **Canonical model** — represent each rule as a canonical event-condition-action (ECA) contract.  
@@ -37,7 +37,7 @@ Architecture diagram (high-level):
 CRM (Action Profiles) -> Extractor -> Canonical Rule Store -> Transformer -> Service Cloud V2 (Flows) + CPI Adapters -> Monitoring
 ```
 
-## Implementation steps (5 phased)
+## Implementation Steps
 1. **Extract & inventory**  
    - Run a discovery job to list all action profiles, definitions, bindings, and last-executed timestamps. Export to JSON/CSV.  
    - Capture associated conditions, target endpoints, email templates, and custom code hooks.
@@ -56,7 +56,7 @@ CRM (Action Profiles) -> Extractor -> Canonical Rule Store -> Transformer -> Ser
 5. **Cutover & operate**  
    - Canary the new flows for a subset of users/tenants. Monitor for divergences and keep a rollback path to the old action engine until parity is confirmed. After full cutover, archive originals with audit metadata.
 
-## Data / contract example (Event payload)
+## Data Contract Example
 ```json
 {
   "eventType": "ServiceRequest.Created",
@@ -71,18 +71,18 @@ CRM (Action Profiles) -> Extractor -> Canonical Rule Store -> Transformer -> Ser
 }
 ```
 
-## Test & validation checklist
+## Validation Checklist
 - Unit test for each transformed rule (event -> expected actions).
 - Integration test for CPI endpoints (mock remote systems).
 - Performance test for high-throughput event replays.
 - Parity report showing 1:1 mapping for critical rules.
 
-## Rollout & runbook (ops)
+## Rollout & Operations
 - Staged feature-flag rollouts with canary (10% → 50% → 100%).
 - Monitor reconciliation dashboards for missed/duplicate actions.
 - Keep archived originals for 90 days and enable fast rollback.
 
-## KPIs & expected impact
+## KPIs & Expected Impact
 - Migration time reduction: ~40% vs manual rewrite.
 - Rule parity: >=98% for critical processes.
 - Post-cutover incidents: less than 5% of pre-cutover level in the first 30 days.

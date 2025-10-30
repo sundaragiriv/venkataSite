@@ -17,17 +17,17 @@ related_signals:
   - "sap-ai-governance-framework"
 ---
 
-## Executive summary
+## Executive Summary
 Enterprises need a clear, operational governance approach for AI. The GUARD framework (Governance, Understandability, Accuracy, Resilience, Data protection) provides a concise set of controls and checkpoints to ensure AI systems in SAP landscapes are safe, auditable, and robust. This blueprint details concrete checkpoints, validation tests, and an operational runbook for productionizing governance.
 
-## The GUARD pillars (short)
+## GUARD Pillars
 - **Governance**: policies, roles, approval gates.  
 - **Understandability**: explainability and model documentation.  
 - **Accuracy**: validation, test harnesses, and performance SLAs.  
 - **Resilience**: monitoring, drift detection, fallbacks.  
 - **Data protection**: PII handling, encryption, and retention.
 
-## Architecture overview
+## Architecture Overview
 Place governance controls along the model lifecycle: development → validation → deployment → runtime monitoring. Integrate with CI/CD pipelines, feature stores, and BTP/Joule endpoints for inference. Capture metadata (model card), dataset snapshot, test results, and decision logs in a governance ledger.
 
 Governance ledger pattern:
@@ -36,7 +36,7 @@ Governance ledger pattern:
 Model Registry + Model Card -> CI/CD -> Validation -> Governance Ledger (immutable) -> Deployment
 ```
 
-## Implementation checklist (per pillar)
+## Implementation Checklist
 **Governance**
 1. Define owner & approver roles (Data Owner, Model Owner, Risk Approver).  
 2. Document policy for acceptable use, performance thresholds, and escalation.
@@ -57,17 +57,17 @@ Model Registry + Model Card -> CI/CD -> Validation -> Governance Ledger (immutab
 1. Catalog PII elements and apply masking or tokenization in the feature pipeline.  
 2. Ensure encryption at rest and in transit; limit retention per policy.
 
-## Preventive validations (examples)
+## Preventive Validations
 - **Shadow validation**: run model in shadow mode vs existing system and compare decisions.  
 - **Bias checks**: run demographic parity metrics for protected attributes.  
 - **Explainability checks**: sample predictions must include top-3 explanatory features.
 
-## Ops & audit
+## Operations & Audit
 - Store decision logs (input, model_version, output, confidence, explanation_id) for 90 days (or per policy).  
 - Provide dashboards for model health, drift alerts, and compliance metrics.  
 - Quarterly governance reviews for high-risk models.
 
-## KPIs & measurable outcomes
+## KPIs & Measurable Outcomes
 - Validation pass rate for deployed models: target 95% or higher.  
 - Drift alert accuracy: under 5% false positive rate for critical models.  
 - Time-to-remediation SLA for drift incidents: under 48 hours for high-severity.

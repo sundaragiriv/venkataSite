@@ -41,6 +41,7 @@ export default function AppRoutes() {
           <Route path="/veda/:slug" element={<VedaSlug />} />
           <Route path="/ai" element={<AI />} />
           <Route path="/ai/:slug" element={<AISlug />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="*" element={<Home />} />
           </Routes>
         </Suspense>

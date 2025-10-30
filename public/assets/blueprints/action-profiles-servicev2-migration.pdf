@@ -23,6 +23,7 @@ endobj
 /Resources <<
 /Font <<
 /F1 5 0 R
+/F2 6 0 R
 >>
 >>
 >>
@@ -30,22 +31,71 @@ endobj
 
 4 0 obj
 <<
-/Length 200
+/Length 1150
 >>
 stream
 BT
-/F1 18 Tf
+/F2 16 Tf
 50 750 Td
-(CRM Action Profiles → Service Cloud V2 Migration) Tj
+(CRM Action Profiles → Service Cloud V2 Migration Blueprint) Tj
+0 -25 Td
+/F1 10 Tf
+(A repeatable migration pattern to convert legacy CRM Action Profiles into) Tj
+0 -12 Td
+(Service Cloud V2 flows with parity, testability, and safe cutover.) Tj
+
 0 -30 Td
-/F1 12 Tf
-(Practical migration blueprint to map CRM Action Profiles) Tj
+/F2 12 Tf
+(Problem) Tj
 0 -15 Td
-(and Action Definitions into Service Cloud V2 process) Tj
+/F1 10 Tf
+(Legacy CRM action engines contain undocumented rules and custom code;) Tj
+0 -12 Td
+(manual reimplementation is time-consuming and error-prone.) Tj
+
+0 -25 Td
+/F2 12 Tf
+(Solution) Tj
 0 -15 Td
-(automation and event-driven integrations.) Tj
-0 -30 Td
-(By Venkata Sundaragiri) Tj
+/F1 10 Tf
+(A disciplined migration approach: extract and canonicalize action rules into) Tj
+0 -12 Td
+(an event-condition-action model, transform into Service Cloud V2 flows and) Tj
+0 -12 Td
+(CPI adapters, validate via replay tests, and cut over with canary routing.) Tj
+
+0 -25 Td
+/F2 12 Tf
+(5-step Implementation) Tj
+0 -15 Td
+/F1 10 Tf
+(1. Inventory: extract action definitions, templates, bindings, and traces) Tj
+0 -12 Td
+(2. Canonicalization: convert to ECA contracts and tag custom code) Tj
+0 -12 Td
+(3. Transformation: generate Service Cloud V2 flows and CPI artifacts) Tj
+0 -12 Td
+(4. Validation: run replay tests and produce parity reports) Tj
+0 -12 Td
+(5. Cutover: staged canary with reconciliation and fallback) Tj
+
+0 -25 Td
+/F2 12 Tf
+(Key KPIs) Tj
+0 -15 Td
+/F1 10 Tf
+(• Migration effort reduction: target ~40% vs manual rewrite) Tj
+0 -12 Td
+(• Rule parity: target ≥98% for critical rules) Tj
+0 -12 Td
+(• Post-cutover incidents: under 5% of historical rate) Tj
+
+0 -25 Td
+/F2 12 Tf
+(Contact) Tj
+0 -15 Td
+/F1 10 Tf
+(Email: sundaragiriv@gmail.com) Tj
 ET
 endstream
 endobj
@@ -58,19 +108,28 @@ endobj
 >>
 endobj
 
+6 0 obj
+<<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica-Bold
+>>
+endobj
+
 xref
-0 6
+0 7
 0000000000 65535 f 
 0000000009 00000 n 
 0000000058 00000 n 
 0000000115 00000 n 
-0000000274 00000 n 
-0000000526 00000 n 
+0000000284 00000 n 
+0000001486 00000 n 
+0000001553 00000 n 
 trailer
 <<
-/Size 6
+/Size 7
 /Root 1 0 R
 >>
 startxref
-593
+1625
 %%EOF
