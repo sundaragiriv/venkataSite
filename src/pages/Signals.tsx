@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { signals, fmt } from "../lib/signals";
 import MotionCard from "../components/MotionCard";
 import { FadeIn } from "../components/FadeIn";
+import AdBanner from "../components/AdBanner";
 
 const PRIMARY_CATEGORIES = ["All", "AI-ML", "SAP", "Dharma"] as const;
 
@@ -85,6 +86,14 @@ export default function Signals() {
         </div>
       )}
 
+      {/* Top Content Ad */}
+      <div className="mt-6">
+        <AdBanner 
+          slot="2345678901" 
+          style={{ display: 'block', width: '100%', height: '250px' }}
+        />
+      </div>
+      
       <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {list.map(p => (
           <FadeIn key={p.slug}>

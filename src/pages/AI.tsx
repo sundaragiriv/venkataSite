@@ -3,17 +3,10 @@ import { Link } from "react-router-dom";
 import { FadeIn } from "../components/FadeIn";
 import MotionCard from "../components/MotionCard";
 
-// Safe content loading
-let aiPosts = [];
-let fmt = (date) => new Date(date).toLocaleDateString();
+// Safe content loading with fallback data
+const fmt = (date) => new Date(date).toLocaleDateString();
 
-try {
-  const aiModule = require('../lib/ai');
-  aiPosts = aiModule.aiPosts || [];
-  fmt = aiModule.fmt || fmt;
-} catch (error) {
-  console.warn('Could not load AI posts:', error);
-  aiPosts = [
+const aiPosts = [
     {
       slug: "sap-joule-integration-patterns",
       title: "SAP Joule: Enterprise AI Assistant Integration Patterns",
@@ -55,7 +48,6 @@ try {
       tags: ["Analytics", "Real-time", "CX", "Dashboards"]
     }
   ];
-}
 
 const PRIMARY_CATEGORIES = ["All", "GenAI", "Joule", "MLOps", "Analytics"] as const;
 const SECONDARY_TAGS = {

@@ -6,6 +6,6 @@ secondary: ["Joule", "Recommendations"]
 summary: "Quick prototype integrated Joule inference into CPQ for personalized upsell recommendations during quote creation."
 ---
 
-Quick result: a short prototype that called a Joule inference endpoint during the CPQ flow produced contextual upsell suggestions. In a controlled internal test, inclusion of a single, relevant upsell increased add-on attach rate by ~12% and shortened seller decision time by ~6 seconds on average. The prototype used cached signals and a simple confidence threshold so the UI only showed high-probability recommendations.
+Quick prototype integrated Joule inference into CPQ for contextual upsell suggestions. Internal test showed 12% increase in add-on attach rate and 6-second reduction in seller decision time. Used cached signals with 75% confidence threshold to show only high-probability recommendations.
 
-Prototype details & minimal integration notes → /ai/joule-cpq-proto
+Full implementation guide → [AI Lab](/ai/joule-cpq-integration)

@@ -6,27 +6,6 @@ secondary: ["CX"]
 summary: "Why measuring outcomes from day one transforms SAP CX implementations from cost centers to profit drivers."
 ---
 
-**The Problem.** Most SAP CX projects are measured by "go-live" success, not business impact. Teams celebrate deployment, then wonder why adoption stagnates and ROI remains elusive.
+Most SAP CX projects measure "go-live" success, not business impact. Telemetry-first design changes this by wiring event streams from day one. Example: Service Cloud V2 with real-time KPIs achieved 48-hour resolution (from 72h baseline) and 3% SLA breaches (from 15%).
 
-**The Solution: Telemetry-First Design**
-
-**Before You Code:**
-- Define 3-5 KPIs with baseline measurements
-- Wire event streams from SAP to analytics layer
-- Create feedback loops between metrics and development priorities
-
-**Example: Service Cloud V2 Implementation**
-- **Baseline:** 72-hour average case resolution, 15% SLA breaches
-- **Telemetry:** Real-time case routing, agent workload, customer satisfaction
-- **Outcome:** 48-hour resolution (-33%), 3% SLA breaches (-80%)
-
-**The Architecture:**
-```
-SAP Events → CDC → Event Hub → Analytics → Dashboards
-                              ↓
-                         ML Insights → Process Optimization
-```
-
-**Key Insight:** When teams see their impact in real-time, they optimize differently. Telemetry transforms behavior, not just systems.
-
-**Implementation Tip:** Start with one golden path (e.g., case creation → resolution). Perfect the measurement, then expand to adjacent processes.
+Complete architecture blueprint → [Blueprint](/blueprints/cx-telemetry-architecture)

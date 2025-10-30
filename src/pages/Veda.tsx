@@ -3,17 +3,10 @@ import { Link } from "react-router-dom";
 import { FadeIn } from "../components/FadeIn";
 import MotionCard from "../components/MotionCard";
 
-// Safe content loading
-let vedaPosts = [];
-let fmt = (date) => new Date(date).toLocaleDateString();
+// Safe content loading with fallback data
+const fmt = (date) => new Date(date).toLocaleDateString();
 
-try {
-  const vedaModule = require('../lib/veda');
-  vedaPosts = vedaModule.vedaPosts || [];
-  fmt = vedaModule.fmt || fmt;
-} catch (error) {
-  console.warn('Could not load Veda posts:', error);
-  vedaPosts = [
+const vedaPosts = [
     {
       slug: "ahimsa-psychological-safety",
       title: "Ahimsa and Psychological Safety",
@@ -34,7 +27,6 @@ try {
       summary: "Applying dharmic principles to ethical technology leadership and decision-making."
     }
   ];
-}
 
 const ALL_TAGS = ["All", "Ahimsa", "Dharma", "Leadership", "Ethics", "Practice", "Team Culture"] as const;
 

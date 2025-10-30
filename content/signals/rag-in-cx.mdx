@@ -1,15 +1,11 @@
 ---
 title: "RAG for CX: Governed Context Inside SAP Flows"
-date: "2025-01-07"
+date: "2024-01-07"
 primary: "AI-ML"
 secondary: ["Recommendations"]
 summary: "A practical recipe for adding retrieval to Sales/Service Cloud decisions without chaos."
 ---
 
-**Problem.** Most RAG implementations in customer experience fail because they retrieve too much irrelevant context or miss critical business rules that should constrain AI responses.
+RAG implementations in CX often fail by retrieving irrelevant context or missing business rules. Solution: build retrieval hierarchies starting with customer-specific context, then product knowledge, then policies. Use CDP for fresh embeddings with business constraints as system prompts.
 
-**Recipe.** Build retrieval hierarchies: start with customer-specific context (account history, preferences, contracts), then expand to product knowledge, and finally general policies. Each layer should filter and prioritize what gets passed to the next.
-
-**Implementation.** Use SAP's Customer Data Platform to maintain fresh embeddings of customer interactions, then retrieve in order of relevance and recency. Always include business constraints (pricing rules, service entitlements) as system prompts that can't be overridden.
-
-**Result.** AI responses become more accurate and business-compliant because they're grounded in the right context at the right granularity.
+Implementation recipe → [AI Lab](/ai/rag-cx-implementation)

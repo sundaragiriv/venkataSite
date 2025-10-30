@@ -1,0 +1,15 @@
+filename,slug,primary,secondary,related_blueprint,pdf,og_image,needs_fix,notes,legacy_primary
+action-profiles-to-servicev2.mdx,action-profiles-to-servicev2,SAP,"[""CX""]",,,,yes,"Missing slug, needs blueprint, future date 2025-01-05",
+ai-driven-cx-sap-joule-ml-toolkit.mdx,ai-driven-cx-sap-joule-ml-toolkit,AI/ML,"[""Joule""]",,,,yes,"Short content, needs blueprint",
+commerce-personalization-pilot.mdx,commerce-personalization-pilot,SAP,"[""CX""]",commerce-personalization-pilot,,,no,"Has blueprint reference",
+cx-modernization-telemetry.mdx,cx-modernization-telemetry,SAP,"[""CX""]",,,,yes,"Missing blueprint, long content for signal",
+joule-cpq-recommendations.mdx,joule-cpq-recommendations,AI/ML,"[""Joule"", ""Recommendations""]",,,,yes,"Future date 2025-11-10, needs blueprint",
+predictive-dispatch-pilot.mdx,predictive-dispatch-pilot,SAP,"[""FSM""]",,,,yes,"Future date 2025-11-03, broken link, needs blueprint",
+predictive-dispatch.mdx,predictive-dispatch,SAP,"[""FSM""]",predictive-dispatch-fsm,,,no,"Has blueprint reference",
+rag-in-cx.mdx,rag-in-cx,AI/ML,"[""Recommendations""]",,,,yes,"Needs blueprint",
+sap-ai-governance-framework.mdx,sap-ai-governance-framework,AI/ML,"[""MLOps""]",,,,yes,"Very long content for signal, needs blueprint",
+sap-ai-integration-patterns.mdx,sap-ai-integration-patterns,AI/ML,"[""Analytics""]",,,,yes,"Needs blueprint",
+sap-performance-optimization.mdx,sap-performance-optimization,SAP,"[""S4HANA"", ""Integration""]",,,,yes,"Very long content for signal, needs blueprint",
+vedic-ahimsa.mdx,vedic-ahimsa,Dharma,"[""Practice""]",,,,yes,"Future date 2025-01-06, needs blueprint",
+vedic-micropractice-focus.mdx,vedic-micropractice-focus,Dharma,"[""Practice""]",,,,yes,"Future date 2025-11-17, broken link, needs blueprint",
+vedic-wisdom-modern-teams.mdx,vedic-wisdom-modern-teams,Dharma,"[""Veda"", ""Practice""]",,,,yes,"Long content for signal, needs blueprint"

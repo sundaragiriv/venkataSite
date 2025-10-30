@@ -4,6 +4,7 @@ import { blueprints, fmt } from "../lib/blueprints";
 import MotionCard from "../components/MotionCard";
 import { FadeIn } from "../components/FadeIn";
 import SEO from "../components/SEO";
+import AdBanner from "../components/AdBanner";
 
 const PRIMARY_CATEGORIES = ["All", "AI/ML", "SAP", "Dharma"] as const;
 
@@ -92,6 +93,14 @@ export default function Blueprints() {
           </div>
         )}
 
+        {/* Top Content Ad */}
+        <div className="mt-6">
+          <AdBanner 
+            slot="4567890123" 
+            style={{ display: 'block', width: '100%', height: '250px' }}
+          />
+        </div>
+        
         <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {list.map(p => (
             <FadeIn key={p.slug}>

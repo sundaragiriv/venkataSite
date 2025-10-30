@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { useLocation } from "react-router-dom";
 import FloatingGlyphs from "./FloatingGlyphs";
 import { BrandLogo } from "./Brand";
+import AdBanner from "./AdBanner";
 
 export default function Layout({ children }: { children: ReactNode }) {
   const { pathname } = useLocation();
@@ -51,7 +52,18 @@ export default function Layout({ children }: { children: ReactNode }) {
       
       <main id="main-content" className="flex-1">{children}</main>
       
-      <footer className="border-t border-black/5 mt-20 bg-slate-50">
+      {/* Footer Ad */}
+      <div className="border-t border-black/5 mt-12 py-4 bg-slate-50">
+        <div className="container max-w-wrap">
+          <AdBanner 
+            slot="1234567890" 
+            style={{ display: 'block', width: '100%', height: '90px' }}
+            className="mx-auto"
+          />
+        </div>
+      </div>
+      
+      <footer className="border-t border-black/5 bg-slate-50">
         <div className="container max-w-wrap py-12">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
