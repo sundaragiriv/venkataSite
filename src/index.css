@@ -169,6 +169,31 @@ html {
   font-family: 'Space Mono', monospace;
 }
 
+/* Additional utility classes */
+.bg-dark-card {
+  background-color: var(--bg-card);
+}
+
+.border-dark-tertiary {
+  border-color: var(--bg-grey);
+}
+
+.bg-accent\/10 {
+  background-color: rgba(0, 255, 65, 0.1);
+}
+
+.border-accent\/20 {
+  border-color: rgba(0, 255, 65, 0.2);
+}
+
+.bg-accent\/5 {
+  background-color: rgba(0, 255, 65, 0.05);
+}
+
+.border-accent\/10 {
+  border-color: rgba(0, 255, 65, 0.1);
+}
+
 /* Headings use Inter for contrast */
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Inter', sans-serif;
@@ -326,6 +351,49 @@ a:focus, button:focus, input:focus, textarea:focus, select:focus {
 .prose h1, .prose h2, .prose h3, .prose h4 {
   color: var(--text-white);
   font-weight: 600;
+}
+
+.prose-invert {
+  color: var(--text-light);
+}
+
+.prose-invert h1, .prose-invert h2, .prose-invert h3, .prose-invert h4, .prose-invert h5, .prose-invert h6 {
+  color: var(--text-white);
+}
+
+.prose-invert p {
+  color: var(--text-light);
+}
+
+.prose-invert strong {
+  color: var(--accent-green);
+  font-weight: 600;
+}
+
+.prose-invert code {
+  color: var(--accent-green);
+  background: var(--bg-card);
+  padding: 0.2em 0.4em;
+  border-radius: 0.25rem;
+  border: 1px solid var(--bg-grey);
+}
+
+.prose-invert pre {
+  background: var(--bg-card);
+  border: 1px solid var(--bg-grey);
+}
+
+.prose-invert blockquote {
+  border-left: 4px solid var(--accent-green);
+  color: var(--text-light);
+}
+
+.prose-invert ul li::marker {
+  color: var(--accent-green);
+}
+
+.prose-invert ol li::marker {
+  color: var(--accent-green);
 }
 
 /* Sanskrit font */
