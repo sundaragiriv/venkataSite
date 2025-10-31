@@ -97,7 +97,7 @@ export default function Blueprints() {
         <div className="mt-6">
           <AdBanner 
             slot="4567890123" 
-            style={{ display: 'block', width: '100%', height: '250px' }}
+            style={{ display: 'block', width: '100%', height: '120px' }}
           />
         </div>
         

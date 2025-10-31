@@ -88,7 +88,7 @@ export default function Signals() {
       <div className="mt-6 sm:mt-8">
         <AdBanner 
           slot="2345678901" 
-          style={{ display: 'block', width: '100%', height: '200px' }}
+          style={{ display: 'block', width: '100%', height: '120px' }}
         />
       </div>
       

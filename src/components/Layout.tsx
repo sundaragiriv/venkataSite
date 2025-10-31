@@ -58,11 +58,11 @@ export default function Layout({ children }: { children: ReactNode }) {
       <main id="main-content" className="flex-1">{children}</main>
       
       {/* Footer Ad */}
-      <div className="border-t border-black/5 mt-12 py-4 bg-slate-50">
+      <div className="border-t border-black/5 mt-8 py-3 bg-slate-50">
         <div className="container max-w-wrap">
           <AdBanner 
             slot="1234567890" 
-            style={{ display: 'block', width: '100%', height: '90px' }}
+            style={{ display: 'block', width: '100%', height: '60px' }}
             className="mx-auto"
           />
         </div>
