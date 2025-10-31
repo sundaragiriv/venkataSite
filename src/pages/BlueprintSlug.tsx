@@ -164,6 +164,14 @@ export default function BlueprintSlug() {
                   </Link>
                 </div>
 
+                {/* Sidebar Ad */}
+                <div className="rounded-lg overflow-hidden">
+                  <AdBanner 
+                    slot="5432109876" 
+                    style={{ display: 'block', width: '100%', height: '250px' }}
+                  />
+                </div>
+
                 {/* Social Share */}
                 <div className="p-6 rounded-lg border border-dark-tertiary bg-dark-card">
                   <h3 className="font-semibold text-primary mb-3 font-sans">Share This Blueprint</h3>

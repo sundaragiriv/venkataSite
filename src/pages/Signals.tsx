@@ -92,31 +92,52 @@ export default function Signals() {
       </div>
       
       <div className="mt-8 sm:mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {list.map(p => (
-          <FadeIn key={p.slug}>
-            <MotionCard className="p-0 h-full card-glow hover-lift group">
-              <Link to={`/signals/${p.slug}`} className="flex flex-col h-full p-6">
-                <div className="text-xs text-muted">{fmt(p.date)}</div>
-                <h3 className="mt-2 sm:mt-3 text-lg font-semibold text-primary leading-tight group-hover:text-accent transition-colors line-clamp-2 font-sans">{p.title}</h3>
-                <div className="mt-2 sm:mt-3 flex flex-wrap items-center gap-2 text-xs sm:text-sm">
-                  <span className="font-medium text-accent px-2 py-1 bg-accent/10 rounded-full border border-accent/20">
-                    {p.primary}
-                  </span>
-                  {p.secondary && p.secondary.length > 0 && (
-                    <span className="text-accent px-2 py-1 bg-accent/5 rounded-full border border-accent/10">
-                      {p.secondary.slice(0, 2).join(", ")}{p.secondary.length > 2 ? "..." : ""}
+        {list.map((p, index) => (
+          <>
+            {/* Insert ad after every 9 items */}
+            {index > 0 && index % 9 === 0 && (
+              <div className="md:col-span-2 lg:col-span-3 my-4">
+                <AdBanner 
+                  slot="2468013579" 
+                  style={{ display: 'block', width: '100%', height: '90px' }}
+                />
+              </div>
+            )}
+            <FadeIn key={p.slug}>
+              <MotionCard className="p-0 h-full card-glow hover-lift group">
+                <Link to={`/signals/${p.slug}`} className="flex flex-col h-full p-6">
+                  <div className="text-xs text-muted">{fmt(p.date)}</div>
+                  <h3 className="mt-2 sm:mt-3 text-lg font-semibold text-primary leading-tight group-hover:text-accent transition-colors line-clamp-2 font-sans">{p.title}</h3>
+                  <div className="mt-2 sm:mt-3 flex flex-wrap items-center gap-2 text-xs sm:text-sm">
+                    <span className="font-medium text-accent px-2 py-1 bg-accent/10 rounded-full border border-accent/20">
+                      {p.primary}
                     </span>
-                  )}
-                </div>
-                <div className="flex-1 mt-3 sm:mt-4">
-                  {p.summary && <p className="text-sm text-secondary line-clamp-2 sm:line-clamp-3">{p.summary}</p>}
-                </div>
-                <span className="mt-4 inline-flex items-center gap-1 text-sm text-accent font-medium group-hover:gap-2 transition-all">Read →</span>
-              </Link>
-            </MotionCard>
-          </FadeIn>
+                    {p.secondary && p.secondary.length > 0 && (
+                      <span className="text-accent px-2 py-1 bg-accent/5 rounded-full border border-accent/10">
+                        {p.secondary.slice(0, 2).join(", ")}{p.secondary.length > 2 ? "..." : ""}
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex-1 mt-3 sm:mt-4">
+                    {p.summary && <p className="text-sm text-secondary line-clamp-2 sm:line-clamp-3">{p.summary}</p>}
+                  </div>
+                  <span className="mt-4 inline-flex items-center gap-1 text-sm text-accent font-medium group-hover:gap-2 transition-all">Read →</span>
+                </Link>
+              </MotionCard>
+            </FadeIn>
+          </>
         ))}
       </div>
+      
+      {/* Bottom Content Ad */}
+      {list.length > 0 && (
+        <div className="mt-12">
+          <AdBanner 
+            slot="8642097531" 
+            style={{ display: 'block', width: '100%', height: '120px' }}
+          />
+        </div>
+      )}
     </section>
   );
 }

@@ -34,22 +34,32 @@ export default function AdBanner({
     return (
       <div className={`ad-placeholder ${className}`} style={{ 
         ...style, 
-        backgroundColor: '#f1f5f9', 
-        border: '2px dashed #cbd5e1',
+        backgroundColor: '#1a1a1a', 
+        border: '2px dashed #00ff41',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         fontSize: '14px',
-        color: '#64748b',
+        color: '#00ff41',
         minHeight: '60px'
       }}>
-        Ad Space (Production Only)
+        💰 Ad Space (Production Only)
       </div>
     );
   }
 
+  const handleAdClick = () => {
+    // Track ad clicks for analytics
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'ad_click', {
+        ad_slot: slot,
+        event_category: 'monetization'
+      });
+    }
+  };
+
   return (
-    <div className={`ad-container ${className}`}>
+    <div className={`ad-container ${className}`} onClick={handleAdClick}>
       <ins
         className="adsbygoogle"
         style={style}
