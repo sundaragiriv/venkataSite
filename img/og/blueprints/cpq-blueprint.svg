@@ -1,0 +1,44 @@
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0B66FF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFC107;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1200" height="630" fill="url(#gradient)" opacity="0.1"/>
+  <rect x="0" y="0" width="1200" height="630" fill="white"/>
+  
+  <!-- Background pattern -->
+  <g opacity="0.05">
+    <pattern id="dots" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <circle cx="20" cy="20" r="2" fill="#0B66FF"/>
+    </pattern>
+    <rect width="1200" height="630" fill="url(#dots)"/>
+  </g>
+  
+  <!-- Content -->
+  <text x="60" y="120" font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="56" font-weight="600" fill="#1e293b">
+    Sales Cloud + CPQ Blueprint
+  </text>
+  
+  <text x="60" y="180" font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="32" fill="#64748b">
+    SAP • CPQ • CX
+  </text>
+  
+  <text x="60" y="250" font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="28" fill="#475569">
+    60% faster quote-to-order • 90% error reduction
+  </text>
+  
+  <text x="60" y="300" font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="28" fill="#475569">
+    3 weeks faster sales onboarding
+  </text>
+  
+  <!-- Logo/Brand -->
+  <text x="60" y="580" font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="24" font-weight="600" fill="#0B66FF">
+    venkata.info
+  </text>
+  
+  <!-- Accent -->
+  <rect x="60" y="350" width="200" height="4" fill="#FFC107" rx="2"/>
+</svg>

@@ -1,0 +1,18 @@
+<!-- SVG placeholder for OG image -->
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#059669"/>
+  <circle cx="100" cy="100" r="40" fill="#fbbf24" stroke="#ffffff" stroke-width="3"/>
+  <text x="100" y="110" font-family="Arial, sans-serif" font-size="24" fill="#ffffff" text-anchor="middle" font-weight="bold">V</text>
+  <text x="600" y="280" font-family="Arial, sans-serif" font-size="42" fill="white" text-anchor="middle" font-weight="bold">
+    Predictive Dispatch for SAP FSM
+  </text>
+  <text x="600" y="340" font-family="Arial, sans-serif" font-size="28" fill="#a7f3d0" text-anchor="middle">
+    35% Fewer Emergency Dispatches • 95% Prediction Accuracy
+  </text>
+  <text x="600" y="420" font-family="Arial, sans-serif" font-size="24" fill="#fbbf24" text-anchor="middle">
+    IoT Sensors → ML Prediction → FSM Integration → Optimized Dispatch
+  </text>
+  <text x="600" y="520" font-family="Arial, sans-serif" font-size="20" fill="#e5e7eb" text-anchor="middle">
+    Venkata Sundaragiri • SAP CX Architect & AI Pioneer
+  </text>
+</svg>

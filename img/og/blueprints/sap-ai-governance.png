@@ -1,0 +1,9 @@
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#1e293b"/>
+  <circle cx="100" cy="100" r="40" fill="#3b82f6"/>
+  <text x="100" y="110" text-anchor="middle" fill="white" font-family="Arial" font-size="24" font-weight="bold">V</text>
+  <text x="200" y="120" fill="white" font-family="Arial" font-size="32" font-weight="bold">SAP AI Governance — GUARD Framework Implementation</text>
+  <text x="200" y="180" fill="#94a3b8" font-family="Arial" font-size="18">A pragmatic implementation blueprint for the GUARD AI governance framework:</text>
+  <text x="200" y="210" fill="#94a3b8" font-family="Arial" font-size="18">Governance, Understandability, Accuracy, Resilience, and Data protection.</text>
+  <text x="200" y="280" fill="#3b82f6" font-family="Arial" font-size="16">By Venkata Sundaragiri</text>
+</svg>

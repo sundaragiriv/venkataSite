@@ -1,0 +1,137 @@
+%PDF-1.4
+1 0 obj
+<<
+/Type /Catalog
+/Pages 2 0 R
+>>
+endobj
+
+2 0 obj
+<<
+/Type /Pages
+/Kids [3 0 R]
+/Count 1
+>>
+endobj
+
+3 0 obj
+<<
+/Type /Page
+/Parent 2 0 R
+/MediaBox [0 0 612 792]
+/Contents 4 0 R
+/Resources <<
+/Font <<
+/F1 5 0 R
+/F2 6 0 R
+>>
+>>
+>>
+endobj
+
+4 0 obj
+<<
+/Length 1100
+>>
+stream
+BT
+/F2 16 Tf
+50 750 Td
+(Telemetry-First CX Architecture) Tj
+0 -25 Td
+/F1 10 Tf
+(Design pattern and checklist for telemetry-first customer experience) Tj
+0 -12 Td
+(platforms, enabling real-time analytics and ML-ready data streams.) Tj
+
+0 -30 Td
+/F2 12 Tf
+(Problem) Tj
+0 -15 Td
+/F1 10 Tf
+(Many CX programs are blind to rich event data emitted across channels) Tj
+0 -12 Td
+(and systems. Data fragmentation prevents rapid detection of experience) Tj
+0 -12 Td
+(degradation and hinders ML experiments.) Tj
+
+0 -25 Td
+/F2 12 Tf
+(Solution) Tj
+0 -15 Td
+/F1 10 Tf
+(A telemetry-first architecture standardizes events, enforces schemas,) Tj
+0 -12 Td
+(and creates reliable pipelines for analytics and inference.) Tj
+
+0 -25 Td
+/F2 12 Tf
+(6-step Implementation) Tj
+0 -15 Td
+/F1 10 Tf
+(1. Define event taxonomy and schema registry) Tj
+0 -12 Td
+(2. Instrument producers to publish validated events) Tj
+0 -12 Td
+(3. Implement ingestion and enrichment via Event Mesh) Tj
+0 -12 Td
+(4. Feature store integration for ML experimentation) Tj
+0 -12 Td
+(5. Analytic surfaces and real-time alerts) Tj
+0 -12 Td
+(6. Governance and retention policies) Tj
+
+0 -25 Td
+/F2 12 Tf
+(Key KPIs) Tj
+0 -15 Td
+/F1 10 Tf
+(• Schema validation failure: under 1%) Tj
+0 -12 Td
+(• Event end-to-end latency: under 1s) Tj
+0 -12 Td
+(• Event coverage: over 90% for targeted flows) Tj
+
+0 -25 Td
+/F2 12 Tf
+(Contact) Tj
+0 -15 Td
+/F1 10 Tf
+(Email: sundaragiriv@gmail.com) Tj
+ET
+endstream
+endobj
+
+5 0 obj
+<<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica
+>>
+endobj
+
+6 0 obj
+<<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica-Bold
+>>
+endobj
+
+xref
+0 7
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000284 00000 n 
+0000001436 00000 n 
+0000001503 00000 n 
+trailer
+<<
+/Size 7
+/Root 1 0 R
+>>
+startxref
+1575
+%%EOF

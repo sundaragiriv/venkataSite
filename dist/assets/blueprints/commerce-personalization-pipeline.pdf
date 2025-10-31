@@ -1,0 +1,141 @@
+%PDF-1.4
+1 0 obj
+<<
+/Type /Catalog
+/Pages 2 0 R
+>>
+endobj
+
+2 0 obj
+<<
+/Type /Pages
+/Kids [3 0 R]
+/Count 1
+>>
+endobj
+
+3 0 obj
+<<
+/Type /Page
+/Parent 2 0 R
+/MediaBox [0 0 612 792]
+/Contents 4 0 R
+/Resources <<
+/Font <<
+/F1 5 0 R
+/F2 6 0 R
+>>
+>>
+>>
+endobj
+
+4 0 obj
+<<
+/Length 1200
+>>
+stream
+BT
+/F2 16 Tf
+50 750 Td
+(Commerce Personalization Pipeline — CDP → Recommendations) Tj
+0 -25 Td
+/F1 10 Tf
+(Fast, low-latency personalization pipeline that converts CDP events into high-precision offers,) Tj
+0 -12 Td
+(driving measurable CTR and conversion lifts.) Tj
+
+0 -30 Td
+/F2 12 Tf
+(Problem) Tj
+0 -15 Td
+/F1 10 Tf
+(Retail teams struggle to deliver relevant, low-latency personalized offers without huge) Tj
+0 -12 Td
+(engineering lift. Broad segmentation produces noise; real-time personalization often) Tj
+0 -12 Td
+(increases page latency and engineering complexity.) Tj
+
+0 -25 Td
+/F2 12 Tf
+(Solution) Tj
+0 -15 Td
+/F1 10 Tf
+(A production-ready pipeline: CDP event capture → validated event mesh → BTP/CPI) Tj
+0 -12 Td
+(preprocessing → feature assembly → Joule inference endpoint → Commerce delivery) Tj
+0 -12 Td
+(with short caching. Design prioritizes simple ranking models, clear data contracts,) Tj
+0 -12 Td
+(and fast rollouts via feature flags.) Tj
+
+0 -25 Td
+/F2 12 Tf
+(5-step Implementation Checklist) Tj
+0 -15 Td
+/F1 10 Tf
+(1. Define event contract and register schemas in schema registry) Tj
+0 -12 Td
+(2. Implement event streaming from CDP to ingestion service) Tj
+0 -12 Td
+(3. Build light ranking model and expose inference endpoint with 250ms SLA) Tj
+0 -12 Td
+(4. Integrate inference into Commerce UI with 60s caching layer) Tj
+0 -12 Td
+(5. Run 2-week A/B pilot on two targeted segments) Tj
+
+0 -25 Td
+/F2 12 Tf
+(Key KPIs) Tj
+0 -15 Td
+/F1 10 Tf
+(• CTR uplift: target 25–40% in pilot) Tj
+0 -12 Td
+(• Conversion lift: 15–25% on targeted segments) Tj
+0 -12 Td
+(• Service latency increase: under +200ms (95th percentile)) Tj
+0 -12 Td
+(• Recommendation precision (top-3): over 60%) Tj
+
+0 -25 Td
+/F2 12 Tf
+(Contact) Tj
+0 -15 Td
+/F1 10 Tf
+(Email: sundaragiriv@gmail.com) Tj
+ET
+endstream
+endobj
+
+5 0 obj
+<<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica
+>>
+endobj
+
+6 0 obj
+<<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica-Bold
+>>
+endobj
+
+xref
+0 7
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000284 00000 n 
+0000001536 00000 n 
+0000001603 00000 n 
+trailer
+<<
+/Size 7
+/Root 1 0 R
+>>
+startxref
+1675
+%%EOF
