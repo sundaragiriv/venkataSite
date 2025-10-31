@@ -4,7 +4,7 @@ import { FadeIn } from "../components/FadeIn";
 import MotionCard from "../components/MotionCard";
 
 // Safe content loading with fallback data
-const fmt = (date) => new Date(date).toLocaleDateString();
+const fmt = (date: string) => new Date(date).toLocaleDateString();
 
 const aiPosts = [
     {

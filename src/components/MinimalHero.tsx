@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { FadeIn } from "./FadeIn";
 import { motion } from "framer-motion";
-import { gridPatterns, spacing, typography, interactive } from "../lib/responsive";
+import { gridPatterns, spacing, typography } from "../lib/responsive";
 
 export default function MinimalHero() {
   return (

@@ -31,7 +31,7 @@ export default function BlueprintSlug() {
       <SEO 
         title={`${blueprint.title} - Blueprint`}
         description={blueprint.excerpt}
-        ogImage={blueprint.og_image}
+        image={blueprint.og_image}
       />
       <link rel="canonical" href={`https://venkata.info/blueprints/${blueprint.slug}`} />
       

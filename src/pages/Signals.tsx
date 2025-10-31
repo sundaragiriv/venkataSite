@@ -4,7 +4,6 @@ import { signals, fmt } from "../lib/signals";
 import MotionCard from "../components/MotionCard";
 import { FadeIn } from "../components/FadeIn";
 import AdBanner from "../components/AdBanner";
-import { gridPatterns, spacing, typography, interactive } from "../lib/responsive";
 
 const PRIMARY_CATEGORIES = ["All", "AI/ML", "SAP", "Dharma"] as const;
 

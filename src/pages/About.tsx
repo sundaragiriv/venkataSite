@@ -36,12 +36,6 @@ export default function About() {
     { title: "Delivery & Governance", description: "Program P&L, stakeholder governance, release management and quality gates." }
   ];
 
-  const timeline = [
-    { t: "2025—Now", h: "SAP CX + AI Architect", d: "Argano · Sales/Service V2, CPQ, FSM, CPI/BTP, AI patterns" },
-    { t: "2019—2022", h: "Director · SAP CX", d: "TA Digital · led practice, multi-cloud integrations" },
-    { t: "Prior", h: "Solution/Integration Roles", d: "ERP, S/4HANA (LE/SD/MM), CX suite, MACH, data" }
-  ];
-
   return (
     <section className="container max-w-wrap py-12 bg-black min-h-screen">
       <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-primary font-sans">About Me</h1>
