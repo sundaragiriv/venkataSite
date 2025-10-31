@@ -7,6 +7,7 @@ import SEO from "../components/SEO";
 import MinimalHero from "../components/MinimalHero";
 import AboutSnapshot from "../components/AboutSnapshot";
 import FeaturedCaseStudy from "../components/FeaturedCaseStudy";
+import { gridPatterns, spacing, typography } from "../lib/responsive";
 
 export default function Home() {
   const latestSignals = signals.slice(0, 3);
@@ -30,20 +31,20 @@ export default function Home() {
         <FeaturedCaseStudy />
 
         {/* Latest Signals */}
-        <section className="py-16 bg-slate-50">
-          <div className="container max-w-wrap">
+        <section className={`${spacing.sectionY} bg-slate-50`}>
+          <div className={`container max-w-wrap ${spacing.container}`}>
             <FadeIn>
-              <div className="flex items-end justify-between mb-8">
-                <h2 className="text-2xl font-semibold text-brand-ink">Latest Signals</h2>
-                <Link to="/signals" className="text-brand hover:text-brand-light font-medium">
+              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 sm:gap-8 mb-6 sm:mb-8">
+                <h2 className={`${typography.h2} text-brand-ink`}>Latest Signals</h2>
+                <Link to="/signals" className={`${typography.nav} text-brand hover:text-brand-light inline-flex items-center gap-2 hover:gap-3 transition-all`}>
                   See all →
                 </Link>
               </div>
             </FadeIn>
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className={gridPatterns.signals}>
               {signals.length === 0 ? (
                 <FadeIn>
-                  <div className="rounded-2xl bg-white border border-black/10 p-6 text-slate-600">
+                  <div className={`${spacing.cardPadding} rounded-xl sm:rounded-2xl bg-white border border-black/10 text-slate-600 col-span-full`}>
                     No posts yet. Add files to <code>content/signals/</code> with front-matter:
                     <pre className="mt-2 text-xs">{`---
 title: …
@@ -55,13 +56,13 @@ tag: Tech|AI-in-SAP|Vedic
               ) : (
                 latestSignals.map((signal) => (
                   <FadeIn key={signal.slug}>
-                    <MotionCard className="p-0 card-glow group overflow-hidden">
-                      <Link to={`/signals/${signal.slug}`} className="block p-6 relative">
+                    <MotionCard className="p-0 card-glow group overflow-hidden h-full">
+                      <Link to={`/signals/${signal.slug}`} className={`block ${spacing.cardPadding} relative h-full flex flex-col`}>
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out" />
-                        <div className="relative">
-                          <div className="flex items-center justify-between mb-2">
-                            <div className="text-xs text-slate-500">{fmt(signal.date)}</div>
-                            <div className={`text-xs font-medium px-2 py-1 rounded-full ${
+                        <div className="relative flex-1 flex flex-col">
+                          <div className="flex items-center justify-between mb-3">
+                            <div className={`${typography.caption}`}>{fmt(signal.date)}</div>
+                            <div className={`text-xs sm:text-sm font-medium px-2 py-1 rounded-full ${
                               signal.primary === 'SAP' ? 'bg-blue-100 text-blue-700' :
                               signal.primary === 'AI/ML' ? 'bg-purple-100 text-purple-700' :
                               signal.primary === 'Dharma' ? 'bg-amber-100 text-amber-700' :
@@ -70,8 +71,8 @@ tag: Tech|AI-in-SAP|Vedic
                               {signal.primary}
                             </div>
                           </div>
-                          <h3 className="text-lg font-semibold text-slate-900 mb-2 group-hover:text-brand-600 transition-colors">{signal.title}</h3>
-                          {signal.summary && <p className="text-sm text-slate-600 line-clamp-2">{signal.summary}</p>}
+                          <h3 className={`${typography.h4} text-slate-900 mb-3 group-hover:text-brand-600 transition-colors line-clamp-2`}>{signal.title}</h3>
+                          {signal.summary && <p className={`${typography.small} line-clamp-2 sm:line-clamp-3 mt-auto`}>{signal.summary}</p>}
                         </div>
                       </Link>
                     </MotionCard>

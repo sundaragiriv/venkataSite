@@ -1,14 +1,15 @@
 import { Link } from "react-router-dom";
 import { FadeIn } from "./FadeIn";
 import { motion } from "framer-motion";
+import { gridPatterns, spacing, typography, interactive } from "../lib/responsive";
 
 export default function MinimalHero() {
   return (
-    <section className="relative py-24 overflow-hidden">
+    <section className={`relative ${spacing.sectionY} lg:py-32 overflow-hidden`}>
       {/* Background Elements */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-yellow-50 opacity-60" />
-      <div className="absolute top-20 right-20 w-32 h-32 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 opacity-30 animate-pulse" />
-      <div className="absolute bottom-20 left-20 w-24 h-24 rounded-full bg-gradient-to-br from-yellow-100 to-yellow-200 opacity-40 animate-pulse" style={{ animationDelay: '1s' }} />
+      <div className="absolute top-10 sm:top-20 right-4 sm:right-20 w-16 sm:w-32 h-16 sm:h-32 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 opacity-30 animate-pulse" />
+      <div className="absolute bottom-10 sm:bottom-20 left-4 sm:left-20 w-12 sm:w-24 h-12 sm:h-24 rounded-full bg-gradient-to-br from-yellow-100 to-yellow-200 opacity-40 animate-pulse" style={{ animationDelay: '1s' }} />
       
       {/* AI Neural Network SVG Background */}
       <svg 
@@ -32,26 +33,26 @@ export default function MinimalHero() {
         </g>
       </svg>
 
-      <div className="container mx-auto px-6 relative z-10">
+      <div className={`container mx-auto ${spacing.container} relative z-10`}>
         <FadeIn className="text-center max-w-4xl mx-auto">
-          <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-slate-900 via-blue-700 to-slate-900 bg-clip-text text-transparent mb-6">
+          <h1 className={`${typography.h1} bg-gradient-to-r from-slate-900 via-blue-700 to-slate-900 bg-clip-text text-transparent mb-4 sm:mb-6`}>
             SAP Architect & AI Pioneer
           </h1>
           
-          <p className="text-xl text-slate-600 mb-8 leading-relaxed">
+          <p className={`${typography.lead} mb-6 sm:mb-8`}>
             Designing enterprise S/4HANA and AI-powered CX that scale. 
             Practical blueprints, measurable outcomes, and short experiments.
           </p>
           
           {/* Primary CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-            <Link to="/blueprints" className="btn-gradient text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-glow-lg hover:shadow-glow inline-flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-12 sm:mb-16">
+            <Link to="/blueprints" className={`btn-gradient text-white ${interactive.button.large} rounded-xl font-semibold shadow-glow-lg hover:shadow-glow inline-flex items-center justify-center gap-2 transition-all`}>
               Explore Blueprints
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
             </Link>
-            <Link to="/signals" className="btn-soft px-8 py-4 rounded-xl font-medium text-lg inline-flex items-center gap-2">
+            <Link to="/signals" className={`btn-soft ${interactive.button.large} rounded-xl font-medium inline-flex items-center justify-center gap-2 transition-all`}>
               Read the Latest Signal
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -62,7 +63,7 @@ export default function MinimalHero() {
 
         {/* Three-Funnel Cards */}
         <motion.div 
-          className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto"
+          className={`${gridPatterns.hero} max-w-5xl mx-auto`}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.6 }}
