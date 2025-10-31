@@ -57,9 +57,7 @@ export default function BlueprintSlug() {
                 </div>
                 <div className="mt-2 flex items-center gap-2 text-xs">
                   <span className="font-medium text-brand">
-                    {blueprint.primary === "AI-ML" ? "AI/ML" :
-                     blueprint.primary === "SAP" ? "SAP" :
-                     blueprint.primary === "Dharma" ? "Dharma" : blueprint.primary}
+                    {blueprint.primary}
                   </span>
                   {blueprint.secondary && blueprint.secondary.length > 0 && (
                     <>
@@ -126,9 +124,7 @@ export default function BlueprintSlug() {
                     <div className="text-sm font-medium text-slate-700 mb-2">Categories:</div>
                     <div className="flex flex-wrap gap-1">
                       <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-brand/10 text-brand">
-                        {blueprint.primary === "AI-ML" ? "AI/ML" :
-                         blueprint.primary === "SAP" ? "SAP" :
-                         blueprint.primary === "Dharma" ? "Dharma" : blueprint.primary}
+                        {blueprint.primary}
                       </span>
                       {blueprint.secondary?.map(tag => (
                         <span key={tag} className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-accent-turmeric/10 text-accent-turmeric">

@@ -5,11 +5,11 @@ import MotionCard from "../components/MotionCard";
 import { FadeIn } from "../components/FadeIn";
 import AdBanner from "../components/AdBanner";
 
-const PRIMARY_CATEGORIES = ["All", "AI-ML", "SAP", "Dharma"] as const;
+const PRIMARY_CATEGORIES = ["All", "AI/ML", "SAP", "Dharma"] as const;
 
 const SECONDARY_TAGS = {
   "SAP": ["CX", "S4HANA", "FSM", "CPQ", "Integration"],
-  "AI-ML": ["Joule", "MLOps", "Recommendations", "Analytics"],
+  "AI/ML": ["Joule", "MLOps", "Recommendations", "Analytics"],
   "Dharma": ["Veda", "Practice", "Reflections", "Rituals"]
 } as const;
 
@@ -61,10 +61,7 @@ export default function Signals() {
                 ? "bg-gradient-to-r from-brand to-brand-light text-white shadow-md" 
                 : "border border-black/10 text-slate-700 hover:bg-slate-50 hover:border-brand/30"
             }`}>
-            {primary === "All" ? "All" :
-             primary === "AI-ML" ? "AI/ML" :
-             primary === "SAP" ? "SAP" :
-             primary === "Dharma" ? "Dharma" : primary}
+            {primary}
           </button>
         ))}
       </div>
@@ -103,9 +100,7 @@ export default function Signals() {
                 <h3 className="mt-1 text-lg font-semibold text-slate-900 leading-tight">{p.title}</h3>
                 <div className="mt-1 flex items-center gap-2 text-xs">
                   <span className="font-medium text-brand">
-                    {p.primary === "AI-ML" ? "AI/ML" :
-                     p.primary === "SAP" ? "SAP" :
-                     p.primary === "Dharma" ? "Dharma" : p.primary}
+                    {p.primary}
                   </span>
                   {p.secondary && p.secondary.length > 0 && (
                     <>

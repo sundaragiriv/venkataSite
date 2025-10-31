@@ -110,9 +110,7 @@ export default function Blueprints() {
                   <h3 className="mt-1 text-lg font-semibold text-slate-900 leading-tight">{p.title}</h3>
                   <div className="mt-1 flex items-center gap-2 text-xs">
                     <span className="font-medium text-brand">
-                      {p.primary === "AI-ML" ? "AI/ML" :
-                       p.primary === "SAP" ? "SAP" :
-                       p.primary === "Dharma" ? "Dharma" : p.primary}
+                      {p.primary}
                     </span>
                     {p.secondary && p.secondary.length > 0 && (
                       <>

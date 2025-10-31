@@ -3,7 +3,7 @@ import { z } from "zod";
 export const PostMetaSchema = z.object({
   title: z.string(),
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be YYYY-MM-DD format"),
-  primary: z.enum(["AI-ML", "SAP", "Dharma"]),
+  primary: z.enum(["AI/ML", "SAP", "Dharma"]),
   secondary: z.array(z.enum([
     // SAP secondary tags
     "CX", "S4HANA", "FSM", "CPQ", "Integration",

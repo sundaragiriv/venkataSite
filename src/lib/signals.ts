@@ -15,15 +15,18 @@ function toISO(d?: string) {
   return Number.isFinite(t) ? new Date(t).toISOString() : ''
 }
 
-function mapLegacyPrimary(primary: string): string {
-  const mapping: Record<string, string> = {
-    'Tech': 'AI-ML',
-    'AI-in-SAP': 'AI-ML', 
-    'AI/ML': 'AI-ML',
+function mapLegacyPrimary(primary: string): 'AI/ML' | 'SAP' | 'Dharma' {
+  const mapping: Record<string, 'AI/ML' | 'SAP' | 'Dharma'> = {
+    'Tech': 'AI/ML',
+    'AI-in-SAP': 'AI/ML', 
+    'AI-ML': 'AI/ML',
+    'AI/ML': 'AI/ML',
     'Vedic': 'Dharma',
-    'SAP-Architecture': 'SAP'
+    'SAP-Architecture': 'SAP',
+    'SAP': 'SAP',
+    'Dharma': 'Dharma'
   };
-  return mapping[primary] || primary;
+  return mapping[primary] || 'SAP'; // Default fallback
 }
 
 export const signals: SignalMeta[] = Object.keys(modules).map((k) => {
@@ -51,7 +54,7 @@ export const signals: SignalMeta[] = Object.keys(modules).map((k) => {
     return {
       title: rawMeta.title || slug,
       date: toISO(rawMeta.date) || new Date().toISOString(),
-      primary: 'Uncategorized',
+      primary: 'SAP' as const,
       secondary: Array.isArray(rawMeta.secondary) ? rawMeta.secondary : [],
       summary: rawMeta.summary || 'No summary available',
       slug,
