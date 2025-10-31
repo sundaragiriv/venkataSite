@@ -34,7 +34,7 @@ export default function Blueprints() {
 
   const handlePrimarySelect = (primary: (typeof PRIMARY_CATEGORIES)[number]) => {
     setSelectedPrimary(primary);
-    setSelectedSecondary([]); // Reset secondary when primary changes
+    setSelectedSecondary([]);
   };
 
   const handleSecondaryToggle = (tag: string) => {
@@ -51,14 +51,14 @@ export default function Blueprints() {
         title="Blueprints - SAP & AI Implementation Guides"
         description="One-page blueprints for SAP integrations, AI implementations, and digital transformation. Downloadable PDFs with architecture diagrams and measured ROI."
       />
-      <section className="container max-w-wrap py-12">
-        <h1 className="text-3xl md:text-4xl font-semibold tracking-tight">Blueprints</h1>
-        <p className="mt-2 text-slate-600 max-w-prose">
-          One-page architecture blueprints focused on <strong>SAP & AI/ML technical playbooks</strong> with measurable outcomes. 
+      <section className="container max-w-wrap py-12 bg-black min-h-screen">
+        <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-primary font-sans">Blueprints</h1>
+        <p className="mt-2 text-secondary max-w-prose font-medium">
+          One-page architecture blueprints focused on <strong className="text-accent">SAP & AI/ML technical playbooks</strong> with measurable outcomes. 
           Each blueprint includes implementation guides, technical diagrams, and downloadable PDFs for your reference.
         </p>
-        <p className="mt-2 text-sm text-slate-500">
-          Note: Dharma team practice guides may be better suited for the <Link to="/veda" className="text-brand hover:underline">Vedic Wisdom</Link> section.
+        <p className="mt-2 text-sm text-muted">
+          Note: Dharma team practice guides may be better suited for the <Link to="/veda" className="text-accent hover:text-primary transition">Vedic Wisdom</Link> section.
         </p>
 
         {/* Primary Category Filters */}
@@ -68,15 +68,15 @@ export default function Blueprints() {
               onClick={() => handlePrimarySelect(primary)}
               className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
                 primary === selectedPrimary 
-                  ? "bg-gradient-to-r from-brand to-brand-light text-white shadow-md" 
-                  : "border border-black/10 text-slate-700 hover:bg-slate-50 hover:border-brand/30"
+                  ? "bg-accent text-black font-semibold shadow-md" 
+                  : "border border-dark-tertiary text-secondary hover:bg-dark-card hover:border-accent hover:text-accent"
               }`}>
               {primary}
             </button>
           ))}
         </div>
 
-        {/* Secondary Tag Filters (show when primary category is selected) */}
+        {/* Secondary Tag Filters */}
         {selectedPrimary !== "All" && SECONDARY_TAGS[selectedPrimary] && (
           <div className="mt-4 flex flex-wrap gap-2">
             {SECONDARY_TAGS[selectedPrimary].map(tag => (
@@ -84,8 +84,8 @@ export default function Blueprints() {
                 onClick={() => handleSecondaryToggle(tag)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                   selectedSecondary.includes(tag)
-                    ? "bg-gradient-to-r from-accent-turmeric/20 to-accent-turmeric/30 text-accent-turmeric border border-accent-turmeric/30"
-                    : "border border-black/5 text-slate-600 hover:bg-slate-50"
+                    ? "bg-accent text-black font-semibold border border-accent"
+                    : "border border-dark-tertiary text-muted hover:bg-dark-card hover:text-accent"
                 }`}>
                 {tag}
               </button>
@@ -104,34 +104,34 @@ export default function Blueprints() {
         <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {list.map(p => (
             <FadeIn key={p.slug}>
-              <MotionCard className="p-0 h-full">
+              <MotionCard className="p-0 h-full card-glow hover-lift">
                 <div className="flex flex-col h-full p-6">
-                  <div className="text-xs text-slate-500">{fmt(p.date)}</div>
-                  <h3 className="mt-1 text-lg font-semibold text-slate-900 leading-tight">{p.title}</h3>
+                  <div className="text-xs text-muted">{fmt(p.date)}</div>
+                  <h3 className="mt-1 text-lg font-semibold text-primary leading-tight font-sans">{p.title}</h3>
                   <div className="mt-1 flex items-center gap-2 text-xs">
-                    <span className="font-medium text-brand">
+                    <span className="font-medium text-accent px-2 py-1 bg-accent/10 rounded-full border border-accent/20">
                       {p.primary}
                     </span>
                     {p.secondary && p.secondary.length > 0 && (
                       <>
-                        <span className="text-slate-400">•</span>
-                        <span className="text-accent-turmeric">
+                        <span className="text-muted">•</span>
+                        <span className="text-accent">
                           {p.secondary.join(", ")}
                         </span>
                       </>
                     )}
                   </div>
                   <div className="flex-1 mt-2">
-                    {p.excerpt && <p className="text-sm text-slate-600 line-clamp-3">{p.excerpt}</p>}
+                    {p.excerpt && <p className="text-sm text-secondary line-clamp-3">{p.excerpt}</p>}
                   </div>
                   
                   {/* Impact KPIs */}
                   {p.impact && p.impact.length > 0 && (
                     <div className="mt-3">
-                      <div className="text-xs font-medium text-slate-500 mb-1">Key Impact:</div>
+                      <div className="text-xs font-medium text-muted mb-1">Key Impact:</div>
                       <div className="space-y-1">
                         {p.impact.slice(0, 2).map((item, idx) => (
-                          <div key={idx} className="text-xs text-accent-turmeric font-medium">
+                          <div key={idx} className="text-xs text-accent font-medium">
                             • {item}
                           </div>
                         ))}
@@ -142,13 +142,13 @@ export default function Blueprints() {
                   <div className="mt-4 flex gap-2">
                     <Link 
                       to={`/blueprints/${p.slug}`}
-                      className="flex-1 inline-flex items-center justify-center gap-1 text-sm text-brand hover:text-brand-light font-medium"
+                      className="flex-1 inline-flex items-center justify-center gap-1 text-sm text-accent hover:text-primary font-medium transition"
                     >
                       View Details
                     </Link>
                     <a 
                       href={p.pdf}
-                      className="flex-1 inline-flex items-center justify-center gap-1 text-xs px-3 py-1.5 rounded-lg bg-brand text-white hover:bg-brand-light transition-colors"
+                      className="flex-1 btn-gradient text-xs inline-flex items-center justify-center gap-1"
                       data-analytics={`download:${p.slug}`}
                     >
                       Download PDF
@@ -162,7 +162,7 @@ export default function Blueprints() {
         
         {list.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-slate-500">No blueprints found for the selected filters.</p>
+            <p className="text-secondary">No blueprints found for the selected filters.</p>
           </div>
         )}
       </section>

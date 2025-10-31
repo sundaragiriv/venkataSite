@@ -91,9 +91,9 @@ export default function AI() {
   };
 
   return (
-    <section className="container max-w-wrap py-12">
-      <h1 className="text-3xl md:text-4xl font-semibold tracking-tight">AI Insights</h1>
-      <p className="mt-2 text-slate-600 max-w-prose">
+    <section className="container max-w-wrap py-12 bg-black min-h-screen">
+      <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-primary">AI Insights</h1>
+      <p className="mt-2 text-secondary max-w-prose font-medium">
         Deep dives into enterprise AI, machine learning patterns, and practical implementation strategies for SAP landscapes.
       </p>
 
@@ -104,8 +104,8 @@ export default function AI() {
             onClick={() => handlePrimarySelect(primary)}
             className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
               primary === selectedPrimary 
-                ? "bg-blue-600 text-white shadow-md" 
-                : "border border-black/10 text-slate-700 hover:bg-yellow-50 hover:border-yellow-300"
+                ? "bg-accent text-black font-semibold shadow-md" 
+                : "border border-dark-tertiary text-secondary hover:bg-dark-card hover:border-accent hover:text-accent"
             }`}>
             {primary}
           </button>
@@ -120,8 +120,8 @@ export default function AI() {
               onClick={() => handleSecondaryToggle(tag)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                 selectedSecondary.includes(tag)
-                  ? "bg-yellow-100 text-yellow-800 border border-yellow-300"
-                  : "border border-black/5 text-slate-600 hover:bg-yellow-50"
+                  ? "bg-accent text-black font-semibold border border-accent"
+                  : "border border-dark-tertiary text-muted hover:bg-dark-card hover:text-accent"
               }`}>
               {tag}
             </button>
@@ -132,26 +132,21 @@ export default function AI() {
       <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {filteredPosts.map(post => (
           <FadeIn key={post.slug}>
-            <MotionCard className="p-0 h-full">
+            <MotionCard className="p-0 h-full card-glow hover-lift">
               <Link to={`/ai/${post.slug}`} className="flex flex-col h-full p-6">
                 <div className="flex items-center justify-between mb-2">
-                  <div className="text-xs text-slate-500">{fmt(post.date)}</div>
-                  <span className={`text-xs px-2 py-1 rounded-full font-medium ${
-                    post.primary === 'GenAI' ? 'bg-purple-100 text-purple-700' :
-                    post.primary === 'Joule' ? 'bg-blue-100 text-blue-700' :
-                    post.primary === 'MLOps' ? 'bg-green-100 text-green-700' :
-                    'bg-orange-100 text-orange-700'
-                  }`}>
+                  <div className="text-xs text-muted">{fmt(post.date)}</div>
+                  <span className="text-xs px-2 py-1 rounded-full font-medium bg-accent/20 text-accent border border-accent/30">
                     {post.primary}
                   </span>
                 </div>
                 
-                <h3 className="text-lg font-semibold text-slate-900 leading-tight mb-2">{post.title}</h3>
+                <h3 className="text-lg font-semibold text-primary leading-tight mb-2">{post.title}</h3>
                 
                 {post.secondary && post.secondary.length > 0 && (
                   <div className="flex flex-wrap gap-1 mb-2">
                     {post.secondary.map(tag => (
-                      <span key={tag} className="text-xs text-yellow-700 bg-yellow-100 px-2 py-1 rounded">
+                      <span key={tag} className="text-xs text-accent bg-accent/10 px-2 py-1 rounded border border-accent/20">
                         {tag}
                       </span>
                     ))}
@@ -159,10 +154,10 @@ export default function AI() {
                 )}
                 
                 <div className="flex-1">
-                  {post.summary && <p className="text-sm text-slate-600 line-clamp-3">{post.summary}</p>}
+                  {post.summary && <p className="text-sm text-secondary line-clamp-3">{post.summary}</p>}
                 </div>
                 
-                <span className="mt-3 inline-flex items-center gap-1 text-sm text-blue-600">Read Article →</span>
+                <span className="mt-3 inline-flex items-center gap-1 text-sm text-accent">Read Article →</span>
               </Link>
             </MotionCard>
           </FadeIn>
@@ -172,14 +167,14 @@ export default function AI() {
       {filteredPosts.length === 0 && (
         <div className="mt-12 text-center py-12">
           <div className="text-4xl mb-4">🤖</div>
-          <h3 className="text-xl font-semibold mb-2">No AI content found</h3>
-          <p className="text-slate-500 mb-4">No articles match your current filters.</p>
+          <h3 className="text-xl font-semibold mb-2 text-primary">No AI content found</h3>
+          <p className="text-secondary mb-4">No articles match your current filters.</p>
           <button
             onClick={() => {
               setSelectedPrimary("All");
               setSelectedSecondary([]);
             }}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="btn-gradient"
           >
             Clear Filters
           </button>

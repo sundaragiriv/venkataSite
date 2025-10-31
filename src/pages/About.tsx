@@ -43,9 +43,9 @@ export default function About() {
   ];
 
   return (
-    <section className="container max-w-wrap py-12">
-      <h1 className="text-3xl md:text-4xl font-semibold tracking-tight">About Me</h1>
-      <p className="mt-2 text-slate-600 max-w-prose">
+    <section className="container max-w-wrap py-12 bg-black min-h-screen">
+      <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-primary font-sans">About Me</h1>
+      <p className="mt-2 text-secondary max-w-prose font-medium">
         22+ years delivering large-scale SAP and AI transformations across Utilities, High Tech, Manufacturing, CPG and Retail. 
         I design outcome-driven architectures that fuse S/4HANA core processes with next-gen CX and AI.
       </p>
@@ -56,8 +56,8 @@ export default function About() {
           <button key={v} onClick={() => setView(v)}
             className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
               v === view 
-                ? "bg-blue-600 text-white shadow-md" 
-                : "border border-black/10 text-slate-700 hover:bg-yellow-50 hover:border-yellow-300"
+                ? "bg-accent text-black font-semibold shadow-md" 
+                : "border border-dark-tertiary text-secondary hover:bg-dark-card hover:border-accent hover:text-accent"
             }`}>
             {v}
           </button>
@@ -68,20 +68,20 @@ export default function About() {
       {view === "Resume" && (
         <div className="mt-8">
           <FadeIn>
-            <MotionCard className="p-6">
+            <MotionCard className="p-6 card-glow">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-bold">Professional Resume</h3>
+                <h3 className="text-lg font-bold text-primary font-sans">Professional Resume</h3>
                 <a href="/contact" 
-                   className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
+                   className="btn-gradient">
                   Request Resume
                 </a>
               </div>
-              <div className="space-y-4 text-slate-700">
-                <p><strong>SAP Senior Consultant & CX Architect</strong> with 23+ years of extensive leadership across global SAP implementations and transformations.</p>
+              <div className="space-y-4 text-secondary">
+                <p><strong className="text-accent">SAP Senior Consultant & CX Architect</strong> with 23+ years of extensive leadership across global SAP implementations and transformations.</p>
                 
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <h4 className="font-semibold mb-2">Core Expertise</h4>
+                    <h4 className="font-semibold mb-2 text-primary">Core Expertise</h4>
                     <ul className="text-sm space-y-1">
                       <li>• SAP CX Cloud (Sales & Service V2, C4C)</li>
                       <li>• SAP S/4HANA (OTC, SD, MM, Service)</li>
@@ -92,7 +92,7 @@ export default function About() {
                     </ul>
                   </div>
                   <div>
-                    <h4 className="font-semibold mb-2">Key Achievements</h4>
+                    <h4 className="font-semibold mb-2 text-primary">Key Achievements</h4>
                     <ul className="text-sm space-y-1">
                       <li>• Unified 18M customer records (42% duplicate reduction)</li>
                       <li>• 55% increase in personalized campaign revenue</li>
@@ -104,19 +104,19 @@ export default function About() {
                 </div>
                 
                 <div>
-                  <h4 className="font-semibold mb-2">Current Role</h4>
-                  <p className="text-sm"><strong>Sr. SAP Emarsys Consultant / CX Solution Architect</strong> at Argano (Jan 2025—Present)<br/>
+                  <h4 className="font-semibold mb-2 text-primary">Current Role</h4>
+                  <p className="text-sm"><strong className="text-accent">Sr. SAP Emarsys Consultant / CX Solution Architect</strong> at Argano (Jan 2025—Present)<br/>
                   Leading PUMA's digital engagement transformation with Emarsys + CDP integration, AI-driven personalization, and omnichannel automation.</p>
                 </div>
                 
                 <div>
-                  <h4 className="font-semibold mb-2">Leadership Experience</h4>
-                  <p className="text-sm"><strong>Director - SAP Practice</strong> at TA Digital (2019-2022)<br/>
+                  <h4 className="font-semibold mb-2 text-primary">Leadership Experience</h4>
+                  <p className="text-sm"><strong className="text-accent">Director - SAP Practice</strong> at TA Digital (2019-2022)<br/>
                   Led SAP Practice with P&L accountability, delivered CX transformations for Fortune 500 clients including Apple, ACN, Bose. Built teams of 40+ consultants within 270-member delivery organization.</p>
                 </div>
                 
                 <div>
-                  <h4 className="font-semibold mb-2">Notable Clients</h4>
+                  <h4 className="font-semibold mb-2 text-primary">Notable Clients</h4>
                   <div className="grid grid-cols-2 gap-2 text-xs">
                     <span>• PUMA North America</span>
                     <span>• Apple Inc.</span>
@@ -139,9 +139,9 @@ export default function About() {
         <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {stats.map((stat, idx) => (
             <FadeIn key={idx}>
-              <MotionCard className="p-6 text-center hover:bg-yellow-50 hover:border-yellow-300 transition-all">
-                <div className="text-xl font-bold text-blue-600">{stat.v}</div>
-                <div className="text-xs text-slate-600 font-medium">{stat.k}</div>
+              <MotionCard className="p-6 text-center card-glow hover-lift">
+                <div className="text-xl font-bold text-accent">{stat.v}</div>
+                <div className="text-xs text-muted font-medium">{stat.k}</div>
               </MotionCard>
             </FadeIn>
           ))}
@@ -153,15 +153,15 @@ export default function About() {
         <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {expertiseTiles.map((tile, idx) => (
             <FadeIn key={idx}>
-              <MotionCard className={`p-6 h-full ${
+              <MotionCard className={`p-6 h-full card-glow hover-lift ${
                 tile.isHighlight 
-                  ? 'border-l-4 border-l-yellow-500 bg-yellow-50' 
-                  : 'hover:bg-yellow-50 hover:border-yellow-300'
-              } transition-all`}>
-                <h3 className="font-medium text-slate-900 mb-2">{tile.title}</h3>
-                <p className="text-sm text-slate-600">{tile.description}</p>
+                  ? 'border-l-4 border-l-accent' 
+                  : ''
+              }`}>
+                <h3 className="font-medium text-primary mb-2 font-sans">{tile.title}</h3>
+                <p className="text-sm text-secondary">{tile.description}</p>
                 {tile.isHighlight && (
-                  <span className="inline-block mt-2 px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                  <span className="inline-block mt-2 px-2 py-1 rounded-full text-xs font-medium bg-accent/20 text-accent border border-accent/30">
                     Top Expertise
                   </span>
                 )}
@@ -175,40 +175,38 @@ export default function About() {
       {view === "Practitioner" && (
         <div className="mt-8 space-y-6">
           <FadeIn>
-            <MotionCard className="p-6">
-              <h3 className="text-lg font-bold mb-4">Principles</h3>
-              <ul className="space-y-3 text-slate-700">
-                <li><strong>Ahimsa:</strong> psychological safety enables honest telemetry and better systems.</li>
-                <li><strong>Samyama:</strong> focused attention → clearer diagnostics → cleaner designs.</li>
-                <li><strong>Ritam:</strong> alignment with reality; measure what matters and adjust.</li>
+            <MotionCard className="p-6 card-glow">
+              <h3 className="text-lg font-bold mb-4 text-primary font-sans">Principles</h3>
+              <ul className="space-y-3 text-secondary">
+                <li><strong className="text-accent">Ahimsa:</strong> psychological safety enables honest telemetry and better systems.</li>
+                <li><strong className="text-accent">Samyama:</strong> focused attention → clearer diagnostics → cleaner designs.</li>
+                <li><strong className="text-accent">Ritam:</strong> alignment with reality; measure what matters and adjust.</li>
               </ul>
             </MotionCard>
           </FadeIn>
           
           <FadeIn>
-            <MotionCard className="p-6 bg-yellow-50 border-yellow-200">
-              <p>Explore <Link to="/veda" className="text-yellow-700 font-semibold underline hover:text-yellow-800">Vedic Wisdom</Link> for Shruti (verse+audio) and Vichāra (essay) entries.</p>
+            <MotionCard className="p-6 card-glow border border-accent/20">
+              <p className="text-secondary">Explore <Link to="/veda" className="text-accent font-semibold hover:text-primary transition">Vedic Wisdom</Link> for Shruti (verse+audio) and Vichāra (essay) entries.</p>
             </MotionCard>
           </FadeIn>
-
-
         </div>
       )}
 
       {/* Contact CTA */}
       <FadeIn>
-        <div className="mt-12 p-8 rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 text-white text-center">
-          <h2 className="text-2xl font-bold mb-4">Ready to Transform Your Enterprise?</h2>
-          <p className="text-blue-100 mb-6 max-w-2xl mx-auto">
+        <div className="mt-12 p-8 rounded-2xl card-glow border border-accent/20 text-center">
+          <h2 className="text-2xl font-bold mb-4 text-primary font-sans">Ready to Transform Your Enterprise?</h2>
+          <p className="text-secondary mb-6 max-w-2xl mx-auto">
             Let's discuss how SAP architecture and AI can accelerate your digital transformation.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="mailto:venkatagirivasan@gmail.com?subject=Strategy Call Request" 
-               className="bg-white text-blue-600 px-8 py-3 rounded-xl font-semibold hover:bg-gray-100 transition-colors">
+               className="btn-gradient">
               Schedule Strategy Call
             </a>
             <a href="https://www.linkedin.com/in/sundaragiri" target="_blank" rel="noopener noreferrer"
-               className="border-2 border-white text-white px-8 py-3 rounded-xl font-semibold hover:bg-white hover:text-blue-600 transition-colors">
+               className="btn-soft">
               Connect on LinkedIn
             </a>
           </div>
