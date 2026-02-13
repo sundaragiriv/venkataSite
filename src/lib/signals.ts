@@ -1,4 +1,6 @@
 import { PostMetaSchema, type PostMeta } from './schema';
+import { logger } from './logger';
+import type { MDXModule } from './mdxTypes';
 
 export type SignalMeta = PostMeta & { 
   slug: string; 
@@ -6,7 +8,7 @@ export type SignalMeta = PostMeta & {
   legacy_primary?: string;
 };
 
-const modules = import.meta.glob('../../content/signals/*.mdx', { eager: true }) as Record<string, any>
+const modules = import.meta.glob('../../content/signals/*.mdx', { eager: true }) as Record<string, MDXModule>
 
 function toISO(d?: string) {
   if (!d) return ''
@@ -49,7 +51,7 @@ export const signals: SignalMeta[] = Object.keys(modules).map((k) => {
       legacy_primary: rawMeta.primary !== mappedPrimary ? rawMeta.primary : undefined
     }
   } catch (error) {
-    console.warn(`Invalid frontmatter in ${slug}.mdx: ${error}`)
+    logger.warn(`Invalid frontmatter in ${slug}.mdx:`, error)
     const rawMeta = m.frontmatter ?? m.meta ?? {}
     return {
       title: rawMeta.title || slug,

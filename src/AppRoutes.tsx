@@ -1,6 +1,7 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { Suspense } from "react";
+import { LoadingState } from "./components/LoadingState";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
@@ -13,6 +14,7 @@ import AI from "./pages/AI";
 import AISlug from "./pages/AISlug";
 import Blueprints from "./pages/Blueprints";
 import BlueprintSlug from "./pages/BlueprintSlug";
+import NotFound from "./pages/NotFound";
 
 export default function AppRoutes() {
   const location = useLocation();
@@ -27,7 +29,7 @@ export default function AppRoutes() {
         exit={{ opacity: 0, y: reducedMotion ? 0 : -8 }}
         transition={{ duration: reducedMotion ? 0 : 0.25 }}
       >
-        <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+        <Suspense fallback={<LoadingState />}>
           <Routes location={location}>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -41,8 +43,7 @@ export default function AppRoutes() {
           <Route path="/veda/:slug" element={<VedaSlug />} />
           <Route path="/ai" element={<AI />} />
           <Route path="/ai/:slug" element={<AISlug />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="*" element={<Home />} />
+          <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
       </motion.div>

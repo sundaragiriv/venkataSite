@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { getVedaPost } from "../lib/veda";
 import { FadeIn } from "../components/FadeIn";
 import SEO from "../components/SEO";
@@ -12,16 +12,16 @@ export default function VedaSlug() {
       <div className="container max-w-wrap py-12 text-center bg-black min-h-screen">
         <h1 className="text-3xl font-bold text-primary mb-4 font-sans">Vedic Entry Not Found</h1>
         <p className="text-secondary mb-6">The Vedic entry you're looking for doesn't exist.</p>
-        <a href="/veda" className="btn-gradient">
+        <Link to="/veda" className="btn-gradient">
           Back to Vedic Wisdom
-        </a>
+        </Link>
       </div>
     );
   }
 
   return (
     <>
-      <SEO 
+      <SEO
         title={`${post.title} - Dharmic Wisdom`}
         description={post.summary || `${post.title} - Ancient wisdom for modern teams`}
         type="article"
@@ -30,9 +30,9 @@ export default function VedaSlug() {
       <article className="container max-w-wrap py-12 bg-black min-h-screen">
         <FadeIn>
           <div className="mb-6">
-            <a href="/veda" className="text-accent hover:text-primary text-sm font-medium">
-              ← Back to Vedic Wisdom
-            </a>
+            <Link to="/veda" className="text-accent hover:text-primary text-sm font-medium">
+              &larr; Back to Vedic Wisdom
+            </Link>
           </div>
 
           <div className="grid lg:grid-cols-3 gap-8">
@@ -45,18 +45,18 @@ export default function VedaSlug() {
                   <p className="text-lg text-secondary italic mb-1">{post.transliteration}</p>
                   <p className="text-base text-primary font-medium">"{post.translation}"</p>
                 </div>
-                
+
                 <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-primary mb-4 font-sans">
                   {post.title}
                 </h2>
                 <div className="flex items-center gap-4 text-sm text-secondary">
                   <span>{post.date}</span>
-                  <span>•</span>
+                  <span>&bull;</span>
                   <span>{post.category}</span>
                   {post.audio && (
                     <>
-                      <span>•</span>
-                      <span className="text-accent">🎵 Audio Available</span>
+                      <span>&bull;</span>
+                      <span className="text-accent">Audio Available</span>
                     </>
                   )}
                 </div>
@@ -76,7 +76,7 @@ export default function VedaSlug() {
                     {post.summary}
                   </p>
                 </div>
-                
+
                 <div className="text-secondary leading-relaxed space-y-6">
                   <p>This exploration delves into the practical applications of ancient Vedic wisdom in modern professional environments.</p>
                   <p>The content bridges timeless Sanskrit teachings with contemporary challenges in leadership, team dynamics, and personal development.</p>
@@ -91,7 +91,7 @@ export default function VedaSlug() {
                 {/* Quick Facts */}
                 <div className="p-6 rounded-lg border border-dark-tertiary bg-dark-card">
                   <h3 className="font-semibold text-primary mb-4 font-sans">Quick Facts</h3>
-                  
+
                   <div className="mb-4">
                     <div className="text-sm font-medium text-secondary mb-1">Sanskrit:</div>
                     <div className="text-sm text-accent sanskrit-font">{post.sanskrit}</div>
@@ -115,7 +115,7 @@ export default function VedaSlug() {
                   {post.audio && (
                     <div className="mb-4">
                       <div className="text-sm font-medium text-secondary mb-1">Audio:</div>
-                      <div className="text-sm text-accent">🎵 Chanting Available</div>
+                      <div className="text-sm text-accent">Chanting Available</div>
                     </div>
                   )}
 
@@ -137,9 +137,9 @@ export default function VedaSlug() {
                   <p className="text-sm text-secondary mb-4">
                     Ancient Sanskrit wisdom applied to modern leadership and conscious business practices.
                   </p>
-                  <a href="/about" className="btn-soft w-full text-center">
+                  <Link to="/about" className="btn-soft w-full text-center inline-block">
                     Learn More
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>

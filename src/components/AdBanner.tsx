@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { logger } from '../lib/logger';
 
 interface AdBannerProps {
   slot: string;
@@ -22,30 +23,19 @@ export default function AdBanner({
     if (!isProduction) return;
     
     try {
-      // @ts-ignore
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
+      const windowWithAds = window as unknown as { adsbygoogle?: Array<Record<string, unknown>> };
+      if (!windowWithAds.adsbygoogle) {
+        windowWithAds.adsbygoogle = [];
+      }
+      windowWithAds.adsbygoogle.push({});
     } catch (err) {
-      console.log('AdSense error:', err);
+      logger.error('AdSense error:', err);
     }
   }, [isProduction]);
 
-  // Don't render anything in development to avoid empty spaces
+  // Don't render anything in development
   if (!isProduction) {
-    return (
-      <div className={`ad-placeholder ${className}`} style={{ 
-        ...style, 
-        backgroundColor: '#1a1a1a', 
-        border: '2px dashed #00ff41',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontSize: '14px',
-        color: '#00ff41',
-        minHeight: '60px'
-      }}>
-        💰 Ad Space (Production Only)
-      </div>
-    );
+    return null;
   }
 
   const handleAdClick = () => {

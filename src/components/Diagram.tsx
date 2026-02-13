@@ -1,7 +1,14 @@
-import { ReactFlow, Background, Controls, MiniMap } from "@xyflow/react";
+import { ReactFlow, Background, Controls, MiniMap, type Node, type Edge } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 
-export default function Diagram({ data }: { data: { nodes: any[]; edges: any[] } }) {
+interface DiagramProps {
+  data: {
+    nodes: Node[];
+    edges: Edge[];
+  };
+}
+
+export default function Diagram({ data }: DiagramProps) {
   return (
     <div className="h-[420px]">
       <ReactFlow nodes={data.nodes} edges={data.edges} fitView>

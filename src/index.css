@@ -49,13 +49,8 @@ html {
   min-height: 100vh;
 }
 
-/* Immediate black background for all elements */
-*, *::before, *::after {
-  background-color: inherit;
-}
-
-/* Override any white backgrounds */
-.container, main, section, div {
+/* Ensure dark backgrounds on key layout elements */
+.container, main, section {
   background-color: transparent;
 }
 
@@ -69,22 +64,22 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--accent-green);
+  background: rgba(0, 255, 65, 0.3);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--accent-green-light);
+  background: rgba(0, 255, 65, 0.5);
 }
 
 /* Button System */
-.btn-gradient { 
+.btn-gradient {
   background: var(--accent-green);
   color: var(--bg-black);
   border: none;
-  border-radius: 8px;
-  font-weight: 400;
-  padding: 14px 28px;
+  border-radius: 10px;
+  font-weight: 500;
+  padding: 14px 32px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-size: 13px;
   letter-spacing: 0.5px;
@@ -94,17 +89,17 @@ html {
 
 .btn-gradient:hover {
   background: var(--accent-green-light);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 255, 65, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0, 255, 65, 0.2);
 }
 
 .btn-soft {
   background: transparent;
   border: 1px solid var(--bg-grey);
-  border-radius: 8px;
+  border-radius: 10px;
   color: var(--text-white);
   font-weight: 400;
-  padding: 14px 28px;
+  padding: 14px 32px;
   transition: all 0.3s ease;
   font-family: 'Space Mono', monospace;
   font-size: 13px;
@@ -119,29 +114,29 @@ html {
 }
 
 /* Card System */
-.card-glow { 
+.card-glow {
   background: var(--bg-card);
   border: 1px solid var(--bg-grey);
-  border-radius: 12px;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .card-glow:hover {
-  border-color: var(--accent-green);
-  transform: translateY(-6px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 255, 65, 0.1);
+  border-color: rgba(0, 255, 65, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), 0 0 12px rgba(0, 255, 65, 0.06);
 }
 
 .glass-card {
   background: var(--bg-card);
   border: 1px solid var(--bg-grey);
-  border-radius: 12px;
+  border-radius: 16px;
   transition: all 0.3s ease;
 }
 
 .glass-card:hover {
-  border-color: var(--accent-green);
-  transform: translateY(-4px);
+  border-color: rgba(0, 255, 65, 0.4);
+  transform: translateY(-2px);
 }
 
 /* Text Colors - Monospace Style */
@@ -247,7 +242,7 @@ a:focus, button:focus, input:focus, textarea:focus, select:focus {
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(16px);
   }
   to {
     opacity: 1;
@@ -258,7 +253,7 @@ a:focus, button:focus, input:focus, textarea:focus, select:focus {
 @keyframes slideInLeft {
   from {
     opacity: 0;
-    transform: translateX(-30px);
+    transform: translateX(-16px);
   }
   to {
     opacity: 1;
@@ -269,7 +264,7 @@ a:focus, button:focus, input:focus, textarea:focus, select:focus {
 @keyframes slideInRight {
   from {
     opacity: 0;
-    transform: translateX(30px);
+    transform: translateX(16px);
   }
   to {
     opacity: 1;
@@ -408,7 +403,7 @@ a:focus, button:focus, input:focus, textarea:focus, select:focus {
 }
 
 .hover-lift:hover {
-  transform: translateY(-4px);
+  transform: translateY(-2px);
 }
 
 .hover-glow:hover {

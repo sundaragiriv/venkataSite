@@ -56,24 +56,24 @@ export default function MobileNav() {
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <button 
-          className="md:hidden ml-auto p-2 rounded-lg hover:bg-slate-100 transition-colors" 
+          className="md:hidden ml-auto p-2 rounded-lg hover:bg-dark-card transition-colors text-primary" 
           aria-label="Open navigation menu"
         >
           <Menu className="w-6 h-6" />
         </button>
       </SheetTrigger>
       
-      <SheetContent side="right" className="w-[300px] sm:w-[350px] px-0">
+      <SheetContent side="right" className="w-[300px] sm:w-[350px] px-0 bg-dark-secondary border-l border-dark-tertiary">
         <div className="flex flex-col h-full">
-          <SheetHeader className="px-6 pb-4 border-b border-slate-200">
+          <SheetHeader className="px-6 pb-4 border-b border-dark-tertiary">
             <SheetTitle className="flex items-center gap-3">
               <BrandLogo size="sm" />
-              <span className="font-semibold text-slate-900">Navigation</span>
+              <span className="font-semibold text-primary">Navigation</span>
             </SheetTitle>
           </SheetHeader>
           
-          <nav className="flex-1 px-6 py-6">
-            <ul className="space-y-1">
+          <nav className="flex-1 px-6 py-6" aria-label="Main navigation">
+            <ul className="space-y-1" role="list">
               {navigationItems.map((item) => {
                 const isActive = location.pathname === item.href || 
                   (item.href !== "/" && location.pathname.startsWith(item.href));
@@ -86,14 +86,15 @@ export default function MobileNav() {
                       className={`
                         flex items-center px-3 py-3 rounded-lg text-base font-medium transition-colors
                         ${isActive 
-                          ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700' 
-                          : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900'
+                          ? 'bg-dark-card text-accent border-l-4 border-accent' 
+                          : 'text-secondary hover:bg-dark-card hover:text-accent'
                         }
                       `}
+                      aria-current={isActive ? 'page' : undefined}
                     >
                       {item.label}
                       {item.href === "/contact" && (
-                        <span className="ml-auto px-2 py-1 text-xs bg-blue-600 text-white rounded-full">
+                        <span className="ml-auto px-2 py-1 text-xs bg-accent text-black rounded-full font-semibold">
                           Let's Talk
                         </span>
                       )}
@@ -103,17 +104,17 @@ export default function MobileNav() {
               })}
             </ul>
             
-            <div className="mt-8 pt-6 border-t border-slate-200">
-              <h4 className="text-sm font-semibold text-slate-900 mb-3">Connect</h4>
-              <div className="flex gap-4">
+            <div className="mt-8 pt-6 border-t border-dark-tertiary">
+              <h4 className="text-sm font-semibold text-primary mb-3">Connect</h4>
+              <div className="flex gap-4" role="list">
                 {socialLinks.map((social) => (
                   <a
                     key={social.label}
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2 rounded-lg hover:bg-slate-100 text-slate-600 hover:text-slate-900 transition-colors"
-                    aria-label={social.label}
+                    className="p-2 rounded-lg hover:bg-dark-card text-muted hover:text-accent transition-colors"
+                    aria-label={`Visit ${social.label} profile`}
                   >
                     {social.icon}
                   </a>
@@ -122,8 +123,8 @@ export default function MobileNav() {
             </div>
           </nav>
           
-          <div className="px-6 py-4 border-t border-slate-200 bg-slate-50">
-            <p className="text-xs text-slate-500 text-center">
+          <div className="px-6 py-4 border-t border-dark-tertiary bg-dark-card">
+            <p className="text-xs text-muted text-center">
               SAP CX Architect • AI Pioneer • Vedic Wisdom
             </p>
           </div>

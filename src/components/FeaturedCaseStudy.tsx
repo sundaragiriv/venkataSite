@@ -3,7 +3,7 @@ import { FadeIn } from "./FadeIn";
 
 export default function FeaturedCaseStudy() {
   return (
-    <section className="py-16 bg-black relative overflow-hidden">
+    <section className="py-20 lg:py-28 bg-black relative overflow-hidden">
       {/* Spiral Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <svg viewBox="0 0 800 400" className="w-full h-full">
@@ -54,26 +54,25 @@ export default function FeaturedCaseStudy() {
                 </div>
               </div>
               
-              <div className="flex gap-4">
-                <Link 
-                  to="/work/cpq-automation" 
+              <div className="flex flex-wrap gap-4">
+                <Link
+                  to="/blueprints"
                   className="btn-gradient inline-flex items-center gap-2"
                 >
-                  View Full Case Study
+                  Explore Blueprints
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
                 </Link>
-                <a 
-                  href="/assets/cpq-blueprint.pdf" 
-                  download 
+                <Link
+                  to="/contact"
                   className="btn-soft inline-flex items-center gap-2"
                 >
-                  Download PDF
+                  Request Details
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                   </svg>
-                </a>
+                </Link>
               </div>
             </div>
             

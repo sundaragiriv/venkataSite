@@ -41,11 +41,13 @@ export const OPTIONS = {
   ] as Choice<Selections["ai"]>[],
 };
 
+import type { Node, Edge } from "@xyflow/react";
+
 export type Pattern = {
   id: string;
   title: string;
   summary: string[];
-  diagram: { nodes: any[]; edges: any[] };
+  diagram: { nodes: Node[]; edges: Edge[] };
   plan90: { phase: string; items: string[] }[];
   kpis: { name: string; target: string }[];
 };

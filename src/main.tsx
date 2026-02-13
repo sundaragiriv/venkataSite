@@ -4,6 +4,7 @@ import { HelmetProvider } from "react-helmet-async";
 import Layout from "./components/Layout";
 import AppRoutes from "./AppRoutes";
 import ErrorBoundary from "./components/ErrorBoundary";
+import { Toaster } from "./components/ui/sonner";
 import "./index.css";
 
 createRoot(document.getElementById("root")!).render(
@@ -13,6 +14,7 @@ createRoot(document.getElementById("root")!).render(
         <Layout>
           <AppRoutes />
         </Layout>
+        <Toaster />
       </BrowserRouter>
     </HelmetProvider>
   </ErrorBoundary>

@@ -1,27 +1,23 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import type { WindowWithAnalytics, AnalyticsEvent } from '../lib/types';
 
-declare global {
-  interface Window {
-    gtag: (...args: any[]) => void;
-    clarity: (...args: any[]) => void;
-  }
-}
+const windowWithAnalytics = window as unknown as WindowWithAnalytics;
 
 export default function Analytics() {
   const location = useLocation();
 
   useEffect(() => {
     // Track page views with Google Analytics
-    if (typeof window.gtag === 'function') {
-      window.gtag('config', 'G-XXXXXXXXXX', {
+    if (typeof windowWithAnalytics.gtag === 'function') {
+      windowWithAnalytics.gtag('config', 'G-XXXXXXXXXX', {
         page_path: location.pathname + location.search,
       });
     }
 
     // Track page views with Microsoft Clarity
-    if (typeof window.clarity === 'function') {
-      window.clarity('set', 'page', location.pathname);
+    if (typeof windowWithAnalytics.clarity === 'function') {
+      windowWithAnalytics.clarity('set', 'page', location.pathname);
     }
   }, [location]);
 
@@ -29,13 +25,13 @@ export default function Analytics() {
 }
 
 // Custom event tracking functions
-export const trackEvent = (eventName: string, parameters?: Record<string, any>) => {
-  if (typeof window.gtag === 'function') {
-    window.gtag('event', eventName, parameters);
+export const trackEvent = (eventName: string, parameters?: AnalyticsEvent): void => {
+  if (typeof windowWithAnalytics.gtag === 'function') {
+    windowWithAnalytics.gtag('event', eventName, parameters);
   }
 };
 
-export const trackDownload = (fileName: string) => {
+export const trackDownload = (fileName: string): void => {
   trackEvent('download', {
     file_name: fileName,
     event_category: 'engagement',
@@ -43,7 +39,7 @@ export const trackDownload = (fileName: string) => {
   });
 };
 
-export const trackAdClick = (adSlot: string, position: string) => {
+export const trackAdClick = (adSlot: string, position: string): void => {
   trackEvent('ad_click', {
     ad_slot: adSlot,
     ad_position: position,

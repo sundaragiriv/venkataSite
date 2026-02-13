@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { getAIPost } from "../lib/ai";
 import { FadeIn } from "../components/FadeIn";
 import SEO from "../components/SEO";
@@ -12,9 +12,9 @@ export default function AISlug() {
       <div className="container max-w-wrap py-12 text-center bg-black min-h-screen">
         <h1 className="text-3xl font-bold text-primary mb-4 font-sans">AI Pattern Not Found</h1>
         <p className="text-secondary mb-6">The AI pattern you're looking for doesn't exist.</p>
-        <a href="/ai" className="btn-gradient">
+        <Link to="/ai" className="btn-gradient">
           Back to AI Lab
-        </a>
+        </Link>
       </div>
     );
   }
@@ -30,9 +30,9 @@ export default function AISlug() {
       <article className="container max-w-wrap py-12 bg-black min-h-screen">
         <FadeIn>
           <div className="mb-6">
-            <a href="/ai" className="text-accent hover:text-primary text-sm font-medium">
-              ← Back to AI Lab
-            </a>
+            <Link to="/ai" className="text-accent hover:text-primary text-sm font-medium">
+              &larr; Back to AI Lab
+            </Link>
           </div>
 
           <div className="grid lg:grid-cols-3 gap-8">
@@ -117,9 +117,9 @@ export default function AISlug() {
                   <p className="text-sm text-secondary mb-4">
                     Schedule a 30-minute call to discuss AI implementation in your SAP environment.
                   </p>
-                  <a href="/contact" className="btn-soft w-full text-center">
+                  <Link to="/contact" className="btn-soft w-full text-center inline-block">
                     Book Strategy Call
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>

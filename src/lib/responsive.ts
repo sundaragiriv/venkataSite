@@ -37,8 +37,8 @@ export const spacing = {
   containerWide: 'px-4 sm:px-6 lg:px-8 xl:px-12',
   
   // Section spacing
-  sectionY: 'py-12 sm:py-16 lg:py-20',
-  sectionYSmall: 'py-8 sm:py-12 lg:py-16',
+  sectionY: 'py-20 lg:py-28',
+  sectionYSmall: 'py-12 sm:py-16 lg:py-20',
   
   // Element spacing
   cardPadding: 'p-4 sm:p-6',
@@ -57,49 +57,49 @@ export const typography = {
   h2: 'text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight',
   h3: 'text-xl sm:text-2xl lg:text-3xl font-semibold tracking-tight',
   h4: 'text-lg sm:text-xl lg:text-2xl font-semibold',
-  
-  // Body text
-  lead: 'text-lg sm:text-xl text-slate-600 leading-relaxed',
-  body: 'text-base sm:text-lg text-slate-700 leading-relaxed',
-  small: 'text-sm sm:text-base text-slate-600',
-  
+
+  // Body text (dark theme compatible)
+  lead: 'text-lg sm:text-xl text-secondary leading-relaxed',
+  body: 'text-base sm:text-lg text-secondary leading-relaxed',
+  small: 'text-sm sm:text-base text-secondary',
+
   // UI elements
   nav: 'text-sm sm:text-base font-medium',
   button: 'text-sm sm:text-base font-medium',
-  caption: 'text-xs sm:text-sm text-slate-500',
+  caption: 'text-xs sm:text-sm text-muted',
 } as const;
 
 // Mobile-first card patterns
 export const cardPatterns = {
   // Standard cards with better mobile spacing
   standard: `
-    rounded-xl sm:rounded-2xl 
-    bg-white 
-    border border-black/10 
-    shadow-sm hover:shadow-md 
+    rounded-xl sm:rounded-2xl
+    bg-dark-card
+    border border-dark-tertiary
+    shadow-soft hover:shadow-lift
     transition-all duration-300
     ${spacing.cardPadding}
   `,
-  
+
   // Interactive cards with hover states
   interactive: `
-    rounded-xl sm:rounded-2xl 
-    bg-white 
-    border border-black/10 
-    shadow-sm hover:shadow-lg 
-    hover:-translate-y-1 
-    transition-all duration-300 
+    rounded-xl sm:rounded-2xl
+    bg-dark-card
+    border border-dark-tertiary
+    shadow-soft hover:shadow-lift
+    hover:-translate-y-1
+    transition-all duration-300
     cursor-pointer
     ${spacing.cardPadding}
     active:scale-95
   `,
-  
+
   // Highlight cards
   highlight: `
-    rounded-xl sm:rounded-2xl 
-    bg-gradient-to-br from-blue-50 to-indigo-50 
-    border border-blue-200 
-    shadow-sm hover:shadow-md 
+    rounded-xl sm:rounded-2xl
+    bg-dark-card
+    border border-accent/20
+    shadow-soft hover:shadow-glow
     transition-all duration-300
     ${spacing.cardPadding}
   `,

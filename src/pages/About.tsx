@@ -65,10 +65,10 @@ export default function About() {
             <MotionCard className="p-6 card-glow">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-bold text-primary font-sans">Professional Resume</h3>
-                <a href="/contact" 
+                <Link to="/contact"
                    className="btn-gradient">
                   Request Resume
-                </a>
+                </Link>
               </div>
               <div className="space-y-4 text-secondary">
                 <p><strong className="text-accent">SAP Senior Consultant & CX Architect</strong> with 23+ years of extensive leadership across global SAP implementations and transformations.</p>
@@ -195,7 +195,7 @@ export default function About() {
             Let's discuss how SAP architecture and AI can accelerate your digital transformation.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="mailto:venkatagirivasan@gmail.com?subject=Strategy Call Request" 
+            <a href="mailto:sundaragiriv@gmail.com?subject=Strategy Call Request"
                className="btn-gradient">
               Schedule Strategy Call
             </a>

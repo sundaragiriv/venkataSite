@@ -9,8 +9,8 @@ export default function AboutSnapshot() {
   ];
 
   return (
-    <section className="py-16 bg-dark-secondary">
-      <div className="container mx-auto px-6 max-w-6xl">
+    <section className="py-20 lg:py-28 bg-dark-secondary">
+      <div className="container mx-auto px-6 lg:px-8 max-w-6xl">
         <FadeIn className="grid lg:grid-cols-2 gap-12 items-center">
           {/* About Text */}
           <div className="animate-slideInLeft">

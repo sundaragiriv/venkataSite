@@ -1,9 +1,10 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { signals, fmt } from "../lib/signals";
 import MotionCard from "../components/MotionCard";
 import { FadeIn } from "../components/FadeIn";
 import AdBanner from "../components/AdBanner";
+import Pagination from "../components/Pagination";
 
 const PRIMARY_CATEGORIES = ["All", "AI/ML", "SAP", "Dharma"] as const;
 
@@ -13,22 +14,38 @@ const SECONDARY_TAGS = {
   "Dharma": ["Veda", "Practice", "Reflections", "Rituals"]
 } as const;
 
+const ITEMS_PER_PAGE = 12;
+
 export default function Signals() {
   const [selectedPrimary, setSelectedPrimary] = useState<(typeof PRIMARY_CATEGORIES)[number]>("All");
   const [selectedSecondary, setSelectedSecondary] = useState<string[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
   
-  const list = useMemo(() => {
-    if (selectedPrimary === "All") return signals;
+  const filteredList = useMemo(() => {
+    let list = signals;
     
-    let filtered = signals.filter(p => p.primary === selectedPrimary);
+    if (selectedPrimary !== "All") {
+      list = list.filter(p => p.primary === selectedPrimary);
+    }
     
     if (selectedSecondary.length > 0) {
-      filtered = filtered.filter(p => 
+      list = list.filter(p => 
         p.secondary && p.secondary.some(tag => selectedSecondary.includes(tag))
       );
     }
     
-    return filtered;
+    return list;
+  }, [selectedPrimary, selectedSecondary]);
+
+  const totalPages = Math.ceil(filteredList.length / ITEMS_PER_PAGE);
+  const paginatedList = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredList.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [filteredList, currentPage]);
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1);
   }, [selectedPrimary, selectedSecondary]);
 
   const handlePrimarySelect = (primary: (typeof PRIMARY_CATEGORIES)[number]) => {
@@ -83,26 +100,8 @@ export default function Signals() {
         </div>
       )}
 
-      {/* Top Content Ad */}
-      <div className="mt-6 sm:mt-8">
-        <AdBanner 
-          slot="2345678901" 
-          style={{ display: 'block', width: '100%', height: '120px' }}
-        />
-      </div>
-      
       <div className="mt-8 sm:mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {list.map((p, index) => (
-          <>
-            {/* Insert ad after every 9 items */}
-            {index > 0 && index % 9 === 0 && (
-              <div className="md:col-span-2 lg:col-span-3 my-4">
-                <AdBanner 
-                  slot="2468013579" 
-                  style={{ display: 'block', width: '100%', height: '90px' }}
-                />
-              </div>
-            )}
+        {paginatedList.map((p) => (
             <FadeIn key={p.slug}>
               <MotionCard className="p-0 h-full card-glow hover-lift group">
                 <Link to={`/signals/${p.slug}`} className="flex flex-col h-full p-6">
@@ -121,16 +120,26 @@ export default function Signals() {
                   <div className="flex-1 mt-3 sm:mt-4">
                     {p.summary && <p className="text-sm text-secondary line-clamp-2 sm:line-clamp-3">{p.summary}</p>}
                   </div>
-                  <span className="mt-4 inline-flex items-center gap-1 text-sm text-accent font-medium group-hover:gap-2 transition-all">Read →</span>
+                  <span className="mt-4 inline-flex items-center gap-1 text-sm text-accent font-medium group-hover:gap-2 transition-all">Read &rarr;</span>
                 </Link>
               </MotionCard>
             </FadeIn>
-          </>
         ))}
       </div>
       
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="mt-12">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        </div>
+      )}
+
       {/* Bottom Content Ad */}
-      {list.length > 0 && (
+      {filteredList.length > 0 && (
         <div className="mt-12">
           <AdBanner 
             slot="8642097531" 

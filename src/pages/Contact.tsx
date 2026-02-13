@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { FadeIn } from "../components/FadeIn";
 import MotionCard from "../components/MotionCard";
+import { validateContactForm, type ValidationError } from "../lib/formValidation";
+import { toast } from "sonner";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -11,6 +14,8 @@ export default function Contact() {
     message: "",
     requestType: ""
   });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const requestTypeOptions = [
     "General Inquiry",
@@ -23,6 +28,23 @@ export default function Contact() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    
+    // Validate form
+    const validation = validateContactForm(formData);
+    
+    if (!validation.isValid) {
+      const errorMap: Record<string, string> = {};
+      validation.errors.forEach(error => {
+        errorMap[error.field] = error.message;
+      });
+      setErrors(errorMap);
+      setIsSubmitting(false);
+      toast.error("Please fix the errors in the form");
+      return;
+    }
+
+    setErrors({});
     
     const subject = formData.requestType === "Resume Request" 
       ? "Resume Request - " + formData.subject
@@ -31,14 +53,42 @@ export default function Contact() {
     const body = `Name: ${formData.name}\nEmail: ${formData.email}\nCompany: ${formData.company}\nRequest Type: ${formData.requestType}\n\nMessage:\n${formData.message}`;
 
     const mailtoLink = `mailto:sundaragiriv@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.location.href = mailtoLink;
+    
+    try {
+      window.location.href = mailtoLink;
+      toast.success("Opening email client...");
+      // Reset form after a delay
+      setTimeout(() => {
+        setFormData({
+          name: "",
+          email: "",
+          company: "",
+          subject: "",
+          message: "",
+          requestType: ""
+        });
+        setIsSubmitting(false);
+      }, 1000);
+    } catch (error) {
+      toast.error("Failed to open email client. Please try again.");
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [e.target.name]: e.target.value
+      [name]: value
     }));
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
   };
 
   return (
@@ -71,9 +121,18 @@ export default function Contact() {
                         required
                         value={formData.name}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 bg-dark-card border border-dark-tertiary rounded-lg focus:ring-2 focus:ring-accent focus:border-accent transition-colors text-primary placeholder-muted"
+                        className={`w-full px-4 py-3 bg-dark-card border rounded-lg focus:ring-2 focus:ring-accent focus:border-accent transition-colors text-primary placeholder-muted ${
+                          errors.name ? 'border-red-500' : 'border-dark-tertiary'
+                        }`}
                         placeholder="Your name"
+                        aria-invalid={!!errors.name}
+                        aria-describedby={errors.name ? 'name-error' : undefined}
                       />
+                      {errors.name && (
+                        <p id="name-error" className="mt-1 text-sm text-red-500" role="alert">
+                          {errors.name}
+                        </p>
+                      )}
                     </div>
 
                     <div>
@@ -87,9 +146,18 @@ export default function Contact() {
                         required
                         value={formData.email}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 bg-dark-card border border-dark-tertiary rounded-lg focus:ring-2 focus:ring-accent focus:border-accent transition-colors text-primary placeholder-muted"
+                        className={`w-full px-4 py-3 bg-dark-card border rounded-lg focus:ring-2 focus:ring-accent focus:border-accent transition-colors text-primary placeholder-muted ${
+                          errors.email ? 'border-red-500' : 'border-dark-tertiary'
+                        }`}
                         placeholder="your@email.com"
+                        aria-invalid={!!errors.email}
+                        aria-describedby={errors.email ? 'email-error' : undefined}
                       />
+                      {errors.email && (
+                        <p id="email-error" className="mt-1 text-sm text-red-500" role="alert">
+                          {errors.email}
+                        </p>
+                      )}
                     </div>
                   </div>
 
@@ -139,14 +207,23 @@ export default function Contact() {
                       required
                       value={formData.subject}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 bg-dark-card border border-dark-tertiary rounded-lg focus:ring-2 focus:ring-accent focus:border-accent transition-colors text-primary placeholder-muted"
+                      className={`w-full px-4 py-3 bg-dark-card border rounded-lg focus:ring-2 focus:ring-accent focus:border-accent transition-colors text-primary placeholder-muted ${
+                        errors.subject ? 'border-red-500' : 'border-dark-tertiary'
+                      }`}
                       placeholder="Brief subject"
+                      aria-invalid={!!errors.subject}
+                      aria-describedby={errors.subject ? 'subject-error' : undefined}
                     />
+                    {errors.subject && (
+                      <p id="subject-error" className="mt-1 text-sm text-red-500" role="alert">
+                        {errors.subject}
+                      </p>
+                    )}
                   </div>
 
                   <div>
                     <label htmlFor="message" className="block text-sm font-medium text-primary mb-2">
-                      Message *
+                      Message * <span className="text-muted text-xs">({formData.message.length}/2000)</span>
                     </label>
                     <textarea
                       id="message"
@@ -155,16 +232,26 @@ export default function Contact() {
                       rows={6}
                       value={formData.message}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 bg-dark-card border border-dark-tertiary rounded-lg focus:ring-2 focus:ring-accent focus:border-accent transition-colors resize-none text-primary placeholder-muted"
+                      className={`w-full px-4 py-3 bg-dark-card border rounded-lg focus:ring-2 focus:ring-accent focus:border-accent transition-colors resize-none text-primary placeholder-muted ${
+                        errors.message ? 'border-red-500' : 'border-dark-tertiary'
+                      }`}
                       placeholder="Tell me about your project or how I can help..."
+                      aria-invalid={!!errors.message}
+                      aria-describedby={errors.message ? 'message-error' : undefined}
                     />
+                    {errors.message && (
+                      <p id="message-error" className="mt-1 text-sm text-red-500" role="alert">
+                        {errors.message}
+                      </p>
+                    )}
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full btn-gradient py-4 font-semibold hover-lift"
+                    disabled={isSubmitting}
+                    className="w-full btn-gradient py-4 font-semibold hover-lift disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    send message
+                    {isSubmitting ? "Sending..." : "send message"}
                   </button>
                 </form>
               </MotionCard>
@@ -232,18 +319,18 @@ export default function Contact() {
               <MotionCard className="p-6 card-glow hover-lift">
                 <h3 className="font-semibold mb-4 text-primary font-sans">Quick Links</h3>
                 <div className="space-y-2">
-                  <a href="/blueprints" className="block text-sm text-secondary hover:text-accent transition">
-                    → View Blueprints
-                  </a>
-                  <a href="/signals" className="block text-sm text-secondary hover:text-accent transition">
-                    → Latest Signals
-                  </a>
-                  <a href="/ai" className="block text-sm text-secondary hover:text-accent transition">
-                    → AI Lab
-                  </a>
-                  <a href="/about" className="block text-sm text-secondary hover:text-accent transition">
-                    → About Me
-                  </a>
+                  <Link to="/blueprints" className="block text-sm text-secondary hover:text-accent transition">
+                    &rarr; View Blueprints
+                  </Link>
+                  <Link to="/signals" className="block text-sm text-secondary hover:text-accent transition">
+                    &rarr; Latest Signals
+                  </Link>
+                  <Link to="/ai" className="block text-sm text-secondary hover:text-accent transition">
+                    &rarr; AI Lab
+                  </Link>
+                  <Link to="/about" className="block text-sm text-secondary hover:text-accent transition">
+                    &rarr; About Me
+                  </Link>
                 </div>
               </MotionCard>
             </FadeIn>

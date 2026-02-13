@@ -3,16 +3,15 @@ import { Link } from "react-router-dom";
 import Icons from "../components/IconLibrary";
 
 function Tile({ to, children }: { to?: string; children: React.ReactNode }) {
-  const C: any = to ? Link : "div";
+  const C = (to ? Link : "div") as React.ElementType;
   return (
-    <motion.div 
-      whileHover={{ y: -6, scale: 1.02 }} 
-      transition={{ type: "spring", stiffness: 400, damping: 30 }} 
+    <motion.div
+      whileHover={{ y: -2 }}
+      transition={{ type: "spring", stiffness: 400, damping: 30 }}
       className="h-full"
     >
       <C to={to} className="block rounded-2xl card-glow p-6 h-full flex flex-col group">
         <div className="relative overflow-hidden rounded-xl">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out" />
           {children}
         </div>
       </C>
@@ -21,14 +20,14 @@ function Tile({ to, children }: { to?: string; children: React.ReactNode }) {
 }
 
 function Label({ children }: { children: React.ReactNode }) {
-  return <div className="text-xs font-medium text-slate-500">{children}</div>;
+  return <div className="text-xs font-medium text-muted">{children}</div>;
 }
 
 function Stat({ k, v }: { k: string; v: string }) {
   return (
     <div>
-      <div className="text-xs text-slate-500">{k}</div>
-      <div className="text-xl font-semibold text-slate-900">{v}</div>
+      <div className="text-xs text-muted">{k}</div>
+      <div className="text-xl font-semibold text-primary">{v}</div>
     </div>
   );
 }
@@ -46,23 +45,23 @@ function ChipBar({ items }: { items: string[] }) {
 }
 
 function Arrow({ children }: { children: React.ReactNode }) {
-  return <span className="mt-3 inline-flex items-center gap-1 text-sm text-brand">{children} →</span>;
+  return <span className="mt-3 inline-flex items-center gap-1 text-sm text-accent">{children} &rarr;</span>;
 }
 
 export default function HomeAboutSnapshot() {
   return (
-    <section className="relative container max-w-wrap 2xl:max-w-wrapWide py-16">
+    <section className="relative container max-w-wrap 2xl:max-w-wrapWide py-20 lg:py-28 px-6 lg:px-8">
       <div className="text-center md:text-left">
-        <h2 className="text-2xl md:text-3xl font-semibold tracking-tight bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
-          About Venkata (Snapshot)
+        <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-primary">
+          About Venkata
         </h2>
-        <p className="mt-3 text-lg text-slate-600 max-w-prose">
+        <p className="mt-3 text-lg text-secondary max-w-prose">
           Architecting SAP CX & AI systems with measurable outcomes and Vedic clarity.
         </p>
       </div>
 
       <motion.div
-        className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+        className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3"
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, margin: "0px 0px -80px 0px" }}
@@ -76,8 +75,8 @@ export default function HomeAboutSnapshot() {
                 <Icons.Target className="h-5 w-5 text-brand" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold">SAP Solution & AI Architect</h3>
-                <p className="mt-1 text-sm text-slate-600">
+                <h3 className="text-lg font-semibold text-primary">SAP Solution & AI Architect</h3>
+                <p className="mt-1 text-sm text-secondary">
                   Blueprints that ship. Telemetry-first. AI with guardrails.
                 </p>
               </div>
@@ -102,7 +101,7 @@ export default function HomeAboutSnapshot() {
 
         {/* Systems */}
         <motion.div variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } }}>
-          <Tile to="/work">
+          <Tile to="/blueprints">
             <div className="flex items-center gap-2 mb-2">
               <Icons.Layers className="h-4 w-4 text-brand" />
               <Label>Systems I build</Label>
@@ -124,13 +123,13 @@ export default function HomeAboutSnapshot() {
 
         {/* Recent case */}
         <motion.div variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } }}>
-          <Tile to="/work/cpq">
+          <Tile to="/blueprints">
             <div className="flex items-center gap-2 mb-2">
-              <Icons.TrendingUp className="h-4 w-4 text-green-600" />
+              <Icons.TrendingUp className="h-4 w-4 text-accent" />
               <Label>Recent case</Label>
             </div>
-            <p className="text-sm text-slate-700">
-              Sales Cloud V2 + CPQ — quote time ↓60% with governed pricing.
+            <p className="text-sm text-secondary">
+              Sales Cloud V2 + CPQ &mdash; quote time &darr;60% with governed pricing.
             </p>
             <Arrow>See story</Arrow>
           </Tile>
@@ -140,18 +139,18 @@ export default function HomeAboutSnapshot() {
         <motion.div variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } }}>
           <Tile to="/veda">
             <div className="flex items-center gap-2 mb-2">
-              <Icons.Lightbulb className="h-4 w-4 text-amber-600" />
+              <Icons.Lightbulb className="h-4 w-4 text-accent" />
               <Label>Vedic principle</Label>
             </div>
-            <p className="text-sm">"ahiṁsā prathamā dharmaḥ"—psychological safety → honest telemetry.</p>
+            <p className="text-sm text-secondary">&ldquo;ahiṁsā prathamā dharmaḥ&rdquo;&mdash;psychological safety &rarr; honest telemetry.</p>
             <Arrow>Explore Dharmic Wisdom</Arrow>
           </Tile>
         </motion.div>
       </motion.div>
 
       {/* CTA row */}
-      <div className="mt-8 flex flex-wrap gap-4">
-        <Link to="/about" className="btn-gradient text-white px-6 py-3 rounded-xl font-medium flex items-center gap-2 group">
+      <div className="mt-10 flex flex-wrap gap-4">
+        <Link to="/about" className="btn-gradient px-6 py-3 rounded-xl font-medium flex items-center gap-2 group">
           <Icons.Users className="h-4 w-4 group-hover:scale-110 transition-transform" />
           Learn more on About
         </Link>
