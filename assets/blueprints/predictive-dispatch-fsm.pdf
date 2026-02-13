@@ -1,0 +1,133 @@
+%PDF-1.4
+1 0 obj
+<<
+/Type /Catalog
+/Pages 2 0 R
+>>
+endobj
+
+2 0 obj
+<<
+/Type /Pages
+/Kids [3 0 R]
+/Count 1
+>>
+endobj
+
+3 0 obj
+<<
+/Type /Page
+/Parent 2 0 R
+/MediaBox [0 0 612 792]
+/Contents 4 0 R
+/Resources <<
+/Font <<
+/F1 5 0 R
+/F2 6 0 R
+>>
+>>
+>>
+endobj
+
+4 0 obj
+<<
+/Length 1100
+>>
+stream
+BT
+/F2 16 Tf
+50 750 Td
+(Predictive Dispatch for SAP FSM — Reduce Emergency Trips & Improve FTF) Tj
+0 -25 Td
+/F1 10 Tf
+(Use ticket history and telemetry to prioritize and route work orders,) Tj
+0 -12 Td
+(improving first-time-fix and reducing emergency dispatches.) Tj
+
+0 -30 Td
+/F2 12 Tf
+(Problem) Tj
+0 -15 Td
+/F1 10 Tf
+(High emergency dispatch rates and low first-time-fix cause cost overruns) Tj
+0 -12 Td
+(and poor customer experience. Manual triage lacks predictive context.) Tj
+
+0 -25 Td
+/F2 12 Tf
+(Solution) Tj
+0 -15 Td
+/F1 10 Tf
+(Combine ticket history, asset telemetry, and basic ML classification to score) Tj
+0 -12 Td
+(urgency and recommend skillsets. Integrate predictions into SAP FSM via CPI.) Tj
+
+0 -25 Td
+/F2 12 Tf
+(5-step Implementation) Tj
+0 -15 Td
+/F1 10 Tf
+(1. Harvest labeled historical tickets and telemetry for training dataset) Tj
+0 -12 Td
+(2. Engineer features and build lightweight classifier) Tj
+0 -12 Td
+(3. Deploy model behind Joule endpoint with priority scores) Tj
+0 -12 Td
+(4. Integrate via CPI to update tickets and assign skills in FSM) Tj
+0 -12 Td
+(5. Pilot in small region and monitor emergency dispatch rate) Tj
+
+0 -25 Td
+/F2 12 Tf
+(Key KPIs) Tj
+0 -15 Td
+/F1 10 Tf
+(• Emergency dispatch reduction: 12–25%) Tj
+0 -12 Td
+(• First-time-fix improvement: +15–25%) Tj
+0 -12 Td
+(• Dispatch latency reduction: measurable improvement) Tj
+
+0 -25 Td
+/F2 12 Tf
+(Contact) Tj
+0 -15 Td
+/F1 10 Tf
+(Email: sundaragiriv@gmail.com) Tj
+ET
+endstream
+endobj
+
+5 0 obj
+<<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica
+>>
+endobj
+
+6 0 obj
+<<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica-Bold
+>>
+endobj
+
+xref
+0 7
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000284 00000 n 
+0000001436 00000 n 
+0000001503 00000 n 
+trailer
+<<
+/Size 7
+/Root 1 0 R
+>>
+startxref
+1575
+%%EOF

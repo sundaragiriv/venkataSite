@@ -1,0 +1,133 @@
+%PDF-1.4
+1 0 obj
+<<
+/Type /Catalog
+/Pages 2 0 R
+>>
+endobj
+
+2 0 obj
+<<
+/Type /Pages
+/Kids [3 0 R]
+/Count 1
+>>
+endobj
+
+3 0 obj
+<<
+/Type /Page
+/Parent 2 0 R
+/MediaBox [0 0 612 792]
+/Contents 4 0 R
+/Resources <<
+/Font <<
+/F1 5 0 R
+/F2 6 0 R
+>>
+>>
+>>
+endobj
+
+4 0 obj
+<<
+/Length 1200
+>>
+stream
+BT
+/F2 16 Tf
+50 750 Td
+(SAP AI Governance — GUARD Framework Implementation) Tj
+0 -25 Td
+/F1 10 Tf
+(Practical governance controls to ensure AI systems in SAP landscapes) Tj
+0 -12 Td
+(are auditable, robust, and compliant.) Tj
+
+0 -30 Td
+/F2 12 Tf
+(Problem) Tj
+0 -15 Td
+/F1 10 Tf
+(AI deployments can expose organizations to operational risk, bias, and) Tj
+0 -12 Td
+(regulatory scrutiny unless governance is embedded into the ML lifecycle.) Tj
+
+0 -25 Td
+/F2 12 Tf
+(Solution) Tj
+0 -15 Td
+/F1 10 Tf
+(Implement GUARD: Governance, Understandability, Accuracy, Resilience,) Tj
+0 -12 Td
+(Data protection. Integrate checks into CI/CD, model registry, and runtime.) Tj
+
+0 -25 Td
+/F2 12 Tf
+(5-step Implementation) Tj
+0 -15 Td
+/F1 10 Tf
+(1. Define governance roles, policies, and approval gates) Tj
+0 -12 Td
+(2. Instrument model cards and automated explainability) Tj
+0 -12 Td
+(3. Build test harness with unit, integration, and regression tests) Tj
+0 -12 Td
+(4. Deploy drift detection and auto-alerting with rollback thresholds) Tj
+0 -12 Td
+(5. Ensure PII handling, encryption, and retention policies) Tj
+
+0 -25 Td
+/F2 12 Tf
+(Key KPIs) Tj
+0 -15 Td
+/F1 10 Tf
+(• Validation pass rate for candidate models: target 95% or higher) Tj
+0 -12 Td
+(• Mean time to remediate drift incidents: under 48 hours) Tj
+0 -12 Td
+(• Audit completeness: model cards and decision logs retained) Tj
+
+0 -25 Td
+/F2 12 Tf
+(Contact) Tj
+0 -15 Td
+/F1 10 Tf
+(Email: sundaragiriv@gmail.com) Tj
+ET
+endstream
+endobj
+
+5 0 obj
+<<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica
+>>
+endobj
+
+6 0 obj
+<<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica-Bold
+>>
+endobj
+
+xref
+0 7
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000284 00000 n 
+0000001536 00000 n 
+0000001603 00000 n 
+trailer
+<<
+/Size 7
+/Root 1 0 R
+>>
+startxref
+1675
+%%EOF

@@ -1,0 +1,85 @@
+{
+  "name": "Venkata Sundaragiri - SAP Architect & AI Pioneer",
+  "short_name": "Venkata",
+  "description": "Expert SAP architect with 22+ years experience in S/4HANA, CX, and AI integration",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1e40af",
+  "orientation": "portrait-primary",
+  "categories": ["business", "productivity", "education"],
+  "lang": "en-US",
+  "icons": [
+    {
+      "src": "/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Search Content",
+      "short_name": "Search",
+      "description": "Search across all content",
+      "url": "/?search=true",
+      "icons": [{ "src": "/icons/search-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Latest Signals",
+      "short_name": "Signals",
+      "description": "View latest insights",
+      "url": "/signals",
+      "icons": [{ "src": "/icons/signals-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Blueprints",
+      "short_name": "Blueprints",
+      "description": "SAP implementation blueprints",
+      "url": "/blueprints",
+      "icons": [{ "src": "/icons/blueprints-96x96.png", "sizes": "96x96" }]
+    }
+  ]
+}

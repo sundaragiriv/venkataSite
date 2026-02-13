@@ -1,0 +1,193 @@
+PROFESSIONAL SUMMARY
+Accomplished SAP Senior Consultant with 23+ years of extensive leadership, architecting, and hands-on experience across global SAP implementations and transformations. 
+Specialized in SAP Customer Experience (CX) Cloud applications, Sales and Service V2 Versions, C4C Sales & Service, C4C IS-U, Commerce Cloud w/integrated seld service portals, SAP CDC, Customer Data Platform (CDP), Emarsys, Qualtrics and SAP S/4HANA (OTC, SD, MM, Asset Management, Preventive Maintenance, ESM, FSM, ESM, Service modules).
+Proven success in delivering complex SAP landscapes under RISE with SAP and GROW with SAP programs, including Greenfield, Brownfield, and Selective Data Transition (SDT) migrations to S/4HANA. 
+Leadership Excellence in SAP S/4HANA Sales (SD), Procurement (MM), Asset Management, Preventive Maintenance, Project Systems, SAP S4HANA Service Management, CS, ESM, and SAP FSM, with expertise in E2E service lifecycles, mobile workforce enablement, planning & dispatch, 
+Design and Deployment Experience on SAP Field Service Management (FSM) integrated with SAP S/4HANA, C4C, and IoT platforms, enabling predictive maintenance, dynamic scheduling, and mobile field execution; defined service workflows, optimized planning board logic, configured technician mobility processes, and validated bidirectional data flows across service orders, equipment, and material stock using SAP CPI and BTP.
+Designed and implemented full-stack SAP CX solutions covering lead-to-cash, customer data unification, campaign-to-conversion pipelines, and real-time engagement across Commerce, CDC, CDP, and Emarsys.
+Architected and deployed SAP CPI/BTP-based integrations, ensuring secure, scalable, and agile connections between S/4HANA, CX Clouds, Salesforce and 3rd party platforms.
+Excellent knowledge and specialized solutions in SAP C4C IS-U for utilities, integrating with S/4HANA IS-U modules for Meter Management, Service Orders, MIMO processes, and Address Lifecycle.
+Applied AI/ML frameworks within SAP CX to enable intelligent personalization, customer sentiment analysis (Qualtrics XM), churn prediction, and behavioral segmentation using CDP and Emarsys.
+Trusted advisor for C-level stakeholders on SAP roadmap strategy, capability alignment, and TCO/ ROI optimization across ECC to S/4HANA migration paths and CX landscape modernization.
+9+ years delivering SAP Service Management: Hands-on S/4HANA CS/ SM Swith SAP FSM and CRM Service Cloud/Field Service integrations; owned full lifecycle delivery including resource billing, Multi Resource Scheduling (MRS) add-on, integrated with SAP ERP systems
+
+
+DETAILED PROJECT EXPERIENCE
+PUMA NORTH AMERICA (ARGANO)
+Sr. SAP Emarsys Consultant / CX Solution Architect (Duration: Jan 2025 – Present)
+PUMA initiated a digital engagement transformation program to unify its e-commerce, loyalty, and retail experiences using SAP Emarsys Customer Engagement and SAP Customer Data Platform (CDP). The goal was to deliver AI-driven personalization, omnichannel automation, and predictive customer insights across global marketing operations.
+-	Designed and led the Emarsys + CDP integration architecture connecting SAP Commerce Cloud, Service Cloud V2, and S/4HANA Retail through SAP CPI and BTP Workflows.
+-	Configured Emarsys Tactics and Automation Center journeys to automate campaigns across email, SMS, mobile push, and web-personalization channels.
+-	Developed behavior-based segmentation and loyalty-trigger campaigns using Smart Insight and predictive models for churn prevention and upsell targeting.
+-	Built a customer-loyalty data loop between POS, Commerce, and Emarsys to track rewards, points accrual, and redemption across all touchpoints.
+-	Partnered with brand marketing to define personalization rules and lifecycle journeys, integrating transactional data from S/4HANA and consent data from CDC.
+-	Created real-time dashboards and campaign-performance KPIs in Emarsys, automating A/B testing and channel optimization.
+-	Customized email and landing-page templates with HTML and CSS to maintain consistent branding and responsiveness across devices.
+-	Applied AI-based send-time optimization and predictive audience targeting to enhance engagement rates and conversion performance.
+-	Trained regional marketing teams and established governance for campaign orchestration and customer-data compliance.
+-	Unified 18 million customer records under SAP CDP, reducing duplicate profiles by 42 %. Increased personalized campaign revenue by 55 % within six months of launch.
+-	Established a scalable CX architecture now being rolled out across EMEA and APAC.
+
+LB FOSTER COMPANY, PITTSBURGH, PA
+Sr. SAP CX Architect, SAP Sales Cloud V2, SAP CPQ, SAP S4HANA (June 2024 – Current)
+-	SAP Architect/ Leadership role for e2e sales Automation using SAP CPQ/ VC/ Sales Cloud V2, ECC, BTP, CPI, and integration with Sales Logix, S4HANA, and INFOR ERP
+-	75 Users, 15 Business Units, close to 33 Sales areas, 4 Lead2Quote Processes, 8 Opportunity Scenarios, and 28 Quote to Cash Process areas. 
+-	Led the design and implementation of SAP Sales Cloud V2 and SAP CPQ, optimizing the end-to-end quote-to-order process with dynamic pricing, approval workflows, and automated proposal generation.
+-	Configured SAP CPQ for complex pricing models, integrating rule-based product recommendations, discounting strategies, and guided selling to enhance sales efficiency.
+-	Developed custom CPQ extensions on SAP BTP, enabling real-time configuration validation, margin analysis, and multi-tier approval processes.
+-	Integrated SAP Sales Cloud V2 with SAP CPQ to enhance lead-to-quote automation, ensuring seamless data flow and reducing manual intervention.
+-	Enabled real-time quote versioning and negotiation tracking within SAP CPQ, improving visibility and customer experience.
+-	Integrated SAP CPQ with S/4HANA for automated order conversion, ensuring seamless transition from quote to sales order.
+-	Orchestrated middleware integration using SAP CPI, enabling real-time data synchronization between SAP CX solutions and backend ERP systems. Master Data integration with Multiple ERP instances with S4HANA, INFOR, Integration using BTP, CPI, and Transactional integration and scenario integration with SAP CPQ for VC, Quoting, and Product Structure
+CARLISLE ROOFING, REMOTE, NY
+Sr. SAP CX Architect, SAP CPQ, FSM & SAP Service w/ ECC Integration Architect\ Consultant (Nov 2023 – May 2024)
+-	Led the implementation of SAP Sales Cloud V2 and SAP CPQ, streamlining lead-to-quote automation with AI-driven product recommendations, margin optimization, and automated approvals.
+-	Configured SAP Service Cloud V2 for ticket management and service automation, integrating case handling with SAP CPQ for efficient contract-based pricing.
+-	Designed and implemented advanced CPQ pricing rules, integrating contract-based pricing from SAP S/4HANA for real-time calculations.
+-	Developed a custom guided selling process in SAP CPQ, improving user experience with intelligent product bundling and cross-sell recommendations.
+-	Configured SAP CPQ workflows for automated proposal generation, e-signature approvals, and document automation, reducing sales cycle time.
+-	Enabled SAP FSM integration with SAP Service Cloud V2 for real-time field service updates and technician scheduling.
+-	Utilized SAP CPI for seamless API-based integration, ensuring secure and efficient data exchange across SAP Sales Cloud V2, SAP Service Cloud V2, and ERP applications.Enabled SAP FSM integration with SAP Sales Cloud V2 for real-time field service updates and technician scheduling.
+-	Utilized SAP CPI for seamless API-based integration, ensuring secure and efficient data exchange across SAP CX and ERP applications.
+WEYERHAEUSER INC., SEATTLE, WA
+Sr. SAP SAP OTC Lead / Functional Architect (Nov 2022 – Nov 2023)
+-	Project leader and track lead for SAP C4C Sales & Service V2 Implementation; other integration modules include SAP S4 HANA, SAP MDG, SAP Qualtrics, SAP CPI as Middleware, SAP BTP Integration, SAP Fiori UI, UI5 app deployment into SAP C4C, and other third-party applications based on the Azure App Pass platform.
+-	Five business lines, five Core processes, and 25 unique E2E processes involve about 600 users in quote-to-cash processes. The leadership role is to mentor and lead a team of 27 people with an offshore and onsite mix. 
+-	Scoping, a hands-on configuration in C4C, activation of iflows in CPI, design, solution, and mentoring the technical team for developing the most complex business scenarios in the lumber business. Develop FS, TS, and blueprints, and be the liaison between multiple project streams, business, PMO, and technical teams.
+-	Scope includes Customer Service, service ticket functions, return orders, credit memo, debit memo process, ATP, Sales Order dual replication, integration with custom and native BTP apps, integration with S4, rebuild ATP functions in C4C accommodating production planning, consumption, integration with priceFX, integration with MSD, rebuilding a legacy tool on the sales and transforming the sales and service cycles in C4C
+TA DIGITAL INC., REMOTE, NC
+Director - SAP Practice / SAP Solution Specialist (Nov 2019 – Nov 2022)
+In the SAP Practice Leader role, I delivered complex, enterprise-grade SAP transformations for Fortune 500 clients, including Apple, ACN, Bose, and Zenni Optical. Proven ability to lead large cross-functional teams, manage P&L ($2M cost / $8M revenue), drive multi-client delivery, and architect innovative solutions across the SAP ecosystem.
+Served as the SAP solutions lead, managing multiple enterprise accounts and full-cycle project deliveries. Played a pivotal role in architecting and delivering complex, cross-cloud solutions involving SAP Sales & Service Cloud (C4C), SAP S/4HANA, SAP Commerce, SAP Emarsys, SAP CPQ, SAP FSM, SAP CDC/CDP, and SAP BTP.
+Acted as the front-facing SAP advisor to C-level stakeholders, driving presales, strategic roadmap development, and enterprise architecture alignment. Delivered tangible results through agile delivery models, from high-scale enterprise rollouts to focused two-person implementation teams.
+-	Practice Ownership & P&L Leadership: Spearheaded SAP Commerce and Microservices Practices with end-to-end accountability—from revenue generation and cost management to team building, solution delivery, and client satisfaction across 5+ enterprise accounts.
+-	Executive Engagement & Portfolio Oversight: Acted as the strategic face of the SAP Practice for multiple high-value clients. Delivered CX-led digital transformations integrating SAP Commerce, CDC, SAP C4C, SAP FSM, CPQ, Emarsys, and S/4HANA Service Management and SAP O2C. Delivered comprehensive roadmaps aligned with client KPIs and business goals.
+-	Architected End-to-End CX Journeys: Designed and implemented unified customer experiences by integrating SAP Commerce Cloud (B2B/B2C), Customer Data Cloud (CDC), Emarsys, CPQ, Field Service Management (FSM), and S/4HANA. Emphasized real-time engagement, personalization, consent/privacy compliance, and revenue attribution.
+-	Cross-Cloud Integration & Innovation: Delivered intelligent customer lifecycle automation using Emarsys, Smart Insights, and predictive modeling. Architected CPQ to S/4 integrations and lead-to-quote-to-order conversion funnels. Integrated Twilio and AEM for omnichannel experiences and campaign optimization.
+-	Hands-on Technical & Functional Expertise: Maintained deep hands-on involvement in solution design, integration architecture, and functional delivery across SAP CX Cloud (C4C, CPQ, Service Cloud), Commerce (Hybris/CCv2), S/4HANA (OTC, MM, Service), CDC/CDP, Marketing Cloud, and SAP BTP/CPI.
+-	Team Development & Talent Growth: Built and led teams of 40+ consultants within a 270-member delivery organization. Recruited top talent, created onboarding/training programs, mentored 20+ professionals, and institutionalized delivery excellence through reusable frameworks and knowledge-sharing.
+-	Strategic Pre-Sales & GTM Enablement: Supported presales, solutioning, proposal development, and GTM packaging. Delivered thought leadership and enterprise architecture strategies to enable growth through RISE with SAP, GROW with SAP, and selective cloud-first migration initiatives.
+CARESTREAM HEALTH, REMOTE, NY
+SAP C4C, Commerce & CX Solutions Architect (Nov 2018 – Nov 2019)
+-	Led end-to-end architecture and delivery for SAP C4C Sales & Service Cloud, Field Service Management (FSM), and Hybris Commerce integration, ensuring seamless flow across customer service, ticketing, contracts, sales orders, parts planning, and financials via SAP ECC.
+-	Architected integrated service operations across C4C, FSM, ECC, Contact Center, and Commerce platforms; enabled real-time master data and transactional sync using SAP CPI and HCI.
+-	Delivered personalized, adaptive UI/UX across C4C using HTML5 and Silverlight views; managed multi-tenant scope definitions and deployments across sales and service modules.
+-	Executed deep domain configuration for Service Management, including service ticketing, contract lifecycle, inventory movements, SD, MM, and SuccessFactors integration.
+-	Enabled C4C Customer Self-Service Portal with MindTouch integration, providing centralized access to technical documentation and knowledge content for dental, medical, and film domains.
+-	Configured and extended C4C objects such as Customers, Opportunities, Quotes, etc., with modern UX paradigms (card/list/chunk views, tags, flags, sticky notes, dashboards).
+-	Acted as SME across SAP FSM, SAP Service Cloud, and ECC; drove process harmonization and integration across order handling, logistics, and 3rd-party platforms.
+PEARSON EDUCATION, REMOTE, NC
+SAP Commerce Solutions Architect (Mar 2018 – Nov 2018)
+Support Architect Solution, design, and Solution Analysis responsibilities for SAP Commerce B2B Solution with a mix of Distributors, wholesalers, tier 1, tier 2, and tier 3 partners for Pearson.
+-	Develop requirements and solutions, write stories, and develop UX designs and strategies to support the implementation of SAP Commerce B2B Accelerator by Cognizant. 
+-	Work with the technical team to solve the requirements, as well as showcase, educate, and recommend approaches for an informed, educated, technically and functionally built solution.
+-	Configure, develop, and integrate API-based with Oracle Cloud, Person legacy systems for catalog, ECC for data validations, attribution, product classification, customer, and import-export using Hotfolders.
+-	Facet configuration, impex generation, cockpits, type configuration, service ticket functionality, role definitions, 
+-	Redesign the B2B Portal from the legacy B2B portal to a Hybris Commerce on-premises solution. 
+-	Providing excellent Hybris SME Support and digital transformation thought leadership, writing detailed Architectural documentation, User Story Guidance, Sprint design, deliverables, priority setup, design, and Implementation Plans
+-	Custom customer report development using standard MVC model in the front end with integration and data retrieval from legacy systems, Hybris Commerce, and Oracle MDM
+COSTCO GROUP, REMOTE, NC
+SAP Solutions Architect/ Hybris Technical Architect (Sept. 2017 – April 2018)
+Solution and Design responsibilities in Hybris Commerce, SAP ECC Order Management, E-Commerce Product/ Type Modelling, Hybris B2C/ B2B Accelerator built, administrative functions, Cockpit Management, PCM & WCMS, Order management, dataHub integration and troubleshooting, and ECC integration.
+-	Search and navigation, Indexing Strategies, Type model definitions, multi-node clustering and advanced caching strategies, AKAMAI caching solutions, Environment design and management Deployment schedules, AS400 Integration, Custom Product Feed integrations, VendorNet Integration, Warehouse and fulfillment integration,
+-	Roles and responsibilities with a strong design focus on architecture and developing omnichannel eCommerce and JEE applications within a B2B, B2C retail/e-commerce environment.  
+-	Engaged in independently architecting full-lifecycle implementation of Hybris for B2B and B2C accelerators and core module extensions and addons.
+-	Active, hands-on experience with various SAP Hybris modules (Product Catalog, Order Management, B2B Commerce, Hybris Accelerator, etc.), Active involvement in architecting JEE-based applications using Spring/OSGi, Hibernate, JMS, REST, SOA, ESB, and SSO technologies.
+-	Design Experience working on multi-language / multi-currency eCommerce website at Costco using multiple Hybris 6.XX platform versions in a single Hybris instance.
+-	Skilled knowledge of integrating SAP Hybris platform and other 3rd services and enterprise systems (OMS, Payment Gateways, Tax Services, Ratings and reviews services, Web Analytics solutions, etc.): 
+-	Expert level knowledge in Performance/Scalability Engineering, Security aspects, and Deployment Strategies of Hybris B2C Commerce applications, Hybris Impex engine, Data Hub, and FlexibleSearch. 
+-	Expert advisory role and hands-on deployment responsibilities of continuous integration concepts, build processes and tools (ANT, Maven, Jenkins, automated builds, automated unit tests, and continuous builds), source code control processes, code branching/merging strategies & source code control tools (GIT, etc.) 
+-	Extensive hands-on implementation roles in engaging teams in Software Design Patterns & multi-threaded Asynchronous Programming Models, agile design concepts, and onshore/offshore vendor engagements
+ELECTRONIC THEATER CONTROLS 
+SAP CX/ Commerce Solution Architect (Mar. 2017 – Sept. 2017)
+Design & Configuration: Hybris Commerce 6.5, SAP ECC Order Management, E-Commerce Product Modelling, Hybris B2B Accelerator, Hybris Data HUB, Admin functions, Hybris Cockpit Management in Hybris Commerce Suite, SAP ECC Order to Cash, Product Content Management, WCMS, B2B Admin Functions, Approval and Workflow procedures, Payment Integration for CC with Authorize.net, ASM Module activations for assisted on-behalf scenarios, Solr, Faceting, Indexing modifications, catalog design and configuration, Classification model attributes design and configuration. JAVA troubleshooting and guidance, etc., 
+-	Strong leadership experience managing cross-functional teams of clients and companies to deliver ETC B2B eCommerce (Hybris) projects successfully.
+-	Actively engaged in providing technical and solution architectural recommendations by providing oversight for new implementation projects and supporting client's digital transformation program for B2B ETCconnect.com
+-	Engage and mentor the team to ensure the adoption of best-in-class coding practices and standards for development, support, quality control, and documentation.
+-	Providing excellent Hybris SME Support and digital transformation thought leadership, writing detailed Architectural documentation, User Story Guidance, Sprint design, deliverables, priority setup, design, and deadlines based on the Statement of Work (SOW), and Implementation Plans
+-	Actively managed a large group of Hybris developers and provided technical leadership by retaining and creating reusable repositories and frameworks to accelerate delivery.
+-	Experience in creating training programs at various levels in the SAP and Hybris Commerce
+-	Solution Architecture tasks with SAP data hub Integration on Material, Price, Stock, and Customer objects and enhancements to standard order, delivery, and stock IDOCs to enable the data free flow between SAP ERP and Hybris Systems
+LENOVO GROUP, USA
+SAP Hybris Architect/ BT Specialist (March 2015 – March 2017)
+-	Led architecture and implementation of SAP Hybris Commerce, CPQ, and C4C integrated with SAP ECC (O2C, APO, MM), SAP CRM, and Salesforce for B2B e-commerce enablement.
+-	Designed and configured Hybris B2B Accelerator, Data Hub, Cockpits, AEM, and integrated Paymetrics, PI/PO, and homegrown middleware for seamless front-end/back-end alignment.
+-	Architected SAP CPQ + Hybris solutions using SSC, SAP IPC, and ECC VC backend for dynamic product configuration, quoting, and contract lifecycle management.
+-	Delivered C4C functionality, including pipeline, sales, service call center modules, tenant configuration, scope definition, and C4C–ECC–Hybris integration via HCI.
+-	Defined omni-channel product modeling and CMS strategies; enabled real-time data syncs, media asset management, and optimized Solr search and WCMS experiences.
+-	Led agile-based delivery with scrum teams, overseeing design/code reviews, reusable Java/Spring components, and mentoring developers to align with Lenovo and Hybris best practices.
+-	Acted as SME for B2B e-support, part sales models, and supply chain integration; collaborated with front-end teams on UI/UX, scripting, and user story development.
+FIRST ENERGY CORP (IS-U)
+Hybris Technical/ Solution Architect – (May 2014 – March 2015)
+-	Led the end-to-end implementation of SAP C4C (Cloud for Customer) as part of FirstEnergy’s Hybris Suite rollout, supporting a new deregulated utility business and integrating seamlessly with SAP ECC for billing and customer master data synchronization.
+-	Architected E2E customer service processes, including Lead to Case, Case to Resolution, and Service to Billing, utilizing SAP C4C’s service ticketing, workflow automation, SLA monitoring, and escalation procedures tailored for utility operations.
+-	Designed and implemented real-time and batch data integrations between SAP C4C and on-premise ECC using SAP PI/PO, OData, and IDoc frameworks, ensuring synchronized updates for customer, contract, meter data, and billing profiles.
+-	Enabled agents with integrated OpenText Extended ECM capabilities within C4C tickets, offering contextual document access to utility bills, service history, and compliance records through CMIS-based services.
+-	Developed custom mashups and UI enhancements in C4C to support utility-specific workflows like meter complaint tracking, account switch requests, and multi-site service management, enhancing agent efficiency and customer transparency.
+-	Established a multi-channel communication hub within C4C, including email, SMS, and IVR integration, to enable bi-directional notifications and real-time status updates for service tickets and billing inquiries.
+-	Collaborated with cross-functional teams across Hybris Billing, SAP Marketing Cloud, and Commerce Cloud to ensure a unified customer experience and data flow across all touchpoints in the CX journey.
+-	Delivered extensive training to internal teams, prepared detailed functional specs, interface control documents (ICDs), and led SIT/UAT cycles to validate end-to-end integration performance and utility process compliance.
+-	Contributed to KPIs such as improved first-contact resolution rates, enhanced ticket closure timelines, and a unified 360° customer view, supporting FirstEnergy's strategic goals in deregulated energy markets.
+H.B. FULLER (ACCENTURE)
+SAP E-Commerce Solution Architect – SAP WCEM (July 2013 – May 2014)
+Design & Configuration: SAP WCEM, ECC/SD Order Management, Integration to Material Master, Stock Information, ATP Check, Demand Planning, Lead time Calculation, Shipping tracking and Integration, Design, Deploy and Develop Web Channel Experience Management 3.0, Module Development, Module Configuration, NWDI debugging, NWDI Admin functions, post-installation tasks, Paymetrics Credit Card Integration, FI Integration for Reconciliations and GL Account Settlement, User Administration design in WCEM in B2B Scenario – Project CUSTOMER CONNECT.
+HONEYWELL INTERNATIONAL
+SAP Solution Architect, SAP CRM/ E-Commerce and Service Project Manager (June 2012 – July 2013)
+Design & Configuration: CRM, ERP Sales O2C Process, Sales Document Configuration, Field Service Management, Service Order Management, CRM Order Download from ECC, Shared Service Framework using the Employee Interaction Center and BCM Configuration/ Design,  Service Orders, Service Contracts, Service Confirmations, IPC Pricing, Partner Channel Mgmt., Service Warranty Claims Management, Partner Services Management,  Service Function W/click-soft, Complaints Processing, Channel Management, Charm Processing, SAP Solution Manager Implementation, Design including Incident Management, Change Request Management (CHARMS Processing in SOLMAN 7.0)(CRM7.0 EHP1), WCEM Collaborated Partner Portal
+CLARK- COUNTY, NV (IS-PUBLIC SECTOR) 
+SAP Solution Architect/ Functional Consultant –(September 2011- June 2012}
+Design & Configuration: Shared Service framework using the SAP Incident and Service Request Management (Administrative Services), Workflow for Knowledge article, problem management, Version history and article publishing, Service Request, Billing, and Accounting Integration using the AIC role in SSF framework for Case & Service Management for Public Guardian and Administrative Offices, Service Process Enablement WBS project integration for Public Works (Design and working Blueprinting sessions)
+HONDA AIRCRAFT, GREENSBORO, NC  						
+SAP CRM Solution Lead/ Functional Consultant (January 2011 – August 2011)
+Design & Configuration: CRM 7.0, Sales, Order Management cycle, O2C, Quotation Management, Lead Management, Sales Assistant Functionality, Activity Management, Master Data Management, Sales Cycle Built, Sales force management, Opportunity cycles and management, Integration to SPM, APO and EWM, 
+LENOVO GROUP (US RELEASE) 
+SAP CRM/ECC Solution Architect (August 2010 – January 2011)
+Design & Configuration: CRM 7.0, CRM Web Channel, Partner Channel Management, Field Service Management for Affinity Customers, FSM, Wattany management using Channel Management, and Channel field service management. Payment Methods, Order 2 Cash process, and E-Commerce Design for US release. IC WebUI Integration W/BCM and Design in Order capture/ return process. B2B, B2C, PME/ IPC Product Catalog & attributes design, User Account Management, Paymetrics Integration, Cyber source, Net weaver PI Integration.
+NOVELL NETWORKS
+SAP CRM Solution Architect, Trade Promotion Management (May 2010 – August 2010)
+Design & Configuration: Pipeline Performance Management, Partner Channel Management, Master Data Management, Campaign Management, Trade Promotion Management, Lead Management, Lead Distribution based on Rules, CRM Workflow, Opportunity Management, Partner Relationship Management (Channel Management), Rule Modeler, Business Rule Modeling, and Territory Management – Realization & Support
+PERKIN ELMER INC.,					       		       
+SAP CRM Solution Architect (December 2009 – May 2010)
+Design & Configuration: ECC Service Management, CRM Service Contract Management, I-Base Management, Service Order Management, Field Service Management, Resource Planning Application, Auto Scheduling, Dispatching processe, Service Confirmations, IC Service, Vendor (Service Provider) Warranty Claims, Resource Planning, and Mobile Service in integration with ECC 5.0, CRM 7.0 – Realization
+
+CARESTREAM HEALTH INC., 							     
+SAP CRM Solution Architect/ Project Manager (June 2008 – November 2009)
+Design, Management & Configuration: Project management, Service Contract Management, Service Management, Pricing Design/ IPC Development, Installed Base Management, Service Order Management, Service Confirmations, Interaction Center Service Scenarios, CTI design, Resource Planning, Planned Services, PSL’s, Mobile Service, Integration with R/3 4.7, Inventory & Van stock management, Results Analysis, Revenue Recognition, Internal orders, FI settlements with CATS and Costing integrations, CRM 2007 Web Channel – Full Cycle Implementation.
+
+HEWLETT-PACKARD PRINTING SOLUTIONS - SAP CRM Functional Consultant (January 2008 – May 2008)
+Master data, Installed Base Management, Service Management, IC Service tickets integration with the Service process, Returns and complaints management, some warranty, and claims management from dealers – Blueprinting and Realization only.
+LENOVO INTERNATIONAL - SAP CRM Functional Lead / Solution Architect (August 2006 – January 2008)
+Design & Configuration: CRM 5.0, ECC 6.0, EP 7.0, Web-Dynpro, Usage of Vendavo for Price Management, Customer and Vendor Warranty Claims Management, Channel Management – High tech, CRM Service & Sales functionalities, Warranty to Service, Service to Claims Blueprinting and Prototyping, Lead to Order, Order to cash, and Market to Order, E-commerce/ ISA. Full Cycle Implementation
+SILICON LABORATORIES - CRM Functional Consultant/ Solutions Architect - CRM 5.0, ECC 5.0, EP 6.0 - (April 2006 – July 2006)
+Hi-tech Opportunity Management, CRM ACE Functions initial design and Rule to Right implementations, Hi-tech Channel management including sell-in, Sell-out, and price protection scenarios, CRM - Lead to Quote, External list Management, Ship and Debit contracts, Sample Orders, Hi-tech Channel Management, Channel Sales Management
+INFOGIAN INC - CRM Functional Lead/ Solutions Architect (December 2005 – March 2006) 
+SAP CRM 5.0 (Prototyping), Interaction Center Prototyping, CRM transformation from Siebel, Campaign Generation, Order to Cash, Quotation & Order management, E-Selling, essential R/3 dependency, Siebel CRM Integration, Full Cycle Implementation
+SAP AG EDUCATION - CRM External Instructor - (Sep 2005 – Apr 2006) 
+Trainer in Modules CR100, CR410, CR400, CR700, and CR800. Client trained are Cardinal Health, Charlotte Pipe and Foundry, Eastman Chemicals, and multiple other clients inside the SAP Facility. 
+BENTLEY SYSTEMS - CRM Functional Lead (Apr 2005 – Sep 2005)
+Quotation Management, Sales Order Management, O2C, Service Contract Management, Opportunity Management, Integrating with Call Center on WebUI, Installed Base Management, Lead Management, Account and Contact Management. Full Cycle Implementation
+HEWLETT-PACKARD - SAP CRM Functional Lead (Jan 2004 – Mar 2005)
+Scope Study and blueprinting for mySAP CRM 4.0, E-Commerce, CRM Online Sales Order & Contract Processing, Quotation & Proposal Management, Account & Contact Management, Some Service Scenarios, Multiple channels in Order Processing. Full Cycle Implementation
+MOLEX INC., CRM Functional Consultant (Mar 2003 – Jan 2004) 
+Core Modules used: Quotation Management, Sales Order Management, ATP Profiles, R/3 Integration with Delivery and Shipping, Credit Management, Rebate Management, E-Service (ICSS), and partially involved in Channel Management. Realization to Go-Live
+MILLENIUM CHEMICALS CRM Functional Consultant (Oct 2002 to Mar 2003) -CRM 3.0, R/3 Integration on Order processing and Billing, Transaction and Item category configuration and mapping, ISA Order Management in a B2B Scenario – Realization only
+DUPONT - SAP SD Functional Consultant (Oct 2001 to Oct 2002) - SAP R/3 SD, Material Controller Configuration, Structured Products, Screen Configuration, Material Groups, Sales Bundles, Free goods, Material Substitution profiles, Partner Determination, Transactional Processing, Item Categories, Controller data Configuration, Account groups, and Order Management – Full Life Cycle Implementation
+LUCENT TECHNOLOGIES CRM Functional Consultant (Jul 2001 to Oct 2001)- SAP CRM 3.0 Sales Modules with R/3 Integration, R/3 Integration, Document configuration changes, Service ticket handling, Q2C Scenarios. Support Project
+APPLE VACATIONS SD/ R/3 Functional Consultant - (Sep 2000 to Jul 2001) - SAP R/3, EDI Order management, Controller data Configuration, Billing documents, FI integration, Credit and Risk Management, Rebate Processing, Payment card processing and pay Metrix, output control and sales bundled – Full Cycle Implementation
+WIPRO TECHNOLOGIES SAP R/3 Consultant (Feb 1998 to Jul 2000) – Sales and Distribution, O2C, Master data Management, Order Management, Output Management, Material Management – Internal Implementation
+WIPRO INFOTECH In-charge - SW Stores (Jul 1997 - FEB 1998) Manage HW Stores, Manage Demands, Demand planning, sourcing, Supply Chain Management, Vendor Management, SAP Business User
+Client References & Testimonials
+I had the pleasure of working with Venkata on the rollout of SAP for H.B. Fuller's North American operations. Venkata was the critical player during our design, configuration, testing, and configuration of SAP's Web Channel & Hybris. Venkata is a consummate professional; he rose to every challenge and was an endless resource of information and genuinely fun to work with.
+-	Luke Walter – Customer Connect Lead – HB Fuller
+
+Venkata demonstrated a superb level of expertise in his area, able to meet and exceed our business requirements. He also taught my team how to use the system, not just how to do it, but “the” why, which allowed my team to understand and grasp the application that otherwise would be pretty difficult to comprehend.
+-	Henry Nakazawa – Functional Lead- Honeywell
+
+Venkata has excellent knowledge of SAP CRM functionality and exceptional communication skills. In addition, he has analytical reasoning and creative problem-solving skills, which enable him to define business requirements & map to optimal solutions clearly.
+-	Aoife Bratton, Functional Lead – Clark County, NV
+
+Venkata is a highly skilled CRM consultant I worked with at a client site for ~5 months. He has great SAP skills and excellent presentation abilities for diverse audiences (client IT, client Business, and project management)
+-	Coleen Borgia, Managing Director – Accenture
+
+Raj was the Solutions Architect of our CRM Project. The project scope required significant experience and focus to provide the technical solution within a very tight timeline. Raj added value beyond his technical skills, I highly recommend him
+-	Ute Stolz-Kuehn, IT Manager – Care stream Health
