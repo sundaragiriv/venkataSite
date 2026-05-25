@@ -1,0 +1,277 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { DOMAINS } from '../../../lib/domains';
+---
+
+<BaseLayout title="Flashcards — Architect Zero">
+<div class="fc-shell">
+
+  <!-- Header -->
+  <div class="fc-header">
+    <a href="/architect-zero/" class="fc-back">← Home</a>
+    <h1 class="fc-title">Flashcards</h1>
+    <p class="fc-subtitle">90 cards · Decision Rules · Anti-Patterns · Exam Traps</p>
+  </div>
+
+  <!-- Domain filter -->
+  <div class="fc-filters" id="fc-filters">
+    <button class="fc-filter active" data-domain="all" onclick="filterDomain('all')">All</button>
+    {DOMAINS.filter(d => d.id !== 'd0').map(d => (
+      <button class="fc-filter" data-domain={d.id} onclick={`filterDomain('${d.id}')`}
+        style={`--fc-color:${d.color}`}>
+        {d.code}
+      </button>
+    ))}
+  </div>
+
+  <!-- Tag filter -->
+  <div class="fc-tag-filters">
+    {['All','Fact','Decision Rule','Anti-Pattern','Exam Trap'].map(tag => (
+      <button class="fc-tag-btn" data-tag={tag} onclick={`filterTag('${tag}')`}>
+        {tag === 'Exam Trap' ? '⚡ ' : tag === 'Anti-Pattern' ? '✗ ' : tag === 'Decision Rule' ? '→ ' : ''}{tag}
+      </button>
+    ))}
+  </div>
+
+  <!-- Stats bar -->
+  <div class="fc-stats">
+    <span class="fc-stat-item" id="fc-stat-showing">0 cards</span>
+    <span class="fc-stat-sep">·</span>
+    <span class="fc-stat-item" id="fc-stat-mastered">0 mastered</span>
+    <span class="fc-stat-sep">·</span>
+    <button class="fc-shuffle-btn" onclick="shuffleCards()">🔀 Shuffle</button>
+  </div>
+
+  <!-- Card area -->
+  <div class="fc-card-area" id="fc-card-area">
+    <div class="fc-card-wrap" id="fc-card-wrap">
+      <div class="fc-card" id="fc-card" onclick="flipCard()">
+        <div class="fc-card-inner" id="fc-card-inner">
+          <div class="fc-card-front" id="fc-front">
+            <div class="fc-card-tag" id="fc-tag-front"></div>
+            <div class="fc-card-domain" id="fc-domain-front"></div>
+            <div class="fc-card-question" id="fc-question"></div>
+            <div class="fc-card-hint">Tap to reveal →</div>
+          </div>
+          <div class="fc-card-back" id="fc-back">
+            <div class="fc-card-tag" id="fc-tag-back"></div>
+            <div class="fc-card-answer" id="fc-answer"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="fc-nav">
+      <button class="fc-nav-btn" onclick="prevCard()">←</button>
+      <div class="fc-nav-center">
+        <span class="fc-nav-pos" id="fc-pos">1 / 90</span>
+        <button class="fc-master-btn" id="fc-master-btn" onclick="toggleMastered()">Mark Mastered</button>
+      </div>
+      <button class="fc-nav-btn" onclick="nextCard()">→</button>
+    </div>
+  </div>
+
+  <!-- Empty state -->
+  <div class="fc-empty hidden" id="fc-empty">No cards match this filter</div>
+
+</div>
+</BaseLayout>
+
+<style>
+.fc-shell { max-width: 700px; margin: 0 auto; padding: 24px 20px 80px; }
+.fc-back { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); text-decoration:none; letter-spacing:1px; }
+.fc-title { font-family:'Bebas Neue',Impact,sans-serif; font-size:clamp(32px,5vw,52px); letter-spacing:3px; color:var(--white); margin:14px 0 6px; }
+.fc-subtitle { font-size:13px; color:var(--muted); font-family:'JetBrains Mono',monospace; margin-bottom:24px; }
+
+.fc-filters { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px; }
+.fc-filter { padding:6px 14px; border-radius:20px; border:1px solid var(--border); background:transparent; color:var(--muted); font-size:12px; font-weight:700; cursor:pointer; font-family:'JetBrains Mono',monospace; transition:all 0.15s; }
+.fc-filter:hover { border-color:var(--fc-color,#00e5ff); color:var(--fc-color,#00e5ff); }
+.fc-filter.active { background:var(--fc-color,#00e5ff); border-color:var(--fc-color,#00e5ff); color:#04040a; }
+
+.fc-tag-filters { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:16px; }
+.fc-tag-btn { padding:4px 12px; border-radius:6px; border:1px solid var(--border); background:transparent; color:var(--muted); font-size:11px; cursor:pointer; transition:all 0.15s; font-family:'JetBrains Mono',monospace; }
+.fc-tag-btn:hover { border-color:var(--muted); color:var(--text); }
+.fc-tag-btn.active { background:var(--surface); border-color:var(--subtle); color:var(--white); }
+
+.fc-stats { display:flex; align-items:center; gap:10px; margin-bottom:24px; }
+.fc-stat-item { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); }
+.fc-stat-sep { color:var(--border); }
+.fc-shuffle-btn { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--electric); background:none; border:none; cursor:pointer; padding:0; }
+
+/* CARD */
+.fc-card-wrap { perspective:1000px; margin-bottom:20px; }
+.fc-card { width:100%; height:320px; cursor:pointer; position:relative; transform-style:preserve-3d; }
+.fc-card-inner { width:100%; height:100%; transition:transform 0.5s; transform-style:preserve-3d; border-radius:16px; }
+.fc-card.flipped .fc-card-inner { transform:rotateY(180deg); }
+.fc-card-front, .fc-card-back {
+  position:absolute; inset:0; backface-visibility:hidden;
+  border-radius:16px; padding:28px; display:flex; flex-direction:column; justify-content:center;
+  border:2px solid var(--border);
+}
+.fc-card-front { background:var(--surface); }
+.fc-card-back { background:var(--card); border-color:var(--electric); transform:rotateY(180deg); }
+.fc-card-tag { font-family:'JetBrains Mono',monospace; font-size:9px; font-weight:800; letter-spacing:3px; text-transform:uppercase; margin-bottom:12px; }
+.fc-card-domain { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--muted); margin-bottom:16px; }
+.fc-card-question { font-size:17px; color:var(--text); font-weight:600; line-height:1.7; flex:1; display:flex; align-items:center; }
+.fc-card-hint { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:1px; margin-top:16px; text-align:right; }
+.fc-card-answer { font-size:14px; color:var(--subtle); line-height:1.85; flex:1; display:flex; align-items:center; }
+
+.fc-nav { display:flex; align-items:center; gap:12px; }
+.fc-nav-btn { width:44px; height:44px; border-radius:50%; border:1px solid var(--border); background:var(--surface); color:var(--text); font-size:18px; cursor:pointer; transition:all 0.15s; flex-shrink:0; }
+.fc-nav-btn:hover { border-color:var(--electric); color:var(--electric); }
+.fc-nav-center { flex:1; display:flex; flex-direction:column; align-items:center; gap:10px; }
+.fc-nav-pos { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); }
+.fc-master-btn { padding:8px 20px; border-radius:8px; border:1px solid var(--border); background:transparent; color:var(--muted); font-size:12px; font-weight:700; cursor:pointer; transition:all 0.15s; }
+.fc-master-btn:hover { border-color:#00f593; color:#00f593; }
+.fc-master-btn.mastered { background:rgba(0,245,147,0.12); border-color:#00f593; color:#00f593; }
+
+.fc-empty { text-align:center; padding:60px; color:var(--muted); font-size:14px; }
+.fc-empty.hidden { display:none; }
+</style>
+
+<script>
+interface Card { id:string; domain:string; front:string; back:string; tag:string; }
+let allCards: Card[] = [];
+let filteredCards: Card[] = [];
+let currentIdx = 0;
+let activeDomain = 'all';
+let activeTag = 'All';
+let mastered: Set<string> = new Set();
+
+const TAG_COLORS: Record<string,string> = {
+  'Fact': '#00e5ff',
+  'Decision Rule': '#00f593',
+  'Anti-Pattern': '#ff3d71',
+  'Exam Trap': '#ffd60a',
+};
+
+async function loadCards() {
+  const domains = ['d1','d2','d3','d4','d5','d6'];
+  const results = await Promise.all(
+    domains.map(d => fetch(`/content/flashcards/${d}-flashcards.json`).then(r=>r.json()).catch(()=>[]))
+  );
+  allCards = results.flat();
+  mastered = new Set(JSON.parse(localStorage.getItem('az_mastered') || '[]'));
+  applyFilters();
+}
+
+function applyFilters() {
+  filteredCards = allCards.filter(c => {
+    const domainOk = activeDomain === 'all' || c.domain === activeDomain;
+    const tagOk = activeTag === 'All' || c.tag === activeTag;
+    return domainOk && tagOk;
+  });
+  currentIdx = 0;
+  const empty = document.getElementById('fc-empty') as HTMLElement;
+  const area = document.getElementById('fc-card-area') as HTMLElement;
+  if (filteredCards.length === 0) {
+    empty.classList.remove('hidden');
+    area.style.display = 'none';
+  } else {
+    empty.classList.add('hidden');
+    area.style.display = 'block';
+    renderCard();
+  }
+  updateStats();
+}
+
+function renderCard() {
+  if (filteredCards.length === 0) return;
+  const card = filteredCards[currentIdx];
+  const isMastered = mastered.has(card.id);
+  const color = TAG_COLORS[card.tag] || '#00e5ff';
+
+  document.getElementById('fc-question')!.textContent = card.front;
+  document.getElementById('fc-answer')!.textContent = card.back;
+  (document.getElementById('fc-tag-front') as HTMLElement).style.color = color;
+  (document.getElementById('fc-tag-front') as HTMLElement).textContent = card.tag;
+  (document.getElementById('fc-tag-back') as HTMLElement).style.color = color;
+  (document.getElementById('fc-tag-back') as HTMLElement).textContent = card.tag;
+  (document.getElementById('fc-domain-front') as HTMLElement).textContent = card.domain.toUpperCase() + ' · ' + card.tag;
+  (document.getElementById('fc-pos') as HTMLElement).textContent = `${currentIdx + 1} / ${filteredCards.length}`;
+
+  const masterBtn = document.getElementById('fc-master-btn') as HTMLElement;
+  masterBtn.textContent = isMastered ? '✓ Mastered' : 'Mark Mastered';
+  masterBtn.className = `fc-master-btn ${isMastered ? 'mastered' : ''}`;
+
+  // Reset flip
+  (document.getElementById('fc-card') as HTMLElement).classList.remove('flipped');
+}
+
+function flipCard() {
+  (document.getElementById('fc-card') as HTMLElement).classList.toggle('flipped');
+}
+
+function nextCard() {
+  currentIdx = (currentIdx + 1) % filteredCards.length;
+  renderCard();
+}
+function prevCard() {
+  currentIdx = (currentIdx - 1 + filteredCards.length) % filteredCards.length;
+  renderCard();
+}
+
+function toggleMastered() {
+  const card = filteredCards[currentIdx];
+  if (mastered.has(card.id)) mastered.delete(card.id);
+  else mastered.add(card.id);
+  localStorage.setItem('az_mastered', JSON.stringify([...mastered]));
+  renderCard();
+  updateStats();
+}
+
+function filterDomain(domain: string) {
+  activeDomain = domain;
+  document.querySelectorAll('.fc-filter').forEach(b => {
+    b.classList.toggle('active', (b as HTMLElement).dataset.domain === domain);
+  });
+  applyFilters();
+}
+
+function filterTag(tag: string) {
+  activeTag = tag;
+  document.querySelectorAll('.fc-tag-btn').forEach(b => {
+    b.classList.toggle('active', (b as HTMLElement).dataset.tag === tag);
+  });
+  applyFilters();
+}
+
+function shuffleCards() {
+  for (let i = filteredCards.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [filteredCards[i], filteredCards[j]] = [filteredCards[j], filteredCards[i]];
+  }
+  currentIdx = 0;
+  renderCard();
+}
+
+function updateStats() {
+  (document.getElementById('fc-stat-showing') as HTMLElement).textContent = `${filteredCards.length} cards`;
+  const masteredInFilter = filteredCards.filter(c => mastered.has(c.id)).length;
+  (document.getElementById('fc-stat-mastered') as HTMLElement).textContent = `${masteredInFilter} mastered`;
+}
+
+// Keyboard nav
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight') nextCard();
+  else if (e.key === 'ArrowLeft') prevCard();
+  else if (e.key === ' ') { e.preventDefault(); flipCard(); }
+  else if (e.key === 'm') toggleMastered();
+});
+
+// Tag button initial active state
+document.querySelectorAll('.fc-tag-btn').forEach(b => {
+  if ((b as HTMLElement).dataset.tag === 'All') b.classList.add('active');
+});
+
+(window as any).filterDomain = filterDomain;
+(window as any).filterTag = filterTag;
+(window as any).flipCard = flipCard;
+(window as any).nextCard = nextCard;
+(window as any).prevCard = prevCard;
+(window as any).toggleMastered = toggleMastered;
+(window as any).shuffleCards = shuffleCards;
+
+loadCards();
+</script>

@@ -49,7 +49,7 @@ const currentSectionRef = currentLessonId
 <aside class="course-rail" data-domain-id={domain.id}>
 
   <div class="course-rail-head">
-    <a href={`/learn/${domain.id}`} class="course-rail-domain"
+    <a href={`/architect-zero/learn/${domain.id}`} class="course-rail-domain"
       style={`border-left:3px solid ${domain.color}`}>
       <span class="course-rail-code" style={`color:${domain.color}`}>{domain.code}</span>
       <span class="course-rail-title">{domain.title}</span>
@@ -89,7 +89,7 @@ const currentSectionRef = currentLessonId
               const slug = l.slug.split('/').pop();
               const isCurrent = currentLessonId === l.data.id;
               return (
-                <a href={`/learn/${domain.id}/${slug}`}
+                <a href={`/architect-zero/learn/${domain.id}/${slug}`}
                   class={`course-lesson ${isCurrent ? 'is-current' : ''}`}
                   data-lesson-id={l.data.id}
                   style={isCurrent ? `border-left-color:${domain.color}` : ''}>

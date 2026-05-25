@@ -1,0 +1,542 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import CourseRail from '../../../../components/CourseRail.astro';
+import { getCollection } from 'astro:content';
+import { DOMAINS } from '../../../../lib/domains';
+
+export async function getStaticPaths() {
+  const lessons = await getCollection('lessons');
+  return lessons.map(lesson => ({
+    params: {
+      domain: lesson.data.domain,
+      lesson: lesson.slug.split('/').pop(),
+    },
+    props: { lesson },
+  }));
+}
+
+const { lesson } = Astro.props;
+const { Content } = await lesson.render();
+const domain = DOMAINS.find(d => d.id === lesson.data.domain)!;
+
+const allLessons = await getCollection('lessons');
+const domainLessons = allLessons
+  .filter(l => l.data.domain === domain.id)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const currentIdx = domainLessons.findIndex(l => l.data.id === lesson.data.id);
+const prevLesson = currentIdx > 0 ? domainLessons[currentIdx - 1] : null;
+const nextLesson = currentIdx < domainLessons.length - 1 ? domainLessons[currentIdx + 1] : null;
+---
+
+<BaseLayout title={`${lesson.data.title} — Architect Zero`}>
+
+<div class="course-shell">
+
+  <div class="course-shell-rail" id="course-rail-wrap">
+    <CourseRail domain={domain} lessons={domainLessons} currentLessonId={lesson.data.id} />
+  </div>
+
+  <main class="course-shell-main">
+
+    <button class="course-shell-rail-toggle" id="course-rail-toggle" aria-label="Open course menu">
+      <span class="course-shell-rail-toggle-icon">📚</span>
+      <span class="course-shell-rail-toggle-text">
+        Lesson {currentIdx + 1} of {domainLessons.length}
+      </span>
+      <span class="course-shell-rail-toggle-chev">›</span>
+    </button>
+
+    <nav class="lesson-topnav">
+      <a href="/architect-zero/learn" class="lesson-topnav-link">Learn</a>
+      <span class="lesson-topnav-sep">›</span>
+      <a href={`/architect-zero/learn/${domain.id}`} class="lesson-topnav-link" style={`color:${domain.color}`}>
+        {domain.code} · {domain.title}
+      </a>
+      {lesson.data.taskRef && (
+        <>
+          <span class="lesson-topnav-sep">›</span>
+          <span class="lesson-topnav-ref" style={`color:${domain.color}99`}>{lesson.data.taskRef}</span>
+        </>
+      )}
+    </nav>
+
+    <h1 class="lesson-heading">{lesson.data.title}</h1>
+
+    <div class="lesson-chips">
+      <span class="lesson-chip" style={`background:${domain.color}18;color:${domain.color};border:1px solid ${domain.color}33`}>
+        {lesson.data.tag}
+      </span>
+      <span class="lesson-chip-muted">{lesson.data.duration}</span>
+      <span class="lesson-chip-muted">+{lesson.data.xp} XP</span>
+    </div>
+
+    <div
+      id="lesson-meta-data"
+      data-lesson-id={lesson.data.id}
+      data-lesson-xp={String(lesson.data.xp)}
+      style="display:none"
+    ></div>
+
+    <div class="lesson-step-tabs" data-accent={domain.color}
+      style={`border-bottom:1px solid ${domain.color}22`}>
+      {[
+        { key: 'analogy',   label: '💡 Analogy'   },
+        { key: 'concept',   label: '📖 Concept'   },
+        { key: 'technical', label: '⚙️ Technical'  },
+      ].map(({ key, label }, i) => (
+        <button
+          class="lesson-step-btn"
+          id={`tab-${key}`}
+          data-tab-key={key}
+          onclick={`switchTab('${key}')`}
+          style={i === 0
+            ? `background:${domain.color};border-color:${domain.color};color:#04040a`
+            : `background:transparent;border-color:${domain.color}44;color:#9898c8`
+          }
+        >
+          {label}
+        </button>
+      ))}
+    </div>
+
+    <!-- ── ANALOGY ── -->
+    <div id="panel-analogy" class="lesson-panel">
+      <div class="analogy-box" style={`background:${domain.color}0d;border:1px solid ${domain.color}30`}>
+        <div style="font-size:32px;margin-bottom:12px">💡</div>
+        <div class="analogy-label" style={`color:${domain.color}`}>THE ANALOGY</div>
+        <p class="analogy-text">{lesson.data.analogy}</p>
+      </div>
+
+      {lesson.data.examTrap && (
+        <div class="exam-trap-box">
+          <div class="exam-trap-label">⚠️ EXAM TRAP — The Wrong Answer People Choose</div>
+          <p class="exam-trap-text">{lesson.data.examTrap}</p>
+        </div>
+      )}
+
+      <div class="key-points-box">
+        <div class="key-points-label">KEY POINTS</div>
+        <div class="key-points-list">
+          {lesson.data.keyPoints.map((point, i) => (
+            <div class="key-point">
+              <span class="key-point-num" style={`color:${domain.color}`}>{i + 1}</span>
+              <span class="key-point-text">{point}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <button
+        class="lesson-advance-btn"
+        style={`background:${domain.color};border-color:${domain.color}`}
+        onclick="switchTab('concept')">
+        Read the Concept →
+      </button>
+    </div>
+
+    <!-- ── CONCEPT ── -->
+    <div id="panel-concept" class="lesson-panel hidden">
+      <div class="prose-lesson">
+        <Content/>
+      </div>
+      <button
+        class="lesson-advance-btn"
+        style={`background:${domain.color};border-color:${domain.color};margin-top:24px`}
+        onclick="switchTab('technical')">
+        Go Technical →
+      </button>
+    </div>
+
+    <!-- ── TECHNICAL ── -->
+    <div id="panel-technical" class="lesson-panel hidden">
+
+      {lesson.data.antiPatterns && lesson.data.antiPatterns.length > 0 && (
+        <div class="anti-patterns-box">
+          <div class="anti-patterns-label">ANTI-PATTERNS — DO NOT DO THESE</div>
+          {lesson.data.antiPatterns.map(ap => (
+            <div class="anti-pattern-item">
+              <span class="anti-pattern-x">✗</span>
+              <span class="anti-pattern-text">{ap}</span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <div class="lesson-meta-detail">
+        <div class="lesson-meta-detail-label">Domain</div>
+        <div class="lesson-meta-detail-val">{domain.code} — {domain.title}</div>
+        {lesson.data.taskRef && (
+          <>
+            <div class="lesson-meta-detail-label">Task Statement</div>
+            <div class="lesson-meta-detail-val">{lesson.data.taskRef}</div>
+          </>
+        )}
+        <div class="lesson-meta-detail-label">XP Value</div>
+        <div class="lesson-meta-detail-val">+{lesson.data.xp} XP</div>
+      </div>
+
+      <div id="complete-section" style="margin-top:20px">
+        <button
+          id="complete-btn"
+          class="lesson-advance-btn"
+          style={`background:${domain.color};border-color:${domain.color}`}
+          onclick={`completeLesson('${lesson.data.id}', ${lesson.data.xp})`}>
+          ✓ Mark Complete · +{lesson.data.xp} XP
+        </button>
+        <div id="complete-done" class="lesson-done-msg hidden" style={`color:${domain.color}`}>
+          ✓ Complete · {lesson.data.xp} XP earned
+        </div>
+      </div>
+
+      <div class="lesson-prevnext">
+        {prevLesson && (
+          <a href={`/architect-zero/learn/${domain.id}/${prevLesson.slug.split('/').pop()}`}
+            class="lesson-prevnext-btn">
+            ← {prevLesson.data.title}
+          </a>
+        )}
+        {nextLesson && (
+          <a href={`/architect-zero/learn/${domain.id}/${nextLesson.slug.split('/').pop()}`}
+            class="lesson-prevnext-btn lesson-prevnext-next"
+            style={`background:${domain.color}15;border-color:${domain.color}44;color:${domain.color}`}>
+            {nextLesson.data.title} →
+          </a>
+        )}
+      </div>
+
+      <a href={`/architect-zero/learn/${domain.id}`} class="lesson-back-domain">
+        ← Back to {domain.code} overview
+      </a>
+    </div>
+
+  </main>
+
+</div>
+
+<div class="course-shell-backdrop" id="course-rail-backdrop"></div>
+
+</BaseLayout>
+
+<style>
+.lesson-topnav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.lesson-topnav-link {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--subtle);
+  text-decoration: none;
+}
+.lesson-topnav-link:hover { color: var(--text); }
+.lesson-topnav-sep { color: var(--border); font-size: 14px; }
+.lesson-topnav-ref { font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+
+.lesson-heading {
+  font-family: 'Bebas Neue', Impact, sans-serif;
+  font-size: clamp(32px, 4vw, 52px);
+  color: white;
+  letter-spacing: 2px;
+  line-height: 1.05;
+  margin-bottom: 16px;
+}
+
+.lesson-chips {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+.lesson-chip {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+.lesson-chip-muted {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--subtle);
+}
+
+.lesson-step-tabs {
+  display: flex;
+  gap: 8px;
+  padding-bottom: 20px;
+  margin-bottom: 28px;
+}
+.lesson-step-btn {
+  padding: 9px 22px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+
+.lesson-panel.hidden { display: none; }
+
+.analogy-box {
+  border-radius: 14px;
+  padding: 28px;
+  margin-bottom: 18px;
+}
+.analogy-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.analogy-text {
+  font-size: 18px;
+  color: var(--text);
+  line-height: 1.8;
+  font-style: italic;
+}
+
+.exam-trap-box {
+  background: rgba(255,61,113,0.05);
+  border: 1px solid rgba(255,61,113,0.25);
+  border-left: 3px solid #ff3d71;
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin-bottom: 18px;
+}
+.exam-trap-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #ff3d71;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+.exam-trap-text { font-size: 15px; color: #fca5a5; line-height: 1.7; }
+
+.key-points-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 22px 24px;
+  margin-bottom: 24px;
+}
+.key-points-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.key-points-list { display: flex; flex-direction: column; gap: 12px; }
+.key-point { display: flex; gap: 14px; }
+.key-point-num { font-size: 16px; font-weight: 900; flex-shrink: 0; }
+.key-point-text { font-size: 15px; color: var(--subtle); line-height: 1.75; }
+
+.anti-patterns-box {
+  background: rgba(255,61,113,0.05);
+  border: 1px solid rgba(255,61,113,0.2);
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin-bottom: 18px;
+}
+.anti-patterns-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #ff3d71;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.anti-pattern-item { display: flex; gap: 12px; margin-bottom: 8px; font-size: 14px; color: #fca5a5; line-height: 1.6; }
+.anti-pattern-x { flex-shrink: 0; }
+
+.lesson-meta-detail {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-bottom: 18px;
+}
+.lesson-meta-detail-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  align-self: center;
+}
+.lesson-meta-detail-val { color: var(--text); font-weight: 600; align-self: center; font-size: 14px; }
+
+.lesson-advance-btn {
+  display: block;
+  width: 100%;
+  padding: 14px 24px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  border: 2px solid;
+  text-align: center;
+  transition: all 0.15s;
+  margin-bottom: 12px;
+  color: #04040a;
+}
+.lesson-advance-btn:hover { filter: brightness(1.1); }
+.lesson-done-msg { text-align: center; padding: 14px; font-weight: 700; margin-bottom: 12px; font-size: 15px; }
+
+.lesson-prevnext {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 20px;
+  margin-bottom: 14px;
+}
+.lesson-prevnext-btn {
+  display: block;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid var(--border);
+  color: var(--subtle);
+  line-height: 1.4;
+  transition: all 0.15s;
+}
+.lesson-prevnext-btn:hover { border-color: var(--muted); color: var(--text); }
+.lesson-prevnext-next { text-align: right; }
+
+.lesson-back-domain {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  text-decoration: none;
+  text-align: center;
+  letter-spacing: 1px;
+  padding: 10px;
+  transition: color 0.15s;
+}
+.lesson-back-domain:hover { color: var(--text); }
+
+/* Mobile rail toggle pill — hidden on desktop, shown on tablet/mobile */
+.course-shell-rail-toggle {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 16px;
+  margin-bottom: 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+}
+.course-shell-rail-toggle:hover { border-color: var(--electric); }
+.course-shell-rail-toggle-icon { font-size: 18px; }
+.course-shell-rail-toggle-text { flex: 1; }
+.course-shell-rail-toggle-chev { color: var(--muted); font-size: 18px; }
+
+@media (max-width: 1024px) {
+  .course-shell-rail-toggle { display: flex; }
+}
+</style>
+
+<script>
+  function switchTab(tab: string) {
+    ['analogy','concept','technical'].forEach(t => {
+      const panel = document.getElementById(`panel-${t}`);
+      if (panel) panel.classList.toggle('hidden', t !== tab);
+    });
+    const tabsEl = document.querySelector('.lesson-step-tabs') as HTMLElement | null;
+    if (tabsEl) {
+      const accent = tabsEl.dataset.accent || '#00e5ff';
+      tabsEl.querySelectorAll<HTMLButtonElement>('.lesson-step-btn').forEach(btn => {
+        const isActive = btn.dataset.tabKey === tab;
+        if (isActive) {
+          btn.style.background = accent;
+          btn.style.borderColor = accent;
+          btn.style.color = '#04040a';
+        } else {
+          btn.style.background = 'transparent';
+          btn.style.borderColor = accent + '44';
+          btn.style.color = '#9898c8';
+        }
+      });
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function completeLesson(lessonId: string, xpAmount: number) {
+    const metaEl2 = document.getElementById('lesson-meta-data');
+    if (!xpAmount && metaEl2) xpAmount = Number(metaEl2.dataset.lessonXp || 0);
+    const completed: string[] = JSON.parse(localStorage.getItem('az_completed') || '[]');
+    if (completed.includes(lessonId)) return;
+    completed.push(lessonId);
+    localStorage.setItem('az_completed', JSON.stringify(completed));
+    const xp = Number(localStorage.getItem('az_xp') || '0') + xpAmount;
+    localStorage.setItem('az_xp', String(xp));
+    document.getElementById('complete-btn')?.classList.add('hidden');
+    document.getElementById('complete-done')?.classList.remove('hidden');
+    document.querySelectorAll(`[data-lesson-id="${lessonId}"]`).forEach(el => {
+      el.classList.add('completed');
+    });
+    window.dispatchEvent(new CustomEvent('xp-updated'));
+  }
+
+  const metaEl = document.getElementById('lesson-meta-data');
+  const lessonId = metaEl?.dataset.lessonId || '';
+  const completed: string[] = JSON.parse(localStorage.getItem('az_completed') || '[]');
+  if (lessonId && completed.includes(lessonId)) {
+    document.getElementById('complete-btn')?.classList.add('hidden');
+    document.getElementById('complete-done')?.classList.remove('hidden');
+  }
+
+  // Mobile rail drawer
+  const railWrap = document.getElementById('course-rail-wrap');
+  const backdrop = document.getElementById('course-rail-backdrop');
+  const toggleBtn = document.getElementById('course-rail-toggle');
+
+  function openRail() {
+    railWrap?.classList.add('is-open');
+    backdrop?.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeRail() {
+    railWrap?.classList.remove('is-open');
+    backdrop?.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+  toggleBtn?.addEventListener('click', openRail);
+  backdrop?.addEventListener('click', closeRail);
+  // Close when a lesson link is clicked (mobile)
+  railWrap?.addEventListener('click', e => {
+    const target = e.target as HTMLElement;
+    if (target.closest('.course-lesson')) closeRail();
+  });
+
+  (window as any).switchTab = switchTab;
+  (window as any).completeLesson = completeLesson;
+</script>

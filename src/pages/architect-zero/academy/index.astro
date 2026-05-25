@@ -1,0 +1,378 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { ANTHROPIC_COURSES, ANTHROPIC_ACADEMY_URL } from '../../../lib/anthropicCourses';
+---
+
+<BaseLayout title="Academy — Architect Zero">
+<div class="academy">
+
+  <header class="academy-head">
+    <div class="academy-eyebrow">OFFICIAL ANTHROPIC ACADEMY · CURATED LAUNCHPAD</div>
+    <h1 class="academy-title">Foundation Courses</h1>
+    <p class="academy-sub">
+      The official courses Anthropic publishes on Skilljar — collected here so
+      you don't have to bookmark three places. Each card opens the live course
+      on the official platform. Your D1-D6 prep in this app picks up where these leave off.
+    </p>
+    <a href={ANTHROPIC_ACADEMY_URL} target="_blank" rel="noopener noreferrer"
+      class="academy-browse-all">
+      Browse all on Anthropic Academy →
+    </a>
+  </header>
+
+  <div class="academy-grid">
+    {ANTHROPIC_COURSES.map(c => (
+      <article class="academy-card" style={`border-top:4px solid ${c.color}`}>
+
+        <div class="academy-card-head">
+          <span class="academy-card-icon" style={`background:${c.color}18;color:${c.color}`}>
+            {c.icon}
+          </span>
+          <div class="academy-card-meta">
+            <span class="academy-card-level" style={`color:${c.color};border-color:${c.color}55`}>
+              {c.level}
+            </span>
+            <span class="academy-card-stats">
+              {c.lessonCount} lessons · {c.duration}
+            </span>
+          </div>
+        </div>
+
+        <h2 class="academy-card-title">{c.title}</h2>
+        <p class="academy-card-tagline" style={`color:${c.color}`}>{c.tagline}</p>
+        <p class="academy-card-desc">{c.description}</p>
+
+        <div class="academy-card-section">
+          <div class="academy-card-section-label">WHO IT'S FOR</div>
+          <p class="academy-card-section-body">{c.audience}</p>
+        </div>
+
+        <div class="academy-card-section">
+          <div class="academy-card-section-label">WHAT'S COVERED</div>
+          <ul class="academy-card-topics">
+            {c.topics.map(t => (
+              <li class="academy-card-topic">
+                <span class="academy-card-topic-dot" style={`background:${c.color}`}></span>
+                {t}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <a href={c.url} target="_blank" rel="noopener noreferrer"
+          class="academy-card-cta"
+          style={`background:${c.color};color:#04040a`}>
+          Launch on {c.url.includes('skilljar') ? 'Skilljar' : 'anthropic.com'} ↗
+        </a>
+        <div class="academy-card-host">
+          {c.url.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+        </div>
+
+      </article>
+    ))}
+  </div>
+
+  <section class="academy-context">
+    <h2 class="academy-context-title">How this fits with Architect Zero</h2>
+    <div class="academy-context-row">
+      <div class="academy-context-step">
+        <div class="academy-context-num">1</div>
+        <div>
+          <div class="academy-context-step-title">Foundations</div>
+          <div class="academy-context-step-body">
+            Watch <strong>Claude 101</strong> and <strong>AI Fluency</strong> on Anthropic Academy
+            for the official mental model.
+          </div>
+        </div>
+      </div>
+      <div class="academy-context-step">
+        <div class="academy-context-num">2</div>
+        <div>
+          <div class="academy-context-step-title">Hands-on with Claude Code</div>
+          <div class="academy-context-step-body">
+            <strong>Claude Code in Action</strong> covers CLI, hooks, MCP — the practical layer
+            the CCA exam tests against.
+          </div>
+        </div>
+      </div>
+      <div class="academy-context-step">
+        <div class="academy-context-num">3</div>
+        <div>
+          <div class="academy-context-step-title">Exam mastery, here</div>
+          <div class="academy-context-step-body">
+            Use the <a href="/architect-zero/learn" class="academy-context-link">Learn</a> domains, quiz, and
+            flashcards in this app to convert understanding into exam points.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="academy-foot">
+    <p>
+      All courses are owned and operated by Anthropic. This page is a launcher —
+      no content is mirrored. The official certification exam is registered through
+      <a href="https://anthropic.skilljar.com/" target="_blank" rel="noopener noreferrer">
+        anthropic.skilljar.com
+      </a>.
+    </p>
+  </footer>
+
+</div>
+</BaseLayout>
+
+<style>
+.academy { max-width: 1080px; margin: 0 auto; padding: 32px 32px 80px; }
+
+.academy-head { margin-bottom: 36px; }
+.academy-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--electric);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.academy-title {
+  font-family: 'Bebas Neue', Impact, sans-serif;
+  font-size: clamp(36px, 4.5vw, 56px);
+  letter-spacing: 2px;
+  color: white;
+  line-height: 1.05;
+  margin-bottom: 14px;
+}
+.academy-sub {
+  font-size: 16px;
+  color: var(--subtle);
+  line-height: 1.75;
+  max-width: 720px;
+  margin-bottom: 18px;
+}
+.academy-browse-all {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--electric);
+  text-decoration: none;
+  padding: 8px 14px;
+  border: 1px solid rgba(0, 229, 255, 0.3);
+  border-radius: 6px;
+  letter-spacing: 1px;
+  transition: all 0.15s;
+}
+.academy-browse-all:hover { background: rgba(0, 229, 255, 0.08); border-color: var(--electric); }
+
+.academy-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 48px;
+}
+
+.academy-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.18s;
+}
+.academy-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+}
+
+.academy-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.academy-card-icon {
+  font-size: 26px;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.academy-card-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+.academy-card-level {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  padding: 3px 8px;
+  border: 1px solid;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+.academy-card-stats {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  text-align: right;
+}
+
+.academy-card-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: white;
+  line-height: 1.25;
+  margin-bottom: 6px;
+}
+.academy-card-tagline {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+.academy-card-desc {
+  font-size: 14px;
+  color: var(--subtle);
+  line-height: 1.7;
+  margin-bottom: 18px;
+}
+
+.academy-card-section { margin-bottom: 14px; }
+.academy-card-section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.academy-card-section-body {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.6;
+}
+.academy-card-topics {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.academy-card-topic {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--subtle);
+}
+.academy-card-topic-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.academy-card-cta {
+  display: block;
+  margin-top: auto;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 14px;
+  text-decoration: none;
+  text-align: center;
+  letter-spacing: 0.3px;
+  transition: filter 0.15s;
+}
+.academy-card-cta:hover { filter: brightness(1.08); }
+.academy-card-host {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--muted);
+  text-align: center;
+  margin-top: 8px;
+  letter-spacing: 0.5px;
+  word-break: break-all;
+}
+
+.academy-context {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px 32px;
+  margin-bottom: 32px;
+}
+.academy-context-title {
+  font-family: 'Bebas Neue', Impact, sans-serif;
+  font-size: 22px;
+  letter-spacing: 1.5px;
+  color: white;
+  margin-bottom: 20px;
+}
+.academy-context-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.academy-context-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+.academy-context-num {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--electric);
+  color: var(--black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 14px;
+}
+.academy-context-step-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 4px;
+}
+.academy-context-step-body {
+  font-size: 13px;
+  color: var(--subtle);
+  line-height: 1.65;
+}
+.academy-context-step-body strong { color: var(--text); }
+.academy-context-link { color: var(--electric); text-decoration: none; }
+.academy-context-link:hover { text-decoration: underline; }
+
+.academy-foot {
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.7;
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
+}
+.academy-foot a { color: var(--subtle); text-decoration: underline; }
+.academy-foot a:hover { color: var(--electric); }
+
+@media (max-width: 1024px) {
+  .academy-grid { grid-template-columns: repeat(2, 1fr); }
+  .academy-context-row { grid-template-columns: 1fr; gap: 18px; }
+}
+@media (max-width: 700px) {
+  .academy { padding: 20px 16px 100px; }
+  .academy-grid { grid-template-columns: 1fr; }
+}
+</style>

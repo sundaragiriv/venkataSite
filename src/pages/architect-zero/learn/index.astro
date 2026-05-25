@@ -1,0 +1,69 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import AppHeader from '../../../components/AppHeader.astro';
+import { DOMAINS } from '../../../lib/domains';
+---
+
+<BaseLayout title="Learn — Architect Zero">
+  <AppHeader slot="header" title="Learn"/>
+
+  <div class="px-4 py-4">
+
+    <p class="text-xs text-az-muted font-mono mb-4">
+      7 domains · 114 lessons · start with D0 if new to AI
+    </p>
+
+    {DOMAINS.map(domain => (
+      <a href={`/architect-zero/learn/${domain.id}`} class="block mb-3 no-underline">
+        <div class="lesson-card" style={`border-left-color:${domain.color}`}>
+          <div class="flex items-start justify-between">
+            <div class="flex items-start gap-3">
+              <span class="text-2xl mt-0.5">{domain.icon}</span>
+              <div>
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-sm font-black text-white">{domain.code}</span>
+                  <span class="text-[9px] font-black px-2 py-0.5 rounded font-mono"
+                    style={`background:${domain.color}20;color:${domain.color};border:1px solid ${domain.color}33`}>
+                    {domain.tag}
+                  </span>
+                </div>
+                <div class="text-sm font-bold text-white mb-1">{domain.title}</div>
+                <div class="text-xs text-az-muted">{domain.subtitle}</div>
+              </div>
+            </div>
+            <div class="flex flex-col items-end gap-1 flex-shrink-0 ml-2">
+              <span class="text-xs font-black domain-pct" data-domain={domain.id}
+                style={`color:${domain.color}`}>0%</span>
+              <span class="text-[10px] text-az-muted">{domain.lessonCount} lessons</span>
+            </div>
+          </div>
+          <div class="domain-pbar mt-2">
+            <div class="domain-pbar-fill domain-fill" data-domain={domain.id}
+              style={`width:0%;background:${domain.color}`}></div>
+          </div>
+        </div>
+      </a>
+    ))}
+
+  </div>
+</BaseLayout>
+
+<script>
+  const domainLessonCounts: Record<string, number> = {
+    d0:12, d1:21, d2:15, d3:18, d4:18, d5:18, d6:12
+  };
+  const completed: string[] = JSON.parse(localStorage.getItem('az_completed') || '[]');
+
+  document.querySelectorAll('.domain-pct').forEach(el => {
+    const id = (el as HTMLElement).dataset.domain || '';
+    const total = domainLessonCounts[id] || 1;
+    const done = completed.filter(c => c.startsWith(id)).length;
+    el.textContent = Math.round((done/total)*100) + '%';
+  });
+  document.querySelectorAll('.domain-fill').forEach(el => {
+    const id = (el as HTMLElement).dataset.domain || '';
+    const total = domainLessonCounts[id] || 1;
+    const done = completed.filter(c => c.startsWith(id)).length;
+    (el as HTMLElement).style.width = Math.round((done/total)*100) + '%';
+  });
+</script>

@@ -1,0 +1,228 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { DOMAINS } from '../../lib/domains';
+
+const studyDomains = DOMAINS.filter(d => d.id !== 'd0');
+const d0 = DOMAINS.find(d => d.id === 'd0')!;
+---
+
+<BaseLayout title="Dashboard — Architect Zero">
+<div class="dash">
+
+  <!-- Hero banner -->
+  <div class="dash-hero">
+    <div class="dash-hero-left">
+      <div class="dash-eyebrow">CCA FOUNDATIONS CERTIFICATION</div>
+      <h1 class="dash-title">Welcome back,<br/><span class="dash-title-electric">Architect.</span></h1>
+      <p class="dash-subtitle">Pick up where you left off. Every lesson completed moves you closer to CCA.</p>
+      <a href="/architect-zero/learn" class="dash-cta">Continue Learning →</a>
+    </div>
+    <div class="dash-hero-right">
+      <div class="dash-score-ring">
+        <div class="dash-score-inner">
+          <div class="dash-score-pct" id="dash-readiness">0%</div>
+          <div class="dash-score-label">Exam Ready</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick stats row -->
+  <div class="dash-stats">
+    <div class="dash-stat">
+      <div class="dash-stat-num" id="dash-xp">0</div>
+      <div class="dash-stat-label">Total XP</div>
+    </div>
+    <div class="dash-stat">
+      <div class="dash-stat-num" id="dash-lessons">0</div>
+      <div class="dash-stat-label">Lessons Done</div>
+    </div>
+    <div class="dash-stat">
+      <div class="dash-stat-num" id="dash-quiz-acc">—</div>
+      <div class="dash-stat-label">Quiz Accuracy</div>
+    </div>
+    <div class="dash-stat">
+      <div class="dash-stat-num" id="dash-mastered">0</div>
+      <div class="dash-stat-label">Cards Mastered</div>
+    </div>
+  </div>
+
+  <!-- D0 banner -->
+  <div class="dash-d0-banner" id="dash-d0-banner">
+    <div class="dash-d0-icon">🌱</div>
+    <div class="dash-d0-text">
+      <div class="dash-d0-title">New to AI? Start with D0 — AI Foundations</div>
+      <div class="dash-d0-sub">12 lessons · No tech background needed · Anyone can start here</div>
+    </div>
+    <a href="/architect-zero/learn/d0" class="dash-d0-btn">Start D0 →</a>
+  </div>
+
+  <!-- Domain grid -->
+  <div class="dash-section-header">
+    <h2 class="dash-section-title">Study Domains</h2>
+    <a href="/architect-zero/learn" class="dash-section-link">View all →</a>
+  </div>
+  <div class="dash-domain-grid">
+    {studyDomains.map(d => (
+      <a href={`/architect-zero/learn/${d.id}`} class="dash-domain-card">
+        <div class="dash-domain-top">
+          <span class="dash-domain-code" style={`color:${d.color}`}>{d.code}</span>
+          {d.examWeight && (
+            <span class="dash-domain-weight" style={`background:${d.color}18;color:${d.color}`}>
+              {d.examWeight}
+            </span>
+          )}
+        </div>
+        <div class="dash-domain-title">{d.title}</div>
+        <div class="dash-domain-sub">{d.lessonCount} lessons</div>
+        <div class="dash-domain-bar">
+          <div class="dash-domain-fill" id={`dash-fill-${d.id}`}
+            style={`width:0%;background:${d.color}`}></div>
+        </div>
+        <div class="dash-domain-pct" id={`dash-pct-${d.id}`}
+          style={`color:${d.color}`}>0%</div>
+      </a>
+    ))}
+  </div>
+
+  <!-- Quick access -->
+  <div class="dash-section-header" style="margin-top:32px">
+    <h2 class="dash-section-title">Practice</h2>
+  </div>
+  <div class="dash-quick-grid">
+    <a href="/architect-zero/quiz" class="dash-quick-card">
+      <div class="dash-quick-icon">🎯</div>
+      <div class="dash-quick-title">Practice Quiz</div>
+      <div class="dash-quick-sub">108 CCA exam questions · 6 scenarios</div>
+    </a>
+    <a href="/architect-zero/flashcards" class="dash-quick-card">
+      <div class="dash-quick-icon">🃏</div>
+      <div class="dash-quick-title">Flashcards</div>
+      <div class="dash-quick-sub">90 cards · Decision Rules · Exam Traps</div>
+    </a>
+    <a href="/architect-zero/progress" class="dash-quick-card">
+      <div class="dash-quick-icon">📈</div>
+      <div class="dash-quick-title">My Progress</div>
+      <div class="dash-quick-sub">Exam readiness · Domain breakdown · XP path</div>
+    </a>
+  </div>
+
+</div>
+</BaseLayout>
+
+<style>
+.dash { max-width: 1100px; margin: 0 auto; padding: 32px 32px 80px; }
+
+/* HERO */
+.dash-hero { display: flex; align-items: center; justify-content: space-between; gap: 32px; margin-bottom: 32px; background: linear-gradient(135deg, #0d0d1c 0%, #111125 100%); border: 1px solid #1a1a30; border-radius: 20px; padding: 40px 48px; }
+.dash-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 4px; color: #00e5ff; text-transform: uppercase; margin-bottom: 12px; }
+.dash-title { font-family: 'Bebas Neue', Impact, sans-serif; font-size: clamp(36px, 4vw, 56px); letter-spacing: 2px; color: white; line-height: 1.05; margin-bottom: 12px; }
+.dash-title-electric { color: #00e5ff; }
+.dash-subtitle { font-size: 15px; color: var(--subtle); line-height: 1.7; margin-bottom: 24px; max-width: 400px; }
+.dash-cta { display: inline-block; padding: 12px 32px; background: #00e5ff; color: #04040a; border-radius: 8px; font-weight: 800; font-size: 15px; text-decoration: none; transition: all 0.15s; }
+.dash-cta:hover { filter: brightness(1.1); transform: translateY(-1px); }
+.dash-score-ring { width: 140px; height: 140px; border-radius: 50%; background: conic-gradient(#00e5ff 0%, #1a1a30 0%); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.dash-score-inner { width: 112px; height: 112px; border-radius: 50%; background: #0d0d1c; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.dash-score-pct { font-family: 'Bebas Neue', Impact, sans-serif; font-size: 36px; color: #00e5ff; letter-spacing: 1px; line-height: 1; }
+.dash-score-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--subtle); letter-spacing: 2px; text-transform: uppercase; }
+
+/* STATS */
+.dash-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+.dash-stat { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px; text-align: center; }
+.dash-stat-num { font-family: 'Bebas Neue', Impact, sans-serif; font-size: 40px; color: #00e5ff; letter-spacing: 1px; line-height: 1; margin-bottom: 4px; }
+.dash-stat-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--subtle); letter-spacing: 2px; text-transform: uppercase; }
+
+/* D0 BANNER */
+.dash-d0-banner { display: flex; align-items: center; gap: 16px; background: rgba(6,182,212,0.08); border: 1px solid rgba(6,182,212,0.3); border-radius: 14px; padding: 20px 24px; margin-bottom: 32px; }
+.dash-d0-icon { font-size: 32px; flex-shrink: 0; }
+.dash-d0-text { flex: 1; }
+.dash-d0-title { font-size: 15px; font-weight: 700; color: white; margin-bottom: 4px; }
+.dash-d0-sub { font-size: 13px; color: var(--subtle); }
+.dash-d0-btn { padding: 10px 24px; background: rgba(6,182,212,0.15); border: 1px solid rgba(6,182,212,0.4); border-radius: 8px; color: #06b6d4; font-weight: 700; font-size: 13px; text-decoration: none; flex-shrink: 0; transition: all 0.15s; }
+.dash-d0-btn:hover { background: rgba(6,182,212,0.25); }
+
+/* SECTION HEADER */
+.dash-section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.dash-section-title { font-family: 'Bebas Neue', Impact, sans-serif; font-size: 24px; letter-spacing: 2px; color: white; }
+.dash-section-link { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #00e5ff; text-decoration: none; }
+
+/* DOMAIN GRID */
+.dash-domain-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 8px; }
+.dash-domain-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px; text-decoration: none; display: block; transition: all 0.15s; }
+.dash-domain-card:hover { border-color: #2a2a40; transform: translateY(-2px); background: var(--card); }
+.dash-domain-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.dash-domain-code { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 800; letter-spacing: 2px; }
+.dash-domain-weight { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; }
+.dash-domain-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; line-height: 1.4; }
+.dash-domain-sub { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--subtle); margin-bottom: 12px; }
+.dash-domain-bar { height: 3px; background: var(--border); border-radius: 2px; margin-bottom: 6px; overflow: hidden; }
+.dash-domain-fill { height: 100%; border-radius: 2px; transition: width 0.4s; }
+.dash-domain-pct { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; }
+
+/* QUICK GRID */
+.dash-quick-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.dash-quick-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px; text-decoration: none; display: flex; flex-direction: column; gap: 8px; transition: all 0.15s; }
+.dash-quick-card:hover { border-color: #2a2a40; background: var(--card); transform: translateY(-2px); }
+.dash-quick-icon { font-size: 28px; }
+.dash-quick-title { font-size: 16px; font-weight: 800; color: white; }
+.dash-quick-sub { font-size: 13px; color: var(--subtle); line-height: 1.5; }
+
+@media (max-width: 900px) {
+  .dash-hero { flex-direction: column; padding: 28px 24px; }
+  .dash-score-ring { display: none; }
+  .dash-stats { grid-template-columns: repeat(2, 1fr); }
+  .dash-domain-grid { grid-template-columns: repeat(2, 1fr); }
+  .dash-quick-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .dash { padding: 20px 16px 80px; }
+  .dash-domain-grid { grid-template-columns: 1fr; }
+}
+</style>
+
+<script>
+const LESSON_COUNTS: Record<string,number> = { d0:12, d1:21, d2:15, d3:18, d4:18, d5:18, d6:12 };
+const xp = Number(localStorage.getItem('az_xp') || 0);
+const completed: string[] = JSON.parse(localStorage.getItem('az_completed') || '[]');
+const mastered: string[] = JSON.parse(localStorage.getItem('az_mastered') || '[]');
+const quizHistory: Record<string,boolean> = JSON.parse(localStorage.getItem('az_quiz_history') || '{}');
+
+(document.getElementById('dash-xp') as HTMLElement).textContent = xp.toLocaleString();
+
+const totalLessons = Object.values(LESSON_COUNTS).reduce((a,b) => a+b, 0);
+const doneLessons = completed.filter(id => /^d[0-6]-/.test(id)).length;
+(document.getElementById('dash-lessons') as HTMLElement).textContent = `${doneLessons}/${totalLessons}`;
+(document.getElementById('dash-mastered') as HTMLElement).textContent = String(mastered.length);
+
+const qAnswered = Object.keys(quizHistory).length;
+const qCorrect = Object.values(quizHistory).filter(Boolean).length;
+const qAcc = qAnswered > 0 ? Math.round(qCorrect / qAnswered * 100) : 0;
+(document.getElementById('dash-quiz-acc') as HTMLElement).textContent = qAnswered > 0 ? qAcc + '%' : '—';
+
+// Domain progress bars
+Object.entries(LESSON_COUNTS).forEach(([d, total]) => {
+  const done = completed.filter(id => id.startsWith(d)).length;
+  const pct = Math.round(done / total * 100);
+  const fill = document.getElementById(`dash-fill-${d}`) as HTMLElement;
+  const pctEl = document.getElementById(`dash-pct-${d}`) as HTMLElement;
+  if (fill) fill.style.width = pct + '%';
+  if (pctEl) pctEl.textContent = pct + '%';
+});
+
+// Readiness score
+const lessonComp = totalLessons > 0 ? doneLessons / totalLessons : 0;
+const quizComp = qAnswered > 0 ? qAcc / 100 : 0;
+const flashComp = mastered.length / 90;
+const readiness = Math.min(100, Math.round((lessonComp * 0.4 + quizComp * 0.4 + flashComp * 0.2) * 100));
+(document.getElementById('dash-readiness') as HTMLElement).textContent = readiness + '%';
+
+// Update score ring
+const ring = document.querySelector('.dash-score-ring') as HTMLElement;
+if (ring) ring.style.background = `conic-gradient(#00e5ff ${readiness * 3.6}deg, #1a1a30 0deg)`;
+
+// Hide D0 banner if user has done some lessons
+if (doneLessons > 3) {
+  const banner = document.getElementById('dash-d0-banner');
+  if (banner) banner.style.display = 'none';
+}
+</script>

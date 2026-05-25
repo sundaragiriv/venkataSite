@@ -14,16 +14,16 @@ const {
 const currentPath = Astro.url.pathname;
 
 const navItems = [
-  { href: '/',           icon: '◈',  emoji: '🏠', label: 'Dashboard'  },
-  { href: '/learn',      icon: '▤',  emoji: '📚', label: 'Learn'       },
-  { href: '/academy',    icon: '✦',  emoji: '🎓', label: 'Academy'     },
-  { href: '/quiz',       icon: '◉',  emoji: '🎯', label: 'Quiz'        },
-  { href: '/flashcards', icon: '◫',  emoji: '🃏', label: 'Flashcards'  },
-  { href: '/progress',   icon: '◑',  emoji: '📈', label: 'Progress'    },
+  { href: '/architect-zero/',           icon: '◈',  emoji: '🏠', label: 'Dashboard'  },
+  { href: '/architect-zero/learn',      icon: '▤',  emoji: '📚', label: 'Learn'       },
+  { href: '/architect-zero/academy',    icon: '✦',  emoji: '🎓', label: 'Academy'     },
+  { href: '/architect-zero/quiz',       icon: '◉',  emoji: '🎯', label: 'Quiz'        },
+  { href: '/architect-zero/flashcards', icon: '◫',  emoji: '🃏', label: 'Flashcards'  },
+  { href: '/architect-zero/progress',   icon: '◑',  emoji: '📈', label: 'Progress'    },
 ];
 
 function isActive(href: string) {
-  if (href === '/') return currentPath === '/';
+  if (href === '/architect-zero/') return currentPath === '/architect-zero/';
   return currentPath.startsWith(href);
 }
 ---
@@ -51,7 +51,7 @@ function isActive(href: string) {
   <aside id="sidebar">
 
     <!-- Logo -->
-    <a href="/" class="sidebar-logo">
+    <a href="/architect-zero/" class="sidebar-logo">
       <svg width="28" height="28" viewBox="0 0 32 32" fill="none" class="sidebar-logo-mark">
         <polygon points="16,2 30,28 2,28" stroke="#00e5ff" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
         <line x1="8" y1="20" x2="24" y2="20" stroke="#00e5ff" stroke-width="2"/>
@@ -113,7 +113,7 @@ function isActive(href: string) {
 
     <!-- TOP BAR — mobile only, hidden on desktop -->
     <header id="topbar">
-      <a href="/" class="topbar-logo">
+      <a href="/architect-zero/" class="topbar-logo">
         ARCHITECT <span class="text-electric">ZERO</span>
       </a>
       <div class="topbar-right">

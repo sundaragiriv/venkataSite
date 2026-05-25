@@ -1,0 +1,243 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import CourseRail from '../../../../components/CourseRail.astro';
+import { getCollection } from 'astro:content';
+import { DOMAINS } from '../../../../lib/domains';
+
+export async function getStaticPaths() {
+  return DOMAINS.map(domain => ({
+    params: { domain: domain.id },
+    props: { domain },
+  }));
+}
+
+const { domain } = Astro.props;
+const allLessons = await getCollection('lessons');
+const domainLessons = allLessons
+  .filter(l => l.data.domain === domain.id)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const domainIdx = DOMAINS.findIndex(d => d.id === domain.id);
+const prevDomain = domainIdx > 0 ? DOMAINS[domainIdx - 1] : null;
+const nextDomain = domainIdx < DOMAINS.length - 1 ? DOMAINS[domainIdx + 1] : null;
+
+const firstLesson = domainLessons[0];
+const firstLessonSlug = firstLesson?.slug.split('/').pop();
+---
+
+<BaseLayout title={`${domain.code} — ${domain.title} | Architect Zero`}>
+
+<div class="domain-landing">
+
+  <a href="/architect-zero/learn" class="domain-back">← All domains</a>
+
+  <div class="domain-hero" style={`border-left:4px solid ${domain.color}`}>
+    <div class="domain-hero-eyebrow">
+      <span class="domain-hero-code" style={`color:${domain.color}`}>{domain.code}</span>
+      {domain.examWeight && (
+        <span class="domain-hero-weight" style={`background:${domain.color}20;color:${domain.color};border:1px solid ${domain.color}33`}>
+          {domain.examWeight} of exam
+        </span>
+      )}
+      <span class="domain-hero-tag">{domain.tag}</span>
+    </div>
+    <h1 class="domain-hero-title">{domain.title}</h1>
+    <p class="domain-hero-desc">{domain.description}</p>
+
+    <div class="domain-hero-stats">
+      <div class="domain-stat">
+        <div class="domain-stat-num" style={`color:${domain.color}`}>{domain.lessonCount}</div>
+        <div class="domain-stat-label">Lessons</div>
+      </div>
+      <div class="domain-stat">
+        <div class="domain-stat-num" style={`color:${domain.color}`}>{domain.taskCount || '—'}</div>
+        <div class="domain-stat-label">Task Statements</div>
+      </div>
+      <div class="domain-stat">
+        <div class="domain-stat-num domain-pct-display" style={`color:${domain.color}`}>0%</div>
+        <div class="domain-stat-label">Complete</div>
+      </div>
+    </div>
+
+    {firstLesson && firstLessonSlug && (
+      <a id="domain-resume-cta" href={`/architect-zero/learn/${domain.id}/${firstLessonSlug}`}
+        class="domain-resume-btn"
+        style={`background:${domain.color};color:#04040a`}>
+        Start →
+      </a>
+    )}
+  </div>
+
+  <div class="domain-toc-label">Course content</div>
+
+  <CourseRail domain={domain} lessons={domainLessons} />
+
+  <div class="domain-nav-row">
+    {prevDomain ? (
+      <a href={`/architect-zero/learn/${prevDomain.id}`} class="domain-nav-btn">← {prevDomain.code}</a>
+    ) : <span/>}
+    {nextDomain && (
+      <a href={`/architect-zero/learn/${nextDomain.id}`} class="domain-nav-btn" style="margin-left:auto">
+        {nextDomain.code} →
+      </a>
+    )}
+  </div>
+
+</div>
+
+</BaseLayout>
+
+<style>
+.domain-landing { max-width: 760px; margin: 0 auto; padding: 24px 32px 80px; }
+
+.domain-back {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 16px;
+  letter-spacing: 1px;
+}
+.domain-back:hover { color: var(--text); }
+
+.domain-hero {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 32px;
+  margin-bottom: 28px;
+}
+.domain-hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.domain-hero-code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+.domain-hero-weight {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 4px;
+  letter-spacing: 1px;
+}
+.domain-hero-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+.domain-hero-title {
+  font-family: 'Bebas Neue', Impact, sans-serif;
+  font-size: clamp(32px, 4vw, 48px);
+  color: var(--white);
+  letter-spacing: 2px;
+  line-height: 1.05;
+  margin-bottom: 14px;
+}
+.domain-hero-desc {
+  font-size: 16px;
+  color: var(--subtle);
+  line-height: 1.75;
+  margin-bottom: 24px;
+}
+.domain-hero-stats {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 24px;
+}
+.domain-stat-num {
+  font-family: 'Bebas Neue', Impact, sans-serif;
+  font-size: 36px;
+  letter-spacing: 1px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.domain-stat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.domain-resume-btn {
+  display: inline-block;
+  padding: 14px 36px;
+  border-radius: 10px;
+  font-weight: 800;
+  font-size: 15px;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  transition: all 0.15s;
+}
+.domain-resume-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
+
+.domain-toc-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.domain-nav-row {
+  display: flex;
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+.domain-nav-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  letter-spacing: 1px;
+  transition: all 0.15s;
+}
+.domain-nav-btn:hover { color: var(--electric); border-color: var(--electric); }
+
+@media (max-width: 600px) {
+  .domain-landing { padding: 16px 16px 100px; }
+  .domain-hero { padding: 22px; }
+  .domain-hero-stats { gap: 18px; }
+  .domain-stat-num { font-size: 28px; }
+}
+</style>
+
+<script>
+  // Resume button: jump to first incomplete lesson; relabel based on state
+  const completed: string[] = JSON.parse(localStorage.getItem('az_completed') || '[]');
+  const cta = document.getElementById('domain-resume-cta') as HTMLAnchorElement | null;
+  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('.course-lesson'));
+
+  if (cta) {
+    const next = links.find(a => !completed.includes(a.dataset.lessonId || ''));
+    if (next) {
+      cta.href = next.href;
+      cta.textContent = completed.length === 0 ? 'Start →' : 'Resume →';
+    } else if (links.length) {
+      cta.href = links[0].href;
+      cta.textContent = 'Review →';
+    }
+  }
+
+  // Domain progress %
+  const total = links.length;
+  const done = links.filter(a => completed.includes(a.dataset.lessonId || '')).length;
+  const pct = total > 0 ? Math.round(done / total * 100) : 0;
+  const pctEl = document.querySelector('.domain-pct-display');
+  if (pctEl) pctEl.textContent = pct + '%';
+</script>

@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Teach-Back — Architect Zero">
+<div class="tb-placeholder">
+
+  <div class="tb-icon">🎤</div>
+  <h1 class="tb-title">TEACH-BACK</h1>
+  <p class="tb-sub">
+    Prove you know it by explaining it back.<br/>
+    This feature is coming soon.
+  </p>
+  <p class="tb-detail">
+    Teach-Back will let you explain any lesson concept out loud,
+    then get instant feedback on your understanding — the fastest
+    way to move knowledge from short-term to long-term.
+  </p>
+  <a href="/architect-zero/learn" class="tb-btn">← Back to Learning</a>
+
+</div>
+</BaseLayout>
+
+<style>
+.tb-placeholder {
+  max-width: 520px;
+  margin: 80px auto;
+  text-align: center;
+  padding: 0 24px;
+}
+.tb-icon { font-size: 56px; margin-bottom: 20px; }
+.tb-title {
+  font-family: 'Bebas Neue', Impact, sans-serif;
+  font-size: 52px;
+  letter-spacing: 4px;
+  color: var(--white);
+  margin-bottom: 16px;
+}
+.tb-sub {
+  font-size: 17px;
+  color: var(--subtle);
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+.tb-detail {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 32px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+}
+.tb-btn {
+  display: inline-block;
+  padding: 11px 28px;
+  background: var(--electric);
+  color: #04040a;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 14px;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.tb-btn:hover { filter: brightness(1.1); }
+</style>

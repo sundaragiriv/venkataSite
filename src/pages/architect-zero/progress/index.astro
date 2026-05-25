@@ -1,0 +1,275 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { DOMAINS } from '../../../lib/domains';
+
+const LESSON_COUNTS: Record<string,number> = { d0:6, d1:21, d2:15, d3:18, d4:18, d5:18, d6:12 };
+const LEVELS = [
+  { title:'Zero',       min:0,    icon:'○' },
+  { title:'Curious',    min:100,  icon:'◎' },
+  { title:'Apprentice', min:500,  icon:'◈' },
+  { title:'Builder',    min:1200, icon:'◆' },
+  { title:'Architect',  min:2500, icon:'⬡' },
+  { title:'CCA Ready',  min:4000, icon:'★' },
+];
+---
+
+<BaseLayout title="Progress — Architect Zero">
+<div class="prog-shell">
+
+  <!-- Header -->
+  <div class="prog-header">
+    <a href="/architect-zero/" class="prog-back">← Home</a>
+    <h1 class="prog-title">My Progress</h1>
+  </div>
+
+  <!-- Level card -->
+  <div class="prog-level-card">
+    <div class="prog-level-left">
+      <div class="prog-level-icon" id="prog-level-icon">○</div>
+      <div>
+        <div class="prog-level-label">CURRENT LEVEL</div>
+        <div class="prog-level-name" id="prog-level-name">Zero</div>
+      </div>
+    </div>
+    <div class="prog-xp-block">
+      <div class="prog-xp-num" id="prog-xp">0</div>
+      <div class="prog-xp-label">XP</div>
+    </div>
+  </div>
+
+  <!-- Level bar -->
+  <div class="prog-level-bar-wrap">
+    <div class="prog-level-bar" id="prog-level-bar"><div class="prog-level-fill" id="prog-level-fill"></div></div>
+    <div class="prog-level-next" id="prog-level-next"></div>
+  </div>
+
+  <!-- Level track -->
+  <div class="prog-track">
+    {LEVELS.map((lv, i) => (
+      <div class="prog-track-step" id={`track-${i}`}>
+        <div class="prog-track-icon">{lv.icon}</div>
+        <div class="prog-track-title">{lv.title}</div>
+        <div class="prog-track-min">{lv.min} XP</div>
+      </div>
+    ))}
+  </div>
+
+  <!-- Exam readiness -->
+  <div class="prog-exam-card" id="prog-exam-card">
+    <div class="prog-exam-label">CCA EXAM READINESS</div>
+    <div class="prog-exam-score" id="prog-exam-score">—</div>
+    <div class="prog-exam-bar"><div class="prog-exam-fill" id="prog-exam-fill"></div></div>
+    <div class="prog-exam-detail" id="prog-exam-detail"></div>
+  </div>
+
+  <!-- Domain breakdown -->
+  <div class="prog-section-title">Domain Progress</div>
+  <div class="prog-domains">
+    {DOMAINS.filter(d => d.id !== 'd0').map(d => (
+      <div class="prog-domain-row">
+        <div class="prog-domain-header">
+          <span class="prog-domain-code" style={`color:${d.color}`}>{d.code}</span>
+          <span class="prog-domain-title">{d.title}</span>
+          {d.examWeight && <span class="prog-domain-weight" style={`color:${d.color}`}>{d.examWeight}</span>}
+          <span class="prog-domain-pct" id={`pct-${d.id}`} style={`color:${d.color}`}>0%</span>
+        </div>
+        <div class="prog-domain-bar">
+          <div class="prog-domain-fill" id={`fill-${d.id}`} style={`background:${d.color}`}></div>
+        </div>
+        <div class="prog-domain-lessons" id={`lessons-${d.id}`}></div>
+      </div>
+    ))}
+  </div>
+
+  <!-- Quiz performance -->
+  <div class="prog-section-title">Quiz Performance</div>
+  <div class="prog-quiz-grid">
+    <div class="prog-quiz-card">
+      <div class="prog-quiz-num" id="quiz-answered">0</div>
+      <div class="prog-quiz-label">Questions Answered</div>
+    </div>
+    <div class="prog-quiz-card">
+      <div class="prog-quiz-num" id="quiz-accuracy" style="color:#00f593">—</div>
+      <div class="prog-quiz-label">Accuracy</div>
+    </div>
+    <div class="prog-quiz-card">
+      <div class="prog-quiz-num" id="flash-mastered" style="color:#ffd60a">0</div>
+      <div class="prog-quiz-label">Cards Mastered</div>
+    </div>
+    <div class="prog-quiz-card">
+      <div class="prog-quiz-num" id="lessons-done">0</div>
+      <div class="prog-quiz-label">Lessons Complete</div>
+    </div>
+  </div>
+
+  <!-- Reset -->
+  <div class="prog-reset-wrap">
+    <button class="prog-reset-btn" onclick="if(confirm('Reset all progress?')){resetProgress()}">Reset All Progress</button>
+  </div>
+
+</div>
+</BaseLayout>
+
+<style>
+.prog-shell { max-width: 720px; margin: 0 auto; padding: 24px 20px 80px; }
+.prog-back { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); text-decoration:none; letter-spacing:1px; }
+.prog-title { font-family:'Bebas Neue',Impact,sans-serif; font-size:clamp(32px,5vw,52px); letter-spacing:3px; color:var(--white); margin:14px 0 24px; }
+
+/* LEVEL CARD */
+.prog-level-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:24px; display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+.prog-level-left { display:flex; align-items:center; gap:16px; }
+.prog-level-icon { font-size:36px; color:var(--electric); }
+.prog-level-label { font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--muted); letter-spacing:2px; text-transform:uppercase; margin-bottom:4px; }
+.prog-level-name { font-family:'Bebas Neue',Impact,sans-serif; font-size:28px; color:var(--white); letter-spacing:2px; }
+.prog-xp-block { text-align:right; }
+.prog-xp-num { font-family:'Bebas Neue',Impact,sans-serif; font-size:48px; color:var(--electric); letter-spacing:1px; line-height:1; }
+.prog-xp-label { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:2px; }
+
+.prog-level-bar-wrap { margin-bottom:8px; }
+.prog-level-bar { height:6px; background:var(--border); border-radius:3px; overflow:hidden; margin-bottom:6px; }
+.prog-level-fill { height:100%; background:var(--electric); border-radius:3px; transition:width 0.5s; }
+.prog-level-next { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--muted); text-align:right; }
+
+/* LEVEL TRACK */
+.prog-track { display:flex; justify-content:space-between; margin:20px 0 28px; overflow-x:auto; gap:8px; }
+.prog-track-step { display:flex; flex-direction:column; align-items:center; gap:4px; flex-shrink:0; opacity:0.35; transition:opacity 0.2s; }
+.prog-track-step.unlocked { opacity:1; }
+.prog-track-step.current .prog-track-icon { color:var(--electric); font-size:22px; }
+.prog-track-icon { font-size:18px; color:var(--muted); }
+.prog-track-title { font-family:'JetBrains Mono',monospace; font-size:9px; font-weight:700; color:var(--text); letter-spacing:1px; }
+.prog-track-min { font-family:'JetBrains Mono',monospace; font-size:8px; color:var(--muted); }
+
+/* EXAM CARD */
+.prog-exam-card { background:rgba(0,229,255,0.05); border:1px solid rgba(0,229,255,0.2); border-radius:14px; padding:24px; margin-bottom:28px; }
+.prog-exam-label { font-family:'JetBrains Mono',monospace; font-size:9px; font-weight:800; letter-spacing:3px; color:#00e5ff; text-transform:uppercase; margin-bottom:12px; }
+.prog-exam-score { font-family:'Bebas Neue',Impact,sans-serif; font-size:56px; color:var(--white); letter-spacing:2px; line-height:1; margin-bottom:12px; }
+.prog-exam-bar { height:8px; background:var(--border); border-radius:4px; overflow:hidden; margin-bottom:8px; }
+.prog-exam-fill { height:100%; background:#00e5ff; border-radius:4px; transition:width 0.5s; }
+.prog-exam-detail { font-size:12px; color:var(--muted); line-height:1.6; }
+
+/* DOMAINS */
+.prog-section-title { font-family:'JetBrains Mono',monospace; font-size:10px; font-weight:800; letter-spacing:3px; color:var(--muted); text-transform:uppercase; margin-bottom:16px; }
+.prog-domains { display:flex; flex-direction:column; gap:16px; margin-bottom:28px; }
+.prog-domain-row { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 20px; }
+.prog-domain-header { display:flex; align-items:center; gap:10px; margin-bottom:10px; flex-wrap:wrap; }
+.prog-domain-code { font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:800; letter-spacing:2px; }
+.prog-domain-title { font-size:13px; font-weight:600; color:var(--text); flex:1; }
+.prog-domain-weight { font-family:'JetBrains Mono',monospace; font-size:9px; font-weight:700; }
+.prog-domain-pct { font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:800; margin-left:auto; }
+.prog-domain-bar { height:4px; background:var(--border); border-radius:2px; overflow:hidden; margin-bottom:10px; }
+.prog-domain-fill { height:100%; border-radius:2px; transition:width 0.4s; }
+.prog-domain-lessons { display:flex; flex-wrap:wrap; gap:4px; }
+.prog-lesson-dot { width:8px; height:8px; border-radius:50%; background:var(--border); display:inline-block; transition:background 0.2s; }
+.prog-lesson-dot.done { background:#00f593; }
+
+/* QUIZ GRID */
+.prog-quiz-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-bottom:28px; }
+.prog-quiz-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px; text-align:center; }
+.prog-quiz-num { font-family:'Bebas Neue',Impact,sans-serif; font-size:40px; color:var(--electric); letter-spacing:1px; margin-bottom:4px; }
+.prog-quiz-label { font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--muted); letter-spacing:2px; text-transform:uppercase; }
+
+.prog-reset-wrap { text-align:center; }
+.prog-reset-btn { background:none; border:1px solid var(--border); border-radius:8px; color:var(--muted); font-size:12px; padding:10px 24px; cursor:pointer; transition:all 0.15s; }
+.prog-reset-btn:hover { border-color:var(--signal); color:var(--signal); }
+</style>
+
+<script>
+const LESSON_COUNTS: Record<string,number> = { d0:6, d1:21, d2:15, d3:18, d4:18, d5:18, d6:12 };
+const DOMAINS_ORDER = ['d1','d2','d3','d4','d5','d6'];
+const LEVELS = [
+  { title:'Zero', min:0, icon:'○' },
+  { title:'Curious', min:100, icon:'◎' },
+  { title:'Apprentice', min:500, icon:'◈' },
+  { title:'Builder', min:1200, icon:'◆' },
+  { title:'Architect', min:2500, icon:'⬡' },
+  { title:'CCA Ready', min:4000, icon:'★' },
+];
+
+function loadProgress() {
+  const completed: string[] = JSON.parse(localStorage.getItem('az_completed') || '[]');
+  const xp = Number(localStorage.getItem('az_xp') || 0);
+  const mastered: string[] = JSON.parse(localStorage.getItem('az_mastered') || '[]');
+  const quizHistory: Record<string,boolean> = JSON.parse(localStorage.getItem('az_quiz_history') || '{}');
+
+  // XP + Level
+  (document.getElementById('prog-xp') as HTMLElement).textContent = xp.toLocaleString();
+
+  let levelIdx = 0;
+  for (let i = 0; i < LEVELS.length; i++) {
+    if (xp >= LEVELS[i].min) levelIdx = i;
+  }
+  const level = LEVELS[levelIdx];
+  const nextLevel = LEVELS[levelIdx + 1];
+  (document.getElementById('prog-level-icon') as HTMLElement).textContent = level.icon;
+  (document.getElementById('prog-level-name') as HTMLElement).textContent = level.title;
+
+  // Level bar
+  if (nextLevel) {
+    const pct = Math.min(100, ((xp - level.min) / (nextLevel.min - level.min)) * 100);
+    (document.getElementById('prog-level-fill') as HTMLElement).style.width = pct + '%';
+    (document.getElementById('prog-level-next') as HTMLElement).textContent = `${xp.toLocaleString()} / ${nextLevel.min.toLocaleString()} XP to ${nextLevel.title}`;
+  } else {
+    (document.getElementById('prog-level-fill') as HTMLElement).style.width = '100%';
+    (document.getElementById('prog-level-next') as HTMLElement).textContent = 'Maximum level reached';
+  }
+
+  // Track steps
+  LEVELS.forEach((lv, i) => {
+    const el = document.getElementById(`track-${i}`);
+    if (el) {
+      if (i <= levelIdx) el.classList.add('unlocked');
+      if (i === levelIdx) el.classList.add('current');
+    }
+  });
+
+  // Domain breakdown
+  let totalLessons = 0;
+  let totalDone = 0;
+  DOMAINS_ORDER.forEach(domainId => {
+    const count = LESSON_COUNTS[domainId] || 0;
+    const done = completed.filter(id => id.startsWith(domainId)).length;
+    const pct = count > 0 ? Math.round((done / count) * 100) : 0;
+    totalLessons += count;
+    totalDone += done;
+    const pctEl = document.getElementById(`pct-${domainId}`);
+    const fillEl = document.getElementById(`fill-${domainId}`);
+    const lessonsEl = document.getElementById(`lessons-${domainId}`);
+    if (pctEl) pctEl.textContent = pct + '%';
+    if (fillEl) fillEl.style.width = pct + '%';
+    if (lessonsEl) {
+      lessonsEl.innerHTML = Array.from({length: count}, (_, i) => {
+        const isDone = completed.some(c => c.startsWith(domainId));
+        return `<span class="prog-lesson-dot ${i < done ? 'done' : ''}"></span>`;
+      }).join('');
+    }
+  });
+
+  // Exam readiness
+  const quizAnswered = Object.keys(quizHistory).length;
+  const quizCorrect = Object.values(quizHistory).filter(Boolean).length;
+  const quizAcc = quizAnswered > 0 ? quizCorrect / quizAnswered : 0;
+  const lessonComp = totalLessons > 0 ? totalDone / totalLessons : 0;
+  const flashComp = 90 > 0 ? mastered.length / 90 : 0;
+  const readiness = Math.round((lessonComp * 0.4 + quizAcc * 0.4 + flashComp * 0.2) * 100);
+  const readinessPct = Math.min(100, readiness);
+
+  (document.getElementById('prog-exam-score') as HTMLElement).textContent = readinessPct + '%';
+  (document.getElementById('prog-exam-fill') as HTMLElement).style.width = readinessPct + '%';
+  (document.getElementById('prog-exam-detail') as HTMLElement).textContent =
+    `Lessons: ${Math.round(lessonComp*100)}% · Quiz accuracy: ${quizAnswered>0?Math.round(quizAcc*100)+'%':'—'} · Cards mastered: ${mastered.length}/90`;
+
+  // Quiz stats
+  (document.getElementById('quiz-answered') as HTMLElement).textContent = String(quizAnswered);
+  (document.getElementById('quiz-accuracy') as HTMLElement).textContent = quizAnswered > 0 ? Math.round(quizAcc*100)+'%' : '—';
+  (document.getElementById('flash-mastered') as HTMLElement).textContent = String(mastered.length);
+  (document.getElementById('lessons-done') as HTMLElement).textContent = String(totalDone);
+}
+
+function resetProgress() {
+  ['az_completed','az_xp','az_mastered','az_quiz_history'].forEach(k => localStorage.removeItem(k));
+  loadProgress();
+}
+
+(window as any).resetProgress = resetProgress;
+loadProgress();
+</script>

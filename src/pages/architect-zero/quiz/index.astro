@@ -1,0 +1,345 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { DOMAINS } from '../../../lib/domains';
+
+const SCENARIOS = [
+  { id: 'all',  label: 'All Scenarios',           icon: '🎯' },
+  { id: 'S1',   label: 'S1 · Agentic Coding',     icon: '🤖' },
+  { id: 'S2',   label: 'S2 · Document Processing',icon: '📄' },
+  { id: 'S3',   label: 'S3 · Customer Support',   icon: '💬' },
+  { id: 'S4',   label: 'S4 · Research',            icon: '🔬' },
+  { id: 'S5',   label: 'S5 · Code Review',         icon: '👁️'  },
+  { id: 'S6',   label: 'S6 · Data Extraction',    icon: '⚙️'  },
+];
+---
+
+<BaseLayout title="Quiz — Architect Zero">
+<div class="quiz-shell" id="quiz-app">
+
+  <!-- ── SCENARIO SELECT ── -->
+  <div id="screen-select" class="quiz-screen">
+    <div class="quiz-header">
+      <a href="/architect-zero/" class="quiz-back">← Home</a>
+      <h1 class="quiz-title">Practice Quiz</h1>
+      <p class="quiz-subtitle">108 scenario-based questions · CCA exam format</p>
+    </div>
+
+    <div class="scenario-grid">
+      {SCENARIOS.map(s => (
+        <button class="scenario-card" data-scenario={s.id} onclick={`startQuiz('${s.id}')`}>
+          <span class="scenario-icon">{s.icon}</span>
+          <span class="scenario-label">{s.label}</span>
+          <span class="scenario-count" id={`count-${s.id}`}>— q</span>
+        </button>
+      ))}
+    </div>
+
+    <div class="quiz-stats-row">
+      <div class="quiz-stat"><span class="quiz-stat-num" id="total-answered">0</span><span class="quiz-stat-label">Answered</span></div>
+      <div class="quiz-stat"><span class="quiz-stat-num" id="total-correct">0</span><span class="quiz-stat-label">Correct</span></div>
+      <div class="quiz-stat"><span class="quiz-stat-num" id="overall-pct">—</span><span class="quiz-stat-label">Accuracy</span></div>
+      <div class="quiz-stat"><span class="quiz-stat-num" id="total-xp">0</span><span class="quiz-stat-label">XP Earned</span></div>
+    </div>
+  </div>
+
+  <!-- ── QUESTION SCREEN ── -->
+  <div id="screen-question" class="quiz-screen hidden">
+    <div class="q-topbar">
+      <button class="q-exit" onclick="exitQuiz()">✕ Exit</button>
+      <div class="q-progress-wrap">
+        <div class="q-progress-bar"><div class="q-progress-fill" id="q-progress-fill"></div></div>
+        <span class="q-progress-label" id="q-progress-label"></span>
+      </div>
+      <div class="q-score-pill" id="q-score-pill">0 / 0</div>
+    </div>
+
+    <div class="q-body">
+      <div class="q-meta">
+        <span class="q-domain-tag" id="q-domain-tag"></span>
+        <span class="q-diff-tag" id="q-diff-tag"></span>
+        <span class="q-xp-tag" id="q-xp-tag"></span>
+      </div>
+      <div class="q-scenario-label" id="q-scenario-label"></div>
+      <p class="q-text" id="q-text"></p>
+      <div class="q-options" id="q-options"></div>
+    </div>
+  </div>
+
+  <!-- ── EXPLANATION SCREEN ── -->
+  <div id="screen-explain" class="quiz-screen hidden">
+    <div class="q-topbar">
+      <div class="q-explain-result" id="q-explain-result"></div>
+      <div class="q-score-pill" id="q-score-pill-2">0 / 0</div>
+    </div>
+    <div class="q-body">
+      <p class="q-text" id="q-explain-question"></p>
+      <div class="q-explain-options" id="q-explain-options"></div>
+      <div class="q-explain-box" id="q-explain-box"></div>
+      <button class="q-next-btn" id="q-next-btn" onclick="nextQuestion()">Next Question →</button>
+    </div>
+  </div>
+
+  <!-- ── RESULTS SCREEN ── -->
+  <div id="screen-results" class="quiz-screen hidden">
+    <div class="results-body">
+      <div class="results-trophy" id="results-trophy"></div>
+      <h2 class="results-title" id="results-title"></h2>
+      <div class="results-score" id="results-score"></div>
+      <div class="results-breakdown" id="results-breakdown"></div>
+      <div class="results-actions">
+        <button class="results-btn-primary" onclick="retryQuiz()">Retry Same Set</button>
+        <button class="results-btn-secondary" onclick="exitQuiz()">Choose Scenario</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+</BaseLayout>
+
+<style>
+.quiz-shell { max-width: 720px; margin: 0 auto; padding: 24px 20px 60px; min-height: 100vh; }
+.quiz-screen.hidden { display: none !important; }
+
+/* SELECT */
+.quiz-header { text-align: center; margin-bottom: 32px; }
+.quiz-back { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); text-decoration: none; letter-spacing: 1px; }
+.quiz-title { font-family: 'Bebas Neue', Impact, sans-serif; font-size: clamp(32px, 5vw, 52px); letter-spacing: 3px; color: var(--white); margin: 16px 0 8px; }
+.quiz-subtitle { font-size: 13px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+
+.scenario-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-bottom: 32px; }
+.scenario-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 16px; cursor: pointer; text-align: left; display: flex; flex-direction: column; gap: 6px; transition: all 0.15s; }
+.scenario-card:hover { border-color: var(--electric); background: var(--card); transform: translateY(-2px); }
+.scenario-icon { font-size: 24px; }
+.scenario-label { font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.4; }
+.scenario-count { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); }
+
+.quiz-stats-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.quiz-stat { text-align: center; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 20px; min-width: 80px; }
+.quiz-stat-num { display: block; font-family: 'Bebas Neue', Impact, sans-serif; font-size: 32px; color: var(--electric); letter-spacing: 1px; }
+.quiz-stat-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; }
+
+/* QUESTION */
+.q-topbar { display: flex; align-items: center; gap: 12px; padding: 16px 0 20px; border-bottom: 1px solid var(--border); margin-bottom: 24px; }
+.q-exit { background: none; border: 1px solid var(--border); border-radius: 6px; color: var(--muted); font-size: 12px; padding: 6px 12px; cursor: pointer; transition: all 0.15s; flex-shrink: 0; }
+.q-exit:hover { border-color: var(--signal); color: var(--signal); }
+.q-progress-wrap { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+.q-progress-bar { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.q-progress-fill { height: 100%; background: var(--electric); border-radius: 2px; transition: width 0.3s; }
+.q-progress-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); }
+.q-score-pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--electric); background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); border-radius: 20px; padding: 4px 12px; flex-shrink: 0; }
+
+.q-body { }
+.q-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.q-domain-tag, .q-diff-tag, .q-xp-tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+  padding: 2px 8px; border-radius: 4px; letter-spacing: 1px;
+}
+.q-domain-tag { background: rgba(0,229,255,0.12); color: #00e5ff; border: 1px solid rgba(0,229,255,0.3); }
+.q-diff-tag { background: rgba(255,214,10,0.1); color: #ffd60a; border: 1px solid rgba(255,214,10,0.3); }
+.q-xp-tag { background: rgba(0,245,147,0.1); color: #00f593; border: 1px solid rgba(0,245,147,0.3); }
+.q-scenario-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; margin-bottom: 16px; }
+.q-text { font-size: 17px; color: var(--text); line-height: 1.75; font-weight: 500; margin-bottom: 24px; }
+
+.q-options { display: flex; flex-direction: column; gap: 10px; }
+.q-option { background: var(--surface); border: 2px solid var(--border); border-radius: 10px; padding: 14px 18px; cursor: pointer; font-size: 14px; color: var(--subtle); line-height: 1.6; text-align: left; transition: all 0.15s; display: flex; align-items: flex-start; gap: 12px; }
+.q-option:hover { border-color: var(--electric); color: var(--text); background: var(--card); }
+.q-option-letter { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 800; color: var(--electric); flex-shrink: 0; margin-top: 2px; }
+.q-option.selected { border-color: var(--electric); background: rgba(0,229,255,0.07); color: var(--white); }
+
+/* EXPLAIN */
+.q-explain-result { font-family: 'Bebas Neue', Impact, sans-serif; font-size: 28px; letter-spacing: 2px; flex: 1; }
+.q-explain-result.correct { color: #00f593; }
+.q-explain-result.wrong { color: #ff3d71; }
+.q-explain-options { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+.q-explain-opt { padding: 12px 16px; border-radius: 8px; font-size: 13px; line-height: 1.6; border: 2px solid var(--border); color: var(--muted); display: flex; gap: 10px; align-items: flex-start; }
+.q-explain-opt.correct-opt { border-color: #00f593; background: rgba(0,245,147,0.08); color: var(--text); }
+.q-explain-opt.wrong-opt { border-color: #ff3d71; background: rgba(255,61,113,0.06); color: var(--muted); text-decoration: line-through; opacity: 0.7; }
+.q-explain-box { background: rgba(0,229,255,0.06); border: 1px solid rgba(0,229,255,0.2); border-left: 3px solid #00e5ff; border-radius: 10px; padding: 18px 20px; margin-bottom: 20px; }
+.q-explain-box-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 800; letter-spacing: 3px; color: #00e5ff; text-transform: uppercase; margin-bottom: 10px; }
+.q-explain-box-text { font-size: 14px; color: var(--subtle); line-height: 1.8; }
+.q-next-btn { width: 100%; padding: 14px; background: var(--electric); color: #04040a; border: none; border-radius: 10px; font-size: 15px; font-weight: 800; cursor: pointer; transition: all 0.15s; }
+.q-next-btn:hover { filter: brightness(1.1); }
+
+/* RESULTS */
+.results-body { text-align: center; padding: 40px 20px; }
+.results-trophy { font-size: 64px; margin-bottom: 16px; }
+.results-title { font-family: 'Bebas Neue', Impact, sans-serif; font-size: 40px; letter-spacing: 3px; color: var(--white); margin-bottom: 16px; }
+.results-score { font-family: 'Bebas Neue', Impact, sans-serif; font-size: 72px; color: var(--electric); letter-spacing: 2px; margin-bottom: 8px; }
+.results-breakdown { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 24px 0; }
+.results-cell { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+.results-cell-num { font-family: 'Bebas Neue', Impact, sans-serif; font-size: 32px; color: var(--electric); }
+.results-cell-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; }
+.results-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 24px; }
+.results-btn-primary { padding: 12px 28px; background: var(--electric); color: #04040a; border: none; border-radius: 8px; font-size: 14px; font-weight: 800; cursor: pointer; }
+.results-btn-secondary { padding: 12px 28px; background: transparent; color: var(--muted); border: 1px solid var(--border); border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; }
+</style>
+
+<script>
+// ── QUIZ ENGINE ─────────────────────────────────────────────────────────────
+interface Question {
+  id: string; scenario: string; scenarioName: string; domain: string;
+  difficulty: string; taskRef: string; question: string;
+  options: string[]; correct: number; xp: number;
+  explanation: string; whyWrong: string[];
+}
+
+let allQuestions: Question[] = [];
+let sessionQuestions: Question[] = [];
+let currentIndex = 0;
+let sessionCorrect = 0;
+let sessionXP = 0;
+let selectedScenario = 'all';
+
+// Load all questions from JSON files
+async function loadQuestions() {
+  const scenarios = ['s1-agentic-coding','s2-document-processing','s3-customer-support','s4-research','s5-code-review','s6-data-extraction'];
+  const results = await Promise.all(
+    scenarios.map(s => fetch(`/content/questions/${s}.json`).then(r => r.json()).catch(() => []))
+  );
+  allQuestions = results.flat();
+
+  // Update counts on select screen
+  const scenarioCounts: Record<string, number> = {};
+  allQuestions.forEach(q => {
+    scenarioCounts[q.scenario] = (scenarioCounts[q.scenario] || 0) + 1;
+  });
+  document.getElementById('count-all')!.textContent = `${allQuestions.length} q`;
+  Object.entries(scenarioCounts).forEach(([s, count]) => {
+    const el = document.getElementById(`count-${s}`);
+    if (el) el.textContent = `${count} q`;
+  });
+  loadStats();
+}
+
+function loadStats() {
+  const history: Record<string, boolean> = JSON.parse(localStorage.getItem('az_quiz_history') || '{}');
+  const answered = Object.keys(history).length;
+  const correct = Object.values(history).filter(Boolean).length;
+  const xp = Number(localStorage.getItem('az_xp') || 0);
+  (document.getElementById('total-answered') as HTMLElement).textContent = String(answered);
+  (document.getElementById('total-correct') as HTMLElement).textContent = String(correct);
+  (document.getElementById('overall-pct') as HTMLElement).textContent = answered > 0 ? Math.round(correct/answered*100)+'%' : '—';
+  (document.getElementById('total-xp') as HTMLElement).textContent = String(xp);
+}
+
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function startQuiz(scenario: string) {
+  selectedScenario = scenario;
+  const pool = scenario === 'all' ? allQuestions : allQuestions.filter(q => q.scenario === scenario);
+  sessionQuestions = shuffle(pool).slice(0, Math.min(20, pool.length));
+  currentIndex = 0; sessionCorrect = 0; sessionXP = 0;
+  showScreen('question');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = sessionQuestions[currentIndex];
+  const pct = (currentIndex / sessionQuestions.length) * 100;
+  (document.getElementById('q-progress-fill') as HTMLElement).style.width = pct + '%';
+  (document.getElementById('q-progress-label') as HTMLElement).textContent = `${currentIndex + 1} of ${sessionQuestions.length}`;
+  (document.getElementById('q-score-pill') as HTMLElement).textContent = `${sessionCorrect} / ${currentIndex}`;
+  (document.getElementById('q-domain-tag') as HTMLElement).textContent = q.domain.toUpperCase();
+  (document.getElementById('q-diff-tag') as HTMLElement).textContent = q.difficulty;
+  (document.getElementById('q-xp-tag') as HTMLElement).textContent = `+${q.xp} XP`;
+  (document.getElementById('q-scenario-label') as HTMLElement).textContent = q.scenarioName;
+  (document.getElementById('q-text') as HTMLElement).textContent = q.question;
+
+  const opts = document.getElementById('q-options') as HTMLElement;
+  opts.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'q-option';
+    btn.innerHTML = `<span class="q-option-letter">${['A','B','C','D'][i]}</span><span>${opt}</span>`;
+    btn.onclick = () => selectAnswer(i);
+    opts.appendChild(btn);
+  });
+}
+
+function selectAnswer(chosen: number) {
+  const q = sessionQuestions[currentIndex];
+  const isCorrect = chosen === q.correct;
+
+  if (isCorrect) {
+    sessionCorrect++;
+    sessionXP += q.xp;
+    const totalXP = Number(localStorage.getItem('az_xp') || 0) + q.xp;
+    localStorage.setItem('az_xp', String(totalXP));
+  }
+
+  // Record in history
+  const history: Record<string, boolean> = JSON.parse(localStorage.getItem('az_quiz_history') || '{}');
+  history[q.id] = isCorrect;
+  localStorage.setItem('az_quiz_history', JSON.stringify(history));
+
+  // Show explanation
+  showScreen('explain');
+  const resultEl = document.getElementById('q-explain-result') as HTMLElement;
+  resultEl.textContent = isCorrect ? '✓ Correct' : '✗ Wrong';
+  resultEl.className = `q-explain-result ${isCorrect ? 'correct' : 'wrong'}`;
+  (document.getElementById('q-score-pill-2') as HTMLElement).textContent = `${sessionCorrect} / ${currentIndex + 1}`;
+  (document.getElementById('q-explain-question') as HTMLElement).textContent = q.question;
+
+  const optsEl = document.getElementById('q-explain-options') as HTMLElement;
+  optsEl.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const div = document.createElement('div');
+    div.className = `q-explain-opt ${i === q.correct ? 'correct-opt' : i === chosen && !isCorrect ? 'wrong-opt' : ''}`;
+    div.innerHTML = `<span style="font-family:monospace;font-size:11px;font-weight:800;flex-shrink:0;margin-top:2px">${['A','B','C','D'][i]}</span><span>${opt}</span>`;
+    optsEl.appendChild(div);
+  });
+
+  const box = document.getElementById('q-explain-box') as HTMLElement;
+  box.innerHTML = `<div class="q-explain-box-label">Why this answer</div><div class="q-explain-box-text">${q.explanation}</div>`;
+
+  const nextBtn = document.getElementById('q-next-btn') as HTMLElement;
+  nextBtn.textContent = currentIndex < sessionQuestions.length - 1 ? 'Next Question →' : 'See Results →';
+}
+
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex >= sessionQuestions.length) {
+    showResults();
+  } else {
+    showScreen('question');
+    renderQuestion();
+  }
+}
+
+function showResults() {
+  showScreen('results');
+  const pct = Math.round(sessionCorrect / sessionQuestions.length * 100);
+  const trophy = pct >= 90 ? '🏆' : pct >= 72 ? '✅' : pct >= 50 ? '📈' : '💪';
+  const title = pct >= 90 ? 'Excellent' : pct >= 72 ? 'Passing Score' : pct >= 50 ? 'Keep Studying' : 'Review and Retry';
+  (document.getElementById('results-trophy') as HTMLElement).textContent = trophy;
+  (document.getElementById('results-title') as HTMLElement).textContent = title;
+  (document.getElementById('results-score') as HTMLElement).textContent = `${pct}%`;
+  (document.getElementById('results-breakdown') as HTMLElement).innerHTML = `
+    <div class="results-cell"><div class="results-cell-num">${sessionCorrect}</div><div class="results-cell-label">Correct</div></div>
+    <div class="results-cell"><div class="results-cell-num">${sessionQuestions.length - sessionCorrect}</div><div class="results-cell-label">Wrong</div></div>
+    <div class="results-cell"><div class="results-cell-num">+${sessionXP}</div><div class="results-cell-label">XP Earned</div></div>
+  `;
+}
+
+function retryQuiz() { startQuiz(selectedScenario); }
+function exitQuiz() { showScreen('select'); loadStats(); }
+function showScreen(name: string) {
+  ['select','question','explain','results'].forEach(s => {
+    (document.getElementById(`screen-${s}`) as HTMLElement).classList.toggle('hidden', s !== name);
+  });
+}
+
+(window as any).startQuiz = startQuiz;
+(window as any).exitQuiz = exitQuiz;
+(window as any).nextQuestion = nextQuestion;
+(window as any).retryQuiz = retryQuiz;
+
+loadQuestions();
+</script>
