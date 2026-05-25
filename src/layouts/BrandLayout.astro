@@ -30,103 +30,135 @@ const {
       <slot />
     </main>
     <script is:inline>
-      const cursor = document.getElementById('cursor');
-      const ring = document.getElementById('cursorRing');
-      let mx = 0;
-      let my = 0;
-      let rx = 0;
-      let ry = 0;
+      // ── Brand interactions: cursor, nav scroll state, reveals, smooth scroll ──
+      // Everything is wrapped in an init function and called on every Astro
+      // page-load (initial + after each ViewTransitions swap) so it survives
+      // SPA navigation. State that must persist across pages (mouse position,
+      // RAF id) lives on window so we never double-bind or leak frames.
 
-      if (cursor && ring && window.matchMedia('(pointer: fine)').matches) {
-        document.addEventListener('mousemove', (event) => {
-          mx = event.clientX;
-          my = event.clientY;
-          cursor.style.left = `${mx - 4}px`;
-          cursor.style.top = `${my - 4}px`;
-        });
+      function setupBrandInteractions() {
+        const cursor = document.getElementById('cursor');
+        const ring = document.getElementById('cursorRing');
+        const isFinePointer = window.matchMedia('(pointer: fine)').matches;
 
-        const animateRing = () => {
-          rx += (mx - rx) * 0.12;
-          ry += (my - ry) * 0.12;
-          ring.style.left = `${rx - 16}px`;
-          ring.style.top = `${ry - 16}px`;
-          requestAnimationFrame(animateRing);
-        };
-        animateRing();
+        // CURSOR — bind mousemove/RAF once (idempotent across navigations).
+        if (cursor && ring && isFinePointer) {
+          window.__azCursor = window.__azCursor || { mx: 0, my: 0, rx: 0, ry: 0, raf: 0, bound: false };
+          const s = window.__azCursor;
 
-        document.querySelectorAll('a, button').forEach((el) => {
-          el.addEventListener('mouseenter', () => {
-            cursor.style.transform = 'scale(2.5)';
-            ring.classList.add('is-hovering');
+          if (!s.bound) {
+            document.addEventListener('mousemove', (event) => {
+              s.mx = event.clientX;
+              s.my = event.clientY;
+              const c = document.getElementById('cursor');
+              if (c) {
+                c.style.left = (s.mx - 4) + 'px';
+                c.style.top = (s.my - 4) + 'px';
+              }
+            });
+            s.bound = true;
+          }
+
+          // Re-target the RAF loop at the CURRENT cursor element each navigation.
+          if (s.raf) cancelAnimationFrame(s.raf);
+          const animateRing = () => {
+            s.rx += (s.mx - s.rx) * 0.12;
+            s.ry += (s.my - s.ry) * 0.12;
+            const r = document.getElementById('cursorRing');
+            if (r) {
+              r.style.left = (s.rx - 16) + 'px';
+              r.style.top = (s.ry - 16) + 'px';
+            }
+            s.raf = requestAnimationFrame(animateRing);
+          };
+          // Snap to current mouse position so the new cursor doesn't appear in the corner.
+          cursor.style.left = (s.mx - 4) + 'px';
+          cursor.style.top = (s.my - 4) + 'px';
+          ring.style.left = (s.rx - 16) + 'px';
+          ring.style.top = (s.ry - 16) + 'px';
+          s.raf = requestAnimationFrame(animateRing);
+
+          // Hover targets are page-local DOM, so re-bind on every navigation.
+          document.querySelectorAll('a, button').forEach((el) => {
+            el.addEventListener('mouseenter', () => {
+              cursor.style.transform = 'scale(2.5)';
+              ring.classList.add('is-hovering');
+            });
+            el.addEventListener('mouseleave', () => {
+              cursor.style.transform = 'scale(1)';
+              ring.classList.remove('is-hovering');
+            });
           });
-          el.addEventListener('mouseleave', () => {
-            cursor.style.transform = 'scale(1)';
-            ring.classList.remove('is-hovering');
+        }
+
+        // NAV SCROLL STATE — bind window scroll once.
+        if (!window.__azNavScrollBound) {
+          window.addEventListener('scroll', () => {
+            const nb = document.getElementById('navbar');
+            if (nb) nb.classList.toggle('scrolled', window.scrollY > 60);
+          });
+          window.__azNavScrollBound = true;
+        }
+
+        // MOBILE MENU TOGGLE — element-local, re-bind per navigation.
+        const menuButton = document.getElementById('navMenuButton');
+        const links = document.getElementById('brandNavLinks');
+        if (menuButton && !menuButton.dataset.bound) {
+          menuButton.addEventListener('click', () => {
+            const isOpen = links?.classList.toggle('is-open');
+            menuButton.setAttribute('aria-expanded', String(Boolean(isOpen)));
+          });
+          menuButton.dataset.bound = 'true';
+        }
+
+        // REVEAL ON SCROLL — IntersectionObserver re-created per page.
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+        // SMOOTH SCROLL for in-page anchors. Page-local, must re-bind.
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+          if (anchor.dataset.smoothBound) return;
+          anchor.dataset.smoothBound = 'true';
+          anchor.addEventListener('click', (event) => {
+            const id = anchor.getAttribute('href');
+            if (!id || id === '#') return;
+            const target = document.querySelector(id);
+            if (target) {
+              event.preventDefault();
+              target.scrollIntoView({ behavior: 'smooth' });
+              links?.classList.remove('is-open');
+              menuButton?.setAttribute('aria-expanded', 'false');
+            }
           });
         });
       }
 
-      const navbar = document.getElementById('navbar');
-      window.addEventListener('scroll', () => {
-        navbar?.classList.toggle('scrolled', window.scrollY > 60);
-      });
-
-      const menuButton = document.getElementById('navMenuButton');
-      const links = document.getElementById('brandNavLinks');
-      menuButton?.addEventListener('click', () => {
-        const isOpen = links?.classList.toggle('is-open');
-        menuButton.setAttribute('aria-expanded', String(Boolean(isOpen)));
-      });
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.1 });
-
-      document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
-
-      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-        anchor.addEventListener('click', (event) => {
-          const id = anchor.getAttribute('href');
-          if (!id || id === '#') return;
-          const target = document.querySelector(id);
-          if (target) {
-            event.preventDefault();
-            target.scrollIntoView({ behavior: 'smooth' });
-            links?.classList.remove('is-open');
-            menuButton?.setAttribute('aria-expanded', 'false');
-          }
-        });
-      });
+      // Initial load + every ViewTransitions navigation.
+      setupBrandInteractions();
+      document.addEventListener('astro:page-load', setupBrandInteractions);
     </script>
   </body>
 </html>
 
 <style is:global>
   body.brand-page {
-    --black: var(--bg-0);
-    --deep: var(--bg-1);
-    --surface: var(--bg-2);
-    --card: var(--bg-3);
-    --border: rgba(154, 255, 190, 0.14);
-    --muted: #688073;
-    --subtle: #a5b7ad;
-    --text: #e8f3ed;
-    --white: #ffffff;
-    --electric: var(--brand);
-    --electric-dim: var(--brand-dim);
-    --electric-mid: var(--brand-mid);
-    --signal: #ff4f7e;
-    --signal-dim: rgba(255, 79, 126, 0.14);
-    --gold: #ffd166;
-    --gold-dim: rgba(255, 209, 102, 0.14);
-    --green: var(--brand);
+    /* On brand pages, the AZ "electric" tokens alias to brand indigo so
+       any AZ-derived component styling that references var(--electric)
+       renders in the brand palette automatically. */
+    --electric: var(--brand-primary);
+    --electric-dim: var(--brand-primary-dim);
+    --electric-mid: var(--brand-primary-mid);
+    --border: rgba(168, 85, 247, 0.18);
     background:
-      radial-gradient(circle at 50% -20%, rgba(0, 255, 65, 0.10), transparent 38%),
+      radial-gradient(circle at 50% -20%, rgba(99, 102, 241, 0.18), transparent 42%),
+      radial-gradient(circle at 80% 110%, rgba(168, 85, 247, 0.14), transparent 50%),
       linear-gradient(180deg, var(--bg-0), var(--bg-1) 42%, var(--bg-0));
     color: var(--text);
     font-family: 'DM Sans', 'Barlow', system-ui, sans-serif;
@@ -188,8 +220,8 @@ const {
     position: absolute;
     inset: 0;
     background-image:
-      linear-gradient(rgba(0, 255, 65, 0.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 255, 65, 0.08) 1px, transparent 1px);
+      linear-gradient(rgba(99, 102, 241, 0.10) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(99, 102, 241, 0.10) 1px, transparent 1px);
     background-size: 64px 64px;
     mask-image: linear-gradient(180deg, black, transparent 82%);
     opacity: 0.42;
@@ -208,7 +240,7 @@ const {
     height: 680px;
     top: -260px;
     right: -160px;
-    background: conic-gradient(from 120deg, rgba(0, 255, 65, 0.18), rgba(138, 255, 193, 0.04), rgba(255, 79, 126, 0.08), rgba(0, 255, 65, 0.18));
+    background: conic-gradient(from 120deg, rgba(99, 102, 241, 0.20), rgba(168, 85, 247, 0.08), rgba(244, 63, 94, 0.08), rgba(99, 102, 241, 0.20));
   }
 
   .brand-orb-2 {
@@ -216,7 +248,7 @@ const {
     height: 460px;
     bottom: -170px;
     left: -130px;
-    background: conic-gradient(from 250deg, rgba(0, 255, 65, 0.14), rgba(255, 209, 102, 0.07), transparent, rgba(0, 255, 65, 0.14));
+    background: conic-gradient(from 250deg, rgba(168, 85, 247, 0.16), rgba(234, 179, 8, 0.07), transparent, rgba(168, 85, 247, 0.16));
     animation-delay: -7s;
   }
 
@@ -225,7 +257,7 @@ const {
     height: 360px;
     top: 36%;
     left: 54%;
-    background: radial-gradient(circle, rgba(0, 255, 65, 0.08), transparent 68%);
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.10), transparent 68%);
     animation-delay: -12s;
   }
 
@@ -470,13 +502,13 @@ const {
 
   .chip-signal {
     background: var(--signal-dim);
-    border: 1px solid rgba(255, 79, 126, 0.32);
+    border: 1px solid rgba(244, 63, 94, 0.32);
     color: var(--signal);
   }
 
   .chip-gold {
     background: var(--gold-dim);
-    border: 1px solid rgba(255, 209, 102, 0.32);
+    border: 1px solid rgba(234, 179, 8, 0.32);
     color: var(--gold);
   }
 
@@ -553,7 +585,7 @@ const {
     width: 100%;
     aspect-ratio: 3 / 4;
     border-radius: 4px;
-    background: linear-gradient(145deg, rgba(0, 255, 65, 0.08), rgba(255, 255, 255, 0.02));
+    background: linear-gradient(145deg, rgba(99, 102, 241, 0.10), rgba(255, 255, 255, 0.02));
     border: 1px solid var(--border);
     position: relative;
     overflow: hidden;
@@ -567,7 +599,7 @@ const {
     content: '';
     position: absolute;
     inset: 12px;
-    border: 1px solid rgba(0, 255, 65, 0.08);
+    border: 1px solid rgba(99, 102, 241, 0.10);
   }
 
   .avatar-placeholder {
@@ -814,7 +846,7 @@ const {
   }
 
   .stat-block:hover {
-    background: rgba(0, 255, 65, 0.05);
+    background: rgba(99, 102, 241, 0.08);
   }
 
   .stat-num {
@@ -878,7 +910,7 @@ const {
   .building-card:hover {
     transform: translateY(-3px);
     border-color: var(--brand-mid);
-    box-shadow: 0 16px 48px rgba(0, 255, 65, 0.08);
+    box-shadow: 0 16px 48px rgba(99, 102, 241, 0.10);
   }
 
   .building-card:hover::before {
@@ -888,9 +920,9 @@ const {
   .bc-electric::before { background: var(--brand); }
   .bc-signal::before { background: var(--signal); }
   .bc-gold::before { background: var(--gold); }
-  .bc-electric:hover { border-color: var(--brand-mid); box-shadow: 0 16px 48px rgba(0, 255, 65, 0.10); }
-  .bc-signal:hover { border-color: rgba(255, 79, 126, 0.34); box-shadow: 0 16px 48px rgba(255, 79, 126, 0.10); }
-  .bc-gold:hover { border-color: rgba(255, 209, 102, 0.34); box-shadow: 0 16px 48px rgba(255, 209, 102, 0.10); }
+  .bc-electric:hover { border-color: var(--brand-mid); box-shadow: 0 16px 48px rgba(99, 102, 241, 0.14); }
+  .bc-signal:hover { border-color: rgba(244, 63, 94, 0.34); box-shadow: 0 16px 48px rgba(244, 63, 94, 0.10); }
+  .bc-gold:hover { border-color: rgba(234, 179, 8, 0.34); box-shadow: 0 16px 48px rgba(234, 179, 8, 0.10); }
   .bc-icon { font-size: 32px; margin-bottom: 20px; }
   .bc-electric .bc-tag, .bc-electric .bc-link { color: var(--brand); }
   .bc-signal .bc-tag, .bc-signal .bc-link { color: var(--signal); }
@@ -942,7 +974,7 @@ const {
     right: -100px;
     width: 500px;
     height: 500px;
-    background: radial-gradient(circle, rgba(0, 255, 65, 0.08), transparent 70%);
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.10), transparent 70%);
   }
 
   .az-feature-grid {
@@ -1015,7 +1047,7 @@ const {
     align-items: center;
     gap: 14px;
     padding: 12px 16px;
-    background: rgba(0, 255, 65, 0.04);
+    background: rgba(99, 102, 241, 0.06);
     border: 1px solid var(--border);
     border-radius: 3px;
     transition: border-color 0.2s var(--ease-out), transform 0.2s var(--ease-out);
@@ -1192,7 +1224,7 @@ const {
     display: grid;
     place-items: center;
     border-radius: 3px;
-    background: rgba(0, 255, 65, 0.08);
+    background: rgba(99, 102, 241, 0.10);
     color: var(--brand);
     font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
