@@ -1,4 +1,5 @@
 ---
+import { ViewTransitions } from 'astro:transitions';
 import '../styles/global.css';
 
 interface Props {
@@ -39,6 +40,7 @@ function isActive(href: string) {
   <meta name="theme-color" content="#04040a"/>
   <meta name="description" content={description}/>
   <link rel="manifest" href="/manifest.webmanifest"/>
+  <ViewTransitions />
   <title>{title}</title>
 </head>
 <body>

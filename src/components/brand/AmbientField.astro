@@ -1,10 +1,69 @@
 ---
+interface Props {
+  variant?: 'brand';
+  bubbles?: boolean;
+}
+
+const { variant = 'brand', bubbles = false } = Astro.props;
+const rand = (min: number, max: number) => Math.random() * (max - min) + min;
+const bubbleConfigs = bubbles
+  ? Array.from({ length: 32 }, () => ({
+      size: Math.round(rand(8, 72)),
+      x: Math.round(rand(0, 100)),
+      duration: Math.round(rand(18, 38)),
+      delay: -Math.round(rand(0, 38)),
+      drift: Math.round(rand(-40, 40)),
+      opacity: (rand(8, 24) / 100).toFixed(2),
+    }))
+  : [];
 ---
 
-<div class="brand-ambient" aria-hidden="true">
+<div class:list={['brand-ambient', `brand-ambient-${variant}`, { 'has-bubbles': bubbles }]} aria-hidden="true">
   <div class="brand-grid-bg"></div>
   <div class="brand-orb brand-orb-1"></div>
   <div class="brand-orb brand-orb-2"></div>
   <div class="brand-orb brand-orb-3"></div>
+  {bubbleConfigs.map((bubble) => (
+    <div
+      class="bubble"
+      style={`--size:${bubble.size}px;--x:${bubble.x}%;--duration:${bubble.duration}s;--delay:${bubble.delay}s;--drift:${bubble.drift}px;--opacity:${bubble.opacity};`}
+    />
+  ))}
   <div class="brand-noise"></div>
 </div>
+
+<style is:global>
+  .bubble {
+    position: absolute;
+    bottom: -10vh;
+    left: var(--x);
+    width: var(--size);
+    height: var(--size);
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, currentColor 0%, transparent 70%);
+    color: var(--brand);
+    opacity: var(--opacity);
+    filter: blur(0.5px);
+    animation: bubbleRise var(--duration) linear infinite;
+    animation-delay: var(--delay);
+    will-change: transform;
+    pointer-events: none;
+  }
+
+  body.brand-page .bubble {
+    color: var(--brand);
+  }
+
+  @keyframes bubbleRise {
+    0% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(var(--drift), -60vh, 0) scale(1.05); }
+    100% { transform: translate3d(0, -120vh, 0) scale(0.9); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bubble {
+      animation: none;
+      opacity: 0;
+    }
+  }
+</style>
