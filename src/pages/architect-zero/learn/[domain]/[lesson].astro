@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import AmbientField from '../../../../components/brand/AmbientField.astro';
 import CourseRail from '../../../../components/CourseRail.astro';
 import { getCollection } from 'astro:content';
 import { DOMAINS } from '../../../../lib/domains';
@@ -32,6 +33,7 @@ const nextLesson = currentIdx < domainLessons.length - 1 ? domainLessons[current
 <BaseLayout title={`${lesson.data.title} — Architect Zero`}>
 
 <div class="course-shell">
+  <AmbientField variant="lesson" domainColor={domain.color} />
 
   <div class="course-shell-rail" id="course-rail-wrap">
     <CourseRail domain={domain} lessons={domainLessons} currentLessonId={lesson.data.id} />
