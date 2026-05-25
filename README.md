@@ -1,76 +1,40 @@
-# Venkata Sundaragiri - SAP Architect & AI Pioneer
+# Venkata.Info
 
-## Project info
+Single Astro site for the Venkata.Info brand and Architect Zero.
 
-Professional website showcasing SAP architecture expertise, AI integration patterns, and practical blueprints for enterprise transformation.
+## Routes
 
-**Live Site**: https://venkata.info
-**Repository**: https://github.com/sundaragiriv/venkataSite
+- `/` - Venkata brand homepage, built from Astro components in `src/components/brand/`.
+- `/architect-zero/*` - Architect Zero CCA study app, migrated from the donor Astro app.
 
-## How can I edit this code?
+## Stack
 
-There are several ways of editing your application.
+- Astro 4
+- Astro content collections for Architect Zero lessons, quiz data, and flashcards
+- React islands available through `@astrojs/react`
+- Tailwind integration installed for compatibility, with AZ pages primarily using scoped CSS
+- `vite-plugin-pwa` scoped to `/architect-zero/`
+- `@astrojs/sitemap` for sitemap generation
 
-**Use Lovable**
+## Source Layout
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/160933a6-3c76-4f75-8cbc-ccca3b22ecc1) and start prompting.
+- `src/pages/index.astro` - brand homepage entry
+- `src/layouts/BrandLayout.astro` - brand shell and inline interaction script
+- `src/components/brand/` - brand homepage sections
+- `src/pages/architect-zero/` - Architect Zero app routes
+- `src/layouts/BaseLayout.astro` - Architect Zero app shell
+- `src/content/` - Architect Zero content collections
+- `public/architect-zero/content/` - runtime quiz and flashcard JSON used by client-side pages
 
-Changes made via Lovable will be committed automatically to this repo.
+## Commands
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+```bash
+npm install
 npm run dev
+npm run build
+npm run preview
 ```
 
-**Edit a file directly in GitHub**
+## Deployment
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/160933a6-3c76-4f75-8cbc-ccca3b22ecc1) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+GitHub Actions builds Astro to `dist/` and publishes to GitHub Pages with `venkata.info` as the custom domain. Do not merge `astro-rewrite` into `main` until cutover review is complete.
