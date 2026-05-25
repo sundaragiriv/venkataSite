@@ -62,21 +62,26 @@ function isActive(href: string) {
     body:not(.az-gating) .az-gate-overlay { display: none; }
   </style>
   <script is:inline>
-    // Synchronous read of supabase session cached in localStorage. Avoids
-    // first-paint flash of dashboard content for unauthed users.
+    // Synchronous session check on first paint. Authed users skip the
+    // "Loading..." overlay; unauthed users stay gated until the async
+    // module script redirects them to sign-in.
     (function () {
       try {
-        var keys = Object.keys(localStorage);
+        var path = window.location.pathname;
+        if (!path.endsWith('/')) path += '/';
+        var bypass = path.indexOf('/architect-zero/auth/') !== -1
+                  || path.indexOf('/architect-zero/_dev/') !== -1;
         var hasSession = false;
-        for (var i = 0; i < keys.length; i++) {
-          if (/^sb-.*-auth-token$/.test(keys[i])) {
-            var v = localStorage.getItem(keys[i]);
+        for (var i = 0; i < localStorage.length; i++) {
+          var k = localStorage.key(i);
+          if (k && /^sb-.*-auth-token$/.test(k)) {
+            var v = localStorage.getItem(k);
             if (v && v.indexOf('access_token') !== -1) { hasSession = true; break; }
           }
         }
-        if (!hasSession) {
-          document.documentElement.classList.add('az-no-session');
-          document.body && document.body.classList.add('az-gating');
+        if (bypass || hasSession) {
+          if (document.body) document.body.classList.remove('az-gating');
+          else document.addEventListener('DOMContentLoaded', function () { document.body.classList.remove('az-gating'); });
         }
       } catch (e) { /* localStorage blocked — fall through to async gate */ }
     })();
@@ -275,15 +280,16 @@ function isActive(href: string) {
   import { supabase } from '../lib/supabase';
   import { getDisplayName, getAvatarUrl, rememberIntendedUrl, AUTH_ROUTES } from '../lib/auth';
 
-  const here = window.location.pathname;
-  const path = here.endsWith('/') ? here : here + '/';
-
-  // Routes that bypass the gate (auth pages themselves + dev smoke).
-  const isAuthRoute = path.includes('/architect-zero/auth/');
-  const isDevRoute = path.includes('/architect-zero/_dev/');
+  function currentPath() {
+    const here = window.location.pathname;
+    return here.endsWith('/') ? here : here + '/';
+  }
+  function isAuthRoute(p: string) { return p.includes('/architect-zero/auth/'); }
+  function isDevRoute(p: string) { return p.includes('/architect-zero/_dev/'); }
 
   async function applyGate() {
-    if (isAuthRoute || isDevRoute) {
+    const path = currentPath();
+    if (isAuthRoute(path) || isDevRoute(path)) {
       document.body.classList.remove('az-gating');
       return;
     }
@@ -320,10 +326,46 @@ function isActive(href: string) {
     }
   }
 
+  function hasCachedSession() {
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && /^sb-.*-auth-token$/.test(k)) {
+          const v = localStorage.getItem(k);
+          if (v && v.indexOf('access_token') !== -1) return true;
+        }
+      }
+    } catch { /* blocked */ }
+    return false;
+  }
+
+  // Fire on initial load AND after every Astro ViewTransitions swap.
+  document.addEventListener('astro:page-load', applyGate);
+
+  // Before the new page paints, decide whether to gate or pass-through.
+  // Skip the overlay during navigation when we already have a cached session
+  // so authed users see no flash of "Loading..." between pages.
+  document.addEventListener('astro:before-swap', (e) => {
+    const target = (e as any).newDocument as Document;
+    if (!target?.body) return;
+    const nextPath = (target.location?.pathname || '/') + '/';
+    if (nextPath.includes('/architect-zero/auth/') || nextPath.includes('/architect-zero/_dev/')) {
+      target.body.classList.remove('az-gating');
+      return;
+    }
+    if (hasCachedSession()) {
+      target.body.classList.remove('az-gating');
+    } else {
+      target.body.classList.add('az-gating');
+    }
+  });
+
+  // First load fallback (in case astro:page-load already fired before this
+  // listener was attached).
   applyGate();
 
   supabase.auth.onAuthStateChange((event) => {
-    if (event === 'SIGNED_OUT' && !isAuthRoute) {
+    if (event === 'SIGNED_OUT' && !isAuthRoute(currentPath())) {
       window.location.replace(AUTH_ROUTES.signIn);
     }
   });
