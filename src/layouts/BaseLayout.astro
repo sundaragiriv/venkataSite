@@ -42,8 +42,49 @@ function isActive(href: string) {
   <link rel="manifest" href="/manifest.webmanifest"/>
   <ViewTransitions />
   <title>{title}</title>
+  <style is:inline>
+    body.az-gating #app,
+    body.az-gating #level-up-overlay { visibility: hidden; }
+    .az-gate-overlay {
+      position: fixed;
+      inset: 0;
+      background: #04040a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #6a6a9a;
+    }
+    body:not(.az-gating) .az-gate-overlay { display: none; }
+  </style>
+  <script is:inline>
+    // Synchronous read of supabase session cached in localStorage. Avoids
+    // first-paint flash of dashboard content for unauthed users.
+    (function () {
+      try {
+        var keys = Object.keys(localStorage);
+        var hasSession = false;
+        for (var i = 0; i < keys.length; i++) {
+          if (/^sb-.*-auth-token$/.test(keys[i])) {
+            var v = localStorage.getItem(keys[i]);
+            if (v && v.indexOf('access_token') !== -1) { hasSession = true; break; }
+          }
+        }
+        if (!hasSession) {
+          document.documentElement.classList.add('az-no-session');
+          document.body && document.body.classList.add('az-gating');
+        }
+      } catch (e) { /* localStorage blocked — fall through to async gate */ }
+    })();
+  </script>
 </head>
-<body>
+<body class="az-gating">
+
+<div class="az-gate-overlay" aria-hidden="true">Loading...</div>
 
 <div id="app">
 
@@ -104,6 +145,10 @@ function isActive(href: string) {
         <span id="sb-streak">0 day streak</span>
       </div>
       <div class="sidebar-exam-tag">CCA Certified Architect</div>
+      <a href="/architect-zero/auth/account" class="sidebar-account" id="sb-account" aria-label="Account">
+        <span class="sidebar-account-avatar" id="sb-avatar" aria-hidden="true">?</span>
+        <span class="sidebar-account-name" id="sb-name">Account</span>
+      </a>
     </div>
 
   </aside>
@@ -224,6 +269,112 @@ function isActive(href: string) {
   }
   window.toggleMobileMenu = toggleMobileMenu;
 </script>
+
+<!-- AUTH GATE -->
+<script>
+  import { supabase } from '../lib/supabase';
+  import { getDisplayName, getAvatarUrl, rememberIntendedUrl, AUTH_ROUTES } from '../lib/auth';
+
+  const here = window.location.pathname;
+  const path = here.endsWith('/') ? here : here + '/';
+
+  // Routes that bypass the gate (auth pages themselves + dev smoke).
+  const isAuthRoute = path.includes('/architect-zero/auth/');
+  const isDevRoute = path.includes('/architect-zero/_dev/');
+
+  async function applyGate() {
+    if (isAuthRoute || isDevRoute) {
+      document.body.classList.remove('az-gating');
+      return;
+    }
+
+    const { data } = await supabase.auth.getSession();
+    const session = data.session;
+
+    if (!session) {
+      rememberIntendedUrl(window.location.pathname + window.location.search);
+      window.location.replace(AUTH_ROUTES.signIn);
+      return;
+    }
+
+    // Authed — render the page and populate the account chip.
+    document.body.classList.remove('az-gating');
+
+    const user = session.user;
+    const name = getDisplayName(user);
+    const avatar = getAvatarUrl(user);
+    const nameEl = document.getElementById('sb-name');
+    const avatarEl = document.getElementById('sb-avatar');
+    if (nameEl) nameEl.textContent = name;
+    if (avatarEl) {
+      if (avatar) {
+        avatarEl.innerHTML = '';
+        const img = document.createElement('img');
+        img.src = avatar;
+        img.alt = '';
+        img.referrerPolicy = 'no-referrer';
+        avatarEl.appendChild(img);
+      } else {
+        avatarEl.textContent = (name[0] || '?').toUpperCase();
+      }
+    }
+  }
+
+  applyGate();
+
+  supabase.auth.onAuthStateChange((event) => {
+    if (event === 'SIGNED_OUT' && !isAuthRoute) {
+      window.location.replace(AUTH_ROUTES.signIn);
+    }
+  });
+</script>
+
+<style is:global>
+  .sidebar-account {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 14px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    color: var(--text);
+    text-decoration: none;
+    transition: background 150ms ease, border-color 150ms ease;
+  }
+  .sidebar-account:hover {
+    background: var(--bg-2);
+    border-color: var(--bg-4);
+  }
+  .sidebar-account-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--brand-gradient);
+    color: white;
+    font-weight: 800;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+  .sidebar-account-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .sidebar-account-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+</style>
 
 </body>
 </html>

@@ -1,0 +1,101 @@
+---
+import AuthLayout from '../../../layouts/AuthLayout.astro';
+import OAuthButtons from '../../../components/auth/OAuthButtons.astro';
+---
+
+<AuthLayout title="Create account — Architect Zero" description="Create an Architect Zero account">
+  <header class="auth-header">
+    <h1>Create your account</h1>
+    <p>114 lessons, 108 quiz questions, 90 flashcards. Free.</p>
+  </header>
+
+  <OAuthButtons label="Sign up" />
+
+  <div class="auth-divider"><span>or with email</span></div>
+
+  <form id="sign-up-form" novalidate>
+    <label class="field">
+      <span>Display name</span>
+      <input type="text" name="displayName" autocomplete="nickname" maxlength="40" placeholder="What should we call you?" />
+    </label>
+    <label class="field">
+      <span>Email</span>
+      <input type="email" name="email" autocomplete="email" required placeholder="you@example.com" />
+    </label>
+    <label class="field">
+      <span>Password</span>
+      <input type="password" name="password" autocomplete="new-password" required minlength="8" placeholder="At least 8 characters" />
+    </label>
+
+    <p id="auth-error" class="auth-error" role="alert" aria-live="polite"></p>
+    <p id="auth-info" class="auth-info" style="display:none"></p>
+
+    <button type="submit" class="auth-submit">Create account</button>
+  </form>
+
+  <p class="auth-links">
+    <a href="/architect-zero/auth/sign-in">Already have an account? Sign in</a>
+  </p>
+</AuthLayout>
+
+<script>
+  import { supabase } from '../../../lib/supabase';
+  import { rememberIntendedUrl } from '../../../lib/auth';
+
+  const params = new URL(window.location.href).searchParams;
+  const next = params.get('next');
+  if (next && next.startsWith('/architect-zero/') && !next.includes('/auth/')) {
+    rememberIntendedUrl(next);
+  }
+
+  const form = document.getElementById('sign-up-form') as HTMLFormElement | null;
+  const errEl = document.getElementById('auth-error');
+  const infoEl = document.getElementById('auth-info');
+
+  function showInfo(message: string) {
+    if (!infoEl) return;
+    infoEl.style.display = 'block';
+    infoEl.textContent = message;
+  }
+
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (errEl) errEl.textContent = '';
+      if (infoEl) { infoEl.style.display = 'none'; infoEl.textContent = ''; }
+
+      const data = new FormData(form);
+      const email = String(data.get('email') || '').trim();
+      const password = String(data.get('password') || '');
+      const displayName = String(data.get('displayName') || '').trim();
+
+      const submit = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+      if (submit) { submit.disabled = true; submit.textContent = 'Creating account...'; }
+
+      const { data: result, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: window.location.origin + '/architect-zero/auth/callback',
+          data: displayName ? { display_name: displayName } : undefined,
+        },
+      });
+
+      if (error) {
+        if (errEl) errEl.textContent = error.message;
+        if (submit) { submit.disabled = false; submit.textContent = 'Create account'; }
+        return;
+      }
+
+      if (result.session) {
+        window.location.replace('/architect-zero/');
+        return;
+      }
+
+      // Email confirmation required
+      showInfo('Check your inbox for a confirmation link. Once confirmed, you can sign in.');
+      form.reset();
+      if (submit) { submit.disabled = false; submit.textContent = 'Create account'; }
+    });
+  }
+</script>

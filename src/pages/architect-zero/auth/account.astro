@@ -1,0 +1,244 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Account — Architect Zero" description="Manage your Architect Zero account">
+  <div class="account-shell">
+    <header class="account-head">
+      <a href="/architect-zero/" class="account-back">&larr; Dashboard</a>
+      <h1>Account</h1>
+    </header>
+
+    <section class="account-card">
+      <h2>Profile</h2>
+      <div class="account-row">
+        <div class="account-row-label">Email</div>
+        <div class="account-row-value" id="acc-email">—</div>
+      </div>
+      <div class="account-row">
+        <div class="account-row-label">Member since</div>
+        <div class="account-row-value" id="acc-since">—</div>
+      </div>
+      <div class="account-row">
+        <div class="account-row-label">Plan</div>
+        <div class="account-row-value">
+          <span id="acc-tier" class="acc-tier">free</span>
+        </div>
+      </div>
+
+      <form id="profile-form" class="account-form" novalidate>
+        <label class="field">
+          <span>Display name</span>
+          <input type="text" name="displayName" maxlength="40" placeholder="Shown on the leaderboard if opted in" />
+        </label>
+
+        <label class="account-toggle">
+          <input type="checkbox" name="leaderboardOptIn" />
+          <span>
+            <strong>Show me on the leaderboard</strong>
+            <small>Off by default. Your display name appears publicly when on.</small>
+          </span>
+        </label>
+
+        <p id="profile-error" class="auth-error" role="alert" aria-live="polite"></p>
+        <p id="profile-info" class="auth-info" style="display:none"></p>
+
+        <button type="submit" class="auth-submit">Save changes</button>
+      </form>
+    </section>
+
+    <section class="account-card account-danger">
+      <h2>Session</h2>
+      <p>Sign out of this browser. Your progress stays saved in your account.</p>
+      <button type="button" id="sign-out-btn" class="acc-signout">Sign out</button>
+    </section>
+  </div>
+</BaseLayout>
+
+<script>
+  import { supabase } from '../../../lib/supabase';
+  import { signOut } from '../../../lib/auth';
+
+  const emailEl = document.getElementById('acc-email');
+  const sinceEl = document.getElementById('acc-since');
+  const tierEl = document.getElementById('acc-tier');
+  const errEl = document.getElementById('profile-error');
+  const infoEl = document.getElementById('profile-info');
+  const form = document.getElementById('profile-form') as HTMLFormElement | null;
+  const signOutBtn = document.getElementById('sign-out-btn') as HTMLButtonElement | null;
+
+  signOutBtn?.addEventListener('click', async () => {
+    signOutBtn.disabled = true;
+    signOutBtn.textContent = 'Signing out...';
+    await signOut();
+  });
+
+  const { data: sessionData } = await supabase.auth.getSession();
+  const user = sessionData.session?.user;
+
+  if (!user) {
+    window.location.replace('/architect-zero/auth/sign-in');
+  } else {
+    if (emailEl) emailEl.textContent = user.email ?? '—';
+    if (sinceEl && user.created_at) {
+      sinceEl.textContent = new Date(user.created_at).toLocaleDateString();
+    }
+
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('display_name, leaderboard_opt_in, tier')
+      .eq('id', user.id)
+      .maybeSingle();
+
+    if (profile) {
+      if (tierEl) tierEl.textContent = profile.tier ?? 'free';
+      if (form) {
+        const nameInput = form.elements.namedItem('displayName') as HTMLInputElement | null;
+        if (nameInput) nameInput.value = profile.display_name ?? '';
+        const toggle = form.elements.namedItem('leaderboardOptIn') as HTMLInputElement | null;
+        if (toggle) toggle.checked = !!profile.leaderboard_opt_in;
+      }
+    }
+  }
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (errEl) errEl.textContent = '';
+    if (infoEl) { infoEl.style.display = 'none'; infoEl.textContent = ''; }
+
+    if (!user) return;
+
+    const data = new FormData(form);
+    const displayName = String(data.get('displayName') || '').trim();
+    const leaderboardOptIn = data.get('leaderboardOptIn') === 'on';
+
+    const submit = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+    if (submit) { submit.disabled = true; submit.textContent = 'Saving...'; }
+
+    const { error } = await supabase
+      .from('profiles')
+      .update({
+        display_name: displayName || null,
+        leaderboard_opt_in: leaderboardOptIn,
+      })
+      .eq('id', user.id);
+
+    if (error) {
+      if (errEl) errEl.textContent = error.message;
+      if (submit) { submit.disabled = false; submit.textContent = 'Save changes'; }
+      return;
+    }
+
+    if (infoEl) {
+      infoEl.style.display = 'block';
+      infoEl.textContent = 'Saved.';
+    }
+    if (submit) { submit.disabled = false; submit.textContent = 'Save changes'; }
+  });
+</script>
+
+<style>
+  .account-shell { max-width: 720px; margin: 0 auto; padding: 32px 24px 80px; }
+  .account-back {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 1px;
+  }
+  .account-head h1 {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: clamp(32px, 4vw, 44px);
+    letter-spacing: 2px;
+    color: var(--white);
+    margin: 12px 0 28px;
+  }
+  .account-card {
+    background: var(--bg-2);
+    border: 1px solid var(--bg-4);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+  .account-card h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    color: var(--electric);
+    text-transform: uppercase;
+    margin: 0 0 20px;
+  }
+  .account-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--bg-4);
+  }
+  .account-row:last-of-type { border-bottom: 0; margin-bottom: 18px; }
+  .account-row-label { font-size: 13px; color: var(--subtle); }
+  .account-row-value { font-size: 14px; color: var(--text); font-weight: 600; }
+  .acc-tier {
+    display: inline-block;
+    padding: 2px 10px;
+    background: var(--electric-dim);
+    border: 1px solid var(--electric-mid);
+    border-radius: 4px;
+    color: var(--electric);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .account-form { padding-top: 8px; }
+  .account-toggle {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+    cursor: pointer;
+  }
+  .account-toggle input[type='checkbox'] {
+    margin-top: 3px;
+    accent-color: var(--brand-primary);
+    width: 18px;
+    height: 18px;
+  }
+  .account-toggle strong {
+    display: block;
+    font-size: 14px;
+    color: var(--text);
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .account-toggle small {
+    display: block;
+    font-size: 12px;
+    color: var(--subtle);
+  }
+  .account-danger h2 { color: var(--signal); }
+  .account-danger p {
+    margin: 0 0 18px;
+    color: var(--subtle);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .acc-signout {
+    background: transparent;
+    border: 1px solid var(--signal-mid);
+    color: var(--signal);
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 150ms ease;
+    font-family: inherit;
+  }
+  .acc-signout:hover:not(:disabled) {
+    background: var(--signal-dim);
+  }
+  .acc-signout:disabled { opacity: 0.6; cursor: progress; }
+</style>
