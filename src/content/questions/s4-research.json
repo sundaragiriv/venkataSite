@@ -1,0 +1,146 @@
+[
+  {
+    "id": "s4-q01", "scenario": "S4", "scenarioName": "Research and Synthesis", "domain": "d1", "difficulty": "Hard", "taskRef": "T1.7",
+    "question": "A research coordinator is asked to 'analyze the competitive landscape for AI assistants.' It spawns subagents for: ChatGPT, Gemini, and Copilot. The synthesis is incomplete — the client says major competitors were missed. Which pattern failed?",
+    "options": ["The subagents used wrong tools for their research", "The coordinator trap — scope was decomposed into only known competitors, missing entire categories (open-source models, vertical AI, emerging players)", "The synthesis step didn't combine results correctly", "The coordinator should have used more subagents"],
+    "correct": 1, "xp": 20,
+    "explanation": "Coordinator trap: the coordinator decomposed 'competitive landscape' into only the three most famous competitors, missing entire categories: open-source models (Llama, Mistral), vertical AI assistants (legal, medical, coding), API-first competitors (Cohere, AI21), and emerging players. The fix: explicitly enumerate ALL categories before creating subtasks.",
+    "whyWrong": ["Subagent execution failure would show specific errors — the issue is scope coverage", "This is the correct answer", "Synthesis combines what it receives — the problem is what was provided to synthesize", "More subagents for the same limited scope doesn't fix the missing categories"]
+  },
+  {
+    "id": "s4-q02", "scenario": "S4", "scenarioName": "Research and Synthesis", "domain": "d5", "difficulty": "Hard", "taskRef": "T5.6",
+    "question": "A research synthesis reports: 'Enterprise AI adoption is 45%.' Source A says 34%, Source B says 67%, Source C says 51%. What should the synthesis have done?",
+    "options": ["Average the three values: (34+67+51)/3 = 50.7%, round to 51%", "Use the most recent source", "Present all three values with citations, note the conflict, and explain the likely cause (different definitions of adoption)", "Use the median value: 51%"],
+    "correct": 2, "xp": 20,
+    "explanation": "Conflicting sources must be presented with both values cited, not resolved by averaging or choosing. The synthesis should: show all three values with source citations, note the significant range (34%-67%), and explain the likely cause (different definitions: production deployment vs pilot vs any AI tool use). The reader decides which definition applies to their context.",
+    "whyWrong": ["Averaging is not source attribution — it destroys the individual source data and creates a fabricated consensus", "Recency doesn't resolve definitional conflicts — the newest source may define adoption differently", "This is the correct answer", "Median also destroys individual source data — same problem as averaging"]
+  },
+  {
+    "id": "s4-q03", "scenario": "S4", "scenarioName": "Research and Synthesis", "domain": "d1", "difficulty": "Medium", "taskRef": "T1.2",
+    "question": "A research system spawns 5 parallel subagents. Three finish in 8 seconds. The other two finish in 15 and 22 seconds respectively. When does the synthesis step start?",
+    "options": ["After the first 3 complete (8 seconds) — don't wait for slow subagents", "After ALL 5 complete (22 seconds) — synthesis requires all inputs", "After 4 complete (15 seconds) — one slow subagent shouldn't delay the whole synthesis", "Synthesis runs in parallel with subagents using partial results"],
+    "correct": 1, "xp": 15,
+    "explanation": "The synthesis step has a data dependency on ALL 5 subagent results — it cannot produce a complete synthesis without all inputs. It must wait for all 5 to complete (22 seconds). The coordinator waits for all Task tool results before spawning the synthesis step.",
+    "whyWrong": ["Starting synthesis with 3 of 5 results produces an incomplete synthesis — the coordinator knows 2 are still running", "This is the correct answer", "Same problem — starting with 4/5 means the synthesis lacks one input source", "Partial synthesis is possible but produces incomplete results — for research synthesis, wait for all inputs"]
+  },
+  {
+    "id": "s4-q04", "scenario": "S4", "scenarioName": "Research and Synthesis", "domain": "d5", "difficulty": "Hard", "taskRef": "T5.6",
+    "question": "A research report cites 'industry experts agree that AI adoption will reach 80% by 2026.' What is wrong with this citation?",
+    "options": ["'Industry experts' is vague — specific named sources with publication dates are required", "The prediction is too optimistic — reports should only state current facts", "The claim needs to be qualified as an opinion, not a fact", "The citation format is wrong — should use numbered footnotes"],
+    "correct": 0, "xp": 15,
+    "explanation": "Source attribution requires specific citations: named organization, named report or publication, date, and methodology where relevant. 'Industry experts agree' is not attribution — it's an unverifiable vague reference. The reader cannot verify the claim, assess source quality, or find the original data.",
+    "whyWrong": ["This is the correct answer", "Forecasts and predictions are valid research content — the attribution, not the content type, is the problem", "The claim being an opinion vs fact is secondary — the primary issue is untraceable citation", "Format conventions vary — the core issue is the vague attribution, not the formatting"]
+  },
+  {
+    "id": "s4-q05", "scenario": "S4", "scenarioName": "Research and Synthesis", "domain": "d1", "difficulty": "Hard", "taskRef": "T1.3",
+    "question": "A research coordinator needs to analyze a 200-file codebase before making recommendations. Running file reads in the main coordinator context takes 45 minutes and fills the context window. What is the correct solution?",
+    "options": ["Increase max_tokens to accommodate the large context", "Use an Explore subagent to read files in isolation and return only a structured summary to the coordinator", "Split the analysis across multiple coordinator sessions and combine results manually", "Use the Batch API to process all file reads simultaneously"],
+    "correct": 1, "xp": 20,
+    "explanation": "The Explore subagent pattern: delegate verbose file exploration to an isolated sub-session (context: fork). The subagent reads all 200 files, builds the analysis, and returns ONLY a structured summary (200 lines, not 200,000 lines of file contents) to the coordinator. The coordinator's context stays clean for the recommendation work.",
+    "whyWrong": ["Increasing max_tokens doesn't prevent context from filling — it just allows longer individual responses", "This is the correct answer", "Multiple sessions with manual combination is error-prone and loses the ability to make cross-file connections", "Batch API is for Claude API calls, not for file reading — and doesn't solve the context window problem"]
+  },
+  {
+    "id": "s4-q06", "scenario": "S4", "scenarioName": "Research and Synthesis", "domain": "d5", "difficulty": "Medium", "taskRef": "T5.6",
+    "question": "A research synthesis cites the same statistic from three different sources: a 2019 academic paper, a 2021 industry report, and a 2024 government survey. All three show different values for the same metric. Is this a conflict?",
+    "options": ["Yes — all three should agree if they're measuring the same thing", "No — temporal differences likely reflect genuine change over time, not conflicting data", "Only the 2024 source matters — older data should be discarded", "All three should be averaged to account for measurement variance"],
+    "correct": 1, "xp": 15,
+    "explanation": "Temporal differences are generally NOT conflicts — a 2019, 2021, and 2024 measurement of the same metric may all be correct for their respective time periods. The metric may have genuinely changed. The synthesis should present all three with their dates, showing the trend over time rather than treating temporal variation as a measurement conflict.",
+    "whyWrong": ["Different years measuring a changing metric will naturally produce different values — this is expected", "This is the correct answer", "Discarding older data loses trend information — the 2019 value establishes the baseline for understanding change", "Averaging across time periods creates a meaningless composite of measurements from different states of the world"]
+  },
+  {
+    "id": "s4-q07", "scenario": "S4", "scenarioName": "Research and Synthesis", "domain": "d1", "difficulty": "Medium", "taskRef": "T1.2",
+    "question": "What is the key advantage of hub-and-spoke over peer-to-peer architecture for a research multi-agent system?",
+    "options": ["Hub-and-spoke is faster because the coordinator routes more efficiently", "All inter-agent communication routes through the coordinator, providing complete observability and centralized error recovery", "Hub-and-spoke uses fewer API calls by consolidating communications", "Subagents in hub-and-spoke can share state through the coordinator"],
+    "correct": 1, "xp": 15,
+    "explanation": "The defining benefit of hub-and-spoke is observability and control: every message passes through the coordinator, so you can log, monitor, and debug the entire execution from one place. Error recovery decisions are centralized. In peer-to-peer, communications between agents are invisible to the coordinator and errors may go undetected.",
+    "whyWrong": ["Routing overhead in hub-and-spoke can actually add latency compared to direct peer-to-peer", "This is the correct answer", "Hub-and-spoke may use MORE API calls since everything routes through the coordinator", "Subagents do NOT share state — they start blank. Context isolation is a feature, not a limitation"]
+  },
+  {
+    "id": "s4-q08", "scenario": "S4", "scenarioName": "Research and Synthesis", "domain": "d5", "difficulty": "Hard", "taskRef": "T5.2",
+    "question": "4 of 5 research subagents succeeded. Subagent 3 failed with a permanent permission error. The coordinator synthesizes the report. What must the synthesis explicitly include?",
+    "options": ["A footnote mentioning that one subagent had technical difficulties", "A Data Limitations section explicitly stating which research area is missing, why (permission error), and how this affects the report's completeness and confidence", "A recommendation to re-run the research with fixed permissions before using the report", "Nothing — the synthesis should present what it has as a complete report"],
+    "correct": 1, "xp": 20,
+    "explanation": "Partial failure must be explicitly labeled in the output. The synthesis must include: which research area is missing, why it failed (permission error — permanent), how this affects the conclusions, and what questions remain unanswered. This allows the report consumer to make informed decisions about whether to act on incomplete data.",
+    "whyWrong": ["A footnote is insufficient — missing data should be prominently disclosed, not buried", "This is the correct answer", "The recommendation is useful but doesn't substitute for disclosing the current report's limitations", "Presenting partial results as complete is the silent-failure anti-pattern — readers make decisions based on false completeness"]
+  },
+  {
+    "id": "s4-q09", "scenario": "S4", "scenarioName": "Research and Synthesis", "domain": "d5", "difficulty": "Medium", "taskRef": "T5.3",
+    "question": "A research report should indicate the confidence level of its conclusions. Which factor most increases a conclusion's confidence?",
+    "options": ["The conclusion is stated with strong, authoritative language", "Multiple independent high-quality sources agree on the same fact", "The conclusion aligns with the researcher's prior expectations", "The conclusion is from the most recently published source"],
+    "correct": 1, "xp": 15,
+    "explanation": "Confidence in a synthesized conclusion is primarily driven by: multiple independent sources agreeing (source count) AND the quality of those sources (peer-reviewed > industry report > blog). Single-source claims get medium confidence at best. Tone, prior expectations, and recency don't affect the underlying evidentiary basis.",
+    "whyWrong": ["Authoritative language is rhetorical, not evidentiary — confidence must reflect evidence quality", "This is the correct answer", "Prior expectations introduce confirmation bias — the opposite of good research methodology", "Recency is relevant for time-sensitive topics but doesn't override the importance of source agreement and quality"]
+  },
+  {
+    "id": "s4-q10", "scenario": "S4", "scenarioName": "Research and Synthesis", "domain": "d1", "difficulty": "Hard", "taskRef": "T1.7",
+    "question": "A research coordinator correctly enumerates all 8 categories in its scope. It then creates 2 subagents covering only 4 categories. The other 4 categories are not assigned. What should happen?",
+    "options": ["The coordinator proceeds with 4 subagents and notes the 4 uncovered categories in the synthesis", "The coverage check catches the gap — coordinator cannot spawn subagents until all 8 categories have coverage", "The synthesis step addresses uncovered categories through general knowledge", "The coordinator spawns additional subagents after receiving partial synthesis results"],
+    "correct": 1, "xp": 20,
+    "explanation": "The coverage check is a mandatory step: after creating the subtask plan, verify that every enumerated scope item maps to at least one subagent. If 4 of 8 categories have no coverage, the coordinator must add subagents before proceeding. Proceeding with known gaps produces an incomplete synthesis.",
+    "whyWrong": ["Noting the gap in synthesis is too late — the coordinator should catch it before spawning any subagents", "This is the correct answer", "Using general knowledge to fill research gaps introduces unverifiable claims without proper attribution", "Waiting until after partial synthesis to address gaps wastes time and complicates the synthesis step"]
+  },
+  {
+    "id": "s4-q11", "scenario": "S4", "scenarioName": "Research and Synthesis", "domain": "d5", "difficulty": "Medium", "taskRef": "T5.6",
+    "question": "A blog post claims an AI statistic. A peer-reviewed study claims a different value for the same metric. How should a research synthesis treat these?",
+    "options": ["Average both values — both may contain partial truth", "Present both values, note the difference in source quality (peer-reviewed vs blog), and assign higher confidence to the peer-reviewed finding", "Ignore the blog post — only peer-reviewed sources are acceptable", "Present both equally — the synthesis should not editorialize about source quality"],
+    "correct": 1, "xp": 15,
+    "explanation": "Source quality must be disclosed and used to calibrate confidence. The synthesis presents both values with attribution, notes that peer-reviewed methodology undergoes editorial review while blogs do not, and assigns higher confidence to the peer-reviewed finding. The reader can make their own judgment with full information.",
+    "whyWrong": ["Averaging ignores source quality differences — peer-reviewed and blog data should not be treated equally", "This is the correct answer", "Discarding non-peer-reviewed sources loses information that may be useful with appropriate caveating", "Treating all sources equally misrepresents the evidentiary strength — the synthesis must disclose quality differences"]
+  },
+  {
+    "id": "s4-q12", "scenario": "S4", "scenarioName": "Research and Synthesis", "domain": "d1", "difficulty": "Medium", "taskRef": "T1.3",
+    "question": "A research coordinator needs to: (1) search web sources, (2) analyze internal documents, (3) interview stakeholders via structured forms, then (4) synthesize. Which steps can run in parallel?",
+    "options": ["Steps 1, 2, and 3 can run in parallel; step 4 must wait for all three", "All four can run in parallel since they're separate research streams", "Only steps 1 and 2 in parallel; step 3 must wait for step 1 results", "All steps must run sequentially to maintain research integrity"],
+    "correct": 0, "xp": 15,
+    "explanation": "Web search (1), document analysis (2), and stakeholder interviews (3) are independent research streams — none depends on the others' outputs. They can run in parallel. Synthesis (4) has data dependencies on all three — it must wait for all research to complete. This is the classic parallel-then-sequential pattern.",
+    "whyWrong": ["This is the correct answer", "Step 4 synthesis has genuine data dependencies — it cannot run in parallel with the research steps", "Steps 1, 2, and 3 are independent of each other — no dependency prevents their parallelization", "Sequential execution for independent research streams is unnecessarily slow — no reason to serialize them"]
+  },
+  {
+    "id": "s4-q13", "scenario": "S4", "scenarioName": "Research and Synthesis", "domain": "d5", "difficulty": "Hard", "taskRef": "T5.1",
+    "question": "A research agent has accumulated 150k tokens of context after reading many sources. It still needs to synthesize. What is the primary concern?",
+    "options": ["The agent will hit the API's token limit and fail", "Lost-in-the-middle effect — key facts from earlier sources receive much less attention than recent content, degrading synthesis quality", "The agent will run out of tokens to generate the synthesis response", "The cost per API call will become prohibitively expensive"],
+    "correct": 1, "xp": 20,
+    "explanation": "With 150k tokens of context, the first sources read are now buried in the middle of a massive context. The lost-in-the-middle effect means they receive much less attention during synthesis. Key findings from early sources may be effectively 'forgotten' during synthesis. The fix: use the Explore subagent pattern to keep main context clean, or use persistent fact extraction.",
+    "whyWrong": ["claude-sonnet-4-6 supports 200k token contexts — 150k is within limits but qualitatively problematic", "This is the correct answer", "Response generation tokens are separate from input context — 150k input still leaves room for synthesis output", "Cost is a consideration but not the primary quality concern — attention degradation is the critical issue"]
+  },
+  {
+    "id": "s4-q14", "scenario": "S4", "scenarioName": "Research and Synthesis", "domain": "d1", "difficulty": "Medium", "taskRef": "T1.2",
+    "question": "What must a coordinator explicitly pass to a research subagent for it to produce useful, contextually appropriate results?",
+    "options": ["The coordinator's full conversation history so the subagent has complete context", "The specific task, all relevant background context, quality criteria, and required output format — subagents start blank", "Only the search query — subagents determine their own approach", "The coordinator's system prompt — it applies to all subagents automatically"],
+    "correct": 1, "xp": 15,
+    "explanation": "Subagents start with completely blank context. Everything they need must be in their prompt: the specific task, background context (original research question, prior findings if relevant), quality criteria (what makes a good output for this task), and output format (structured JSON for coordinator to parse). The coordinator's system prompt is NOT visible to subagents.",
+    "whyWrong": ["Coordinator conversation history is NOT passed to subagents — context isolation is total", "This is the correct answer", "Minimal prompts produce minimal results — subagents need full context to produce contextually appropriate outputs", "The coordinator's system prompt is NOT visible to subagents — they start completely blank"]
+  },
+  {
+    "id": "s4-q15", "scenario": "S4", "scenarioName": "Research and Synthesis", "domain": "d5", "difficulty": "Medium", "taskRef": "T5.6",
+    "question": "A research synthesis states: 'Studies show AI will transform 85% of jobs by 2030.' What is wrong with this attribution?",
+    "options": ["The statistic is too high — it needs to be reduced to a more credible number", "No specific source — 'studies show' is untraceable; requires named study, author, date, and methodology", "The prediction extends too far into the future to be credible", "The percentage should be expressed as a range, not a specific number"],
+    "correct": 1, "xp": 15,
+    "explanation": "'Studies show' is unverifiable — readers cannot check the source, assess methodology, or verify the statistic. Proper attribution requires: specific named study (e.g., 'McKinsey Global Institute 2024 report'), author or organization, publication date, and where relevant, methodology (survey size, definition of 'transformed'). Without this, the claim is unsupported.",
+    "whyWrong": ["The credibility of the number is secondary — the attribution problem applies regardless of the specific value", "This is the correct answer", "Future predictions are valid research content — the attribution problem applies regardless of the time horizon", "Expressing as a range is a good practice but doesn't solve the untraceable citation problem"]
+  },
+  {
+    "id": "s4-q16", "scenario": "S4", "scenarioName": "Research and Synthesis", "domain": "d1", "difficulty": "Hard", "taskRef": "T1.6",
+    "question": "A research agent crashes after 3 hours of work. On restart, it should be able to resume. What state should have been saved at each checkpoint?",
+    "options": ["The full conversation history including all tool results", "Structured state: completed tasks, failed tasks, confirmed findings, decisions made, remaining tasks — not raw conversation", "Just the final synthesis so far — that's the most valuable artifact", "The list of URLs already visited to avoid duplicate searches"],
+    "correct": 1, "xp": 20,
+    "explanation": "Crash recovery requires structured state — not raw conversation history. Structured state: completed task IDs, confirmed findings (extracted facts not raw tool results), decisions made, and remaining task list. This enables precise resumption without re-doing completed work. Raw conversation history is too verbose to inject cleanly on resume.",
+    "whyWrong": ["Full conversation history is too verbose for efficient rehydration — structured state is more precise", "This is the correct answer", "Saving only the synthesis loses track of what research is complete vs pending", "URL deduplication is useful but insufficient — you need task completion status and confirmed findings"]
+  },
+  {
+    "id": "s4-q17", "scenario": "S4", "scenarioName": "Research and Synthesis", "domain": "d5", "difficulty": "Medium", "taskRef": "T5.2",
+    "question": "A research pipeline runs 10 subagents. 8 succeed, 2 fail with transient errors. What is the correct recovery sequence?",
+    "options": ["Fail the entire pipeline — partial results are not acceptable for research", "Retry the 2 failed subagents with exponential backoff; if they succeed, proceed with all 10; if they still fail, synthesize from 8 with explicit gap disclosure", "Synthesize from 8 results immediately and note that 2 are pending", "Rerun all 10 subagents to ensure consistent results"],
+    "correct": 1, "xp": 15,
+    "explanation": "Transient errors are retryable: retry the 2 failed subagents with backoff. If retry succeeds: complete 10/10 synthesis. If retry fails: this is now a partial failure case — synthesize from 8 with explicit disclosure of which 2 failed and why. Don't fail the entire pipeline when 80% succeeded and retries are available.",
+    "whyWrong": ["8/10 successful research is valuable — discarding it is wasteful and unnecessary", "This is the correct answer", "Synthesizing immediately without retry wastes the opportunity to get complete results cheaply", "Rerunning all 10 wastes cost on 8 that already succeeded — retry only the 2 that failed"]
+  },
+  {
+    "id": "s4-q18", "scenario": "S4", "scenarioName": "Research and Synthesis", "domain": "d1", "difficulty": "Medium", "taskRef": "T1.4",
+    "question": "A research agent discovers during execution that the task scope is significantly larger than originally scoped — covering it properly would require 3x the initially budgeted time and resources. What should it do?",
+    "options": ["Complete the original scope and note that additional research was out of scope", "Continue at reduced quality to fit within the original budget", "Pause and surface the scope expansion to the user with options: proceed with reduced scope, expand budget, or prioritize specific areas", "Proceed with the full expanded scope autonomously — the user wants comprehensive research"],
+    "correct": 2, "xp": 15,
+    "explanation": "When scope significantly exceeds original parameters, the minimal footprint principle applies: surface the scope expansion to the user with clear options rather than proceeding autonomously. The user needs to make an informed decision about tradeoffs between completeness, time, and cost. Autonomous expansion violates the 'do less and confirm when uncertain about scope' principle.",
+    "whyWrong": ["Completing reduced scope without informing the user misrepresents the research as comprehensive", "Reduced quality output without disclosure misrepresents the quality of findings", "This is the correct answer", "Proceeding with 3x expanded scope without authorization violates minimal footprint — users must approve scope changes"]
+  }
+]

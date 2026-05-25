@@ -1,0 +1,92 @@
+[
+  {
+    "id": "d1-f01", "domain": "d1",
+    "front": "What is the correct primary mechanism for terminating an agent loop?",
+    "back": "stop_reason == 'end_turn' — never text parsing. The loop returns when Claude signals completion via stop_reason, not when text contains phrases like 'task complete'. Iteration caps are safety valves only.",
+    "tag": "Decision Rule"
+  },
+  {
+    "id": "d1-f02", "domain": "d1",
+    "front": "What does stop_reason == 'tool_use' tell the loop?",
+    "back": "Claude has called one or more tools. The loop must: extract ALL tool_use blocks from the response, execute ALL tool calls, batch ALL results into a single tool_result turn, then call the API again. Never respond to partial tool calls.",
+    "tag": "Fact"
+  },
+  {
+    "id": "d1-f03", "domain": "d1",
+    "front": "What is the hub-and-spoke pattern and what does it guarantee?",
+    "back": "Coordinator is the ONLY communication hub. Subagents never communicate directly with each other. All messages route through the coordinator. Guarantees: complete observability, centralized error recovery, no hidden inter-agent state.",
+    "tag": "Decision Rule"
+  },
+  {
+    "id": "d1-f04", "domain": "d1",
+    "front": "What is the coordinator trap?",
+    "back": "The coordinator decomposes a broad scope into subtasks that miss entire categories. Subagents succeed at their assigned tasks but the synthesis is incomplete. Fix: enumerate ALL scope categories before creating subtasks, then verify every category maps to at least one subagent.",
+    "tag": "Anti-Pattern"
+  },
+  {
+    "id": "d1-f05", "domain": "d1",
+    "front": "When do parallel subagents execute vs when must they chain sequentially?",
+    "back": "Parallel: tasks have no data dependency on each other. Sequential (chain): Task B requires Task A's output as input. The key test: 'Does B need A's result?' If yes → chain. If no → parallelize.",
+    "tag": "Decision Rule"
+  },
+  {
+    "id": "d1-f06", "domain": "d1",
+    "front": "What is context isolation for subagents?",
+    "back": "Every subagent starts with BLANK context. No automatic inheritance from the coordinator. All necessary context must be explicitly passed in the subagent's prompt: task, background, quality criteria, output format. The coordinator's system prompt is NOT visible to subagents.",
+    "tag": "Fact"
+  },
+  {
+    "id": "d1-f07", "domain": "d1",
+    "front": "What triggers plan mode in Claude Code?",
+    "back": "Three signals: (1) many files affected (45+), (2) multiple valid architectural approaches exist, (3) high risk if wrong approach chosen. Plan mode creates an implementation plan for developer review BEFORE modifying any files.",
+    "tag": "Decision Rule"
+  },
+  {
+    "id": "d1-f08", "domain": "d1",
+    "front": "What are the four valid escalation triggers for human-in-the-loop?",
+    "back": "(1) Low confidence on critical fields, (2) scope exceeds original instructions, (3) irreversible action with high blast radius, (4) ambiguous instructions with multiple valid interpretations. NOT valid: routine decisions within scope, recoverable errors.",
+    "tag": "Fact"
+  },
+  {
+    "id": "d1-f09", "domain": "d1",
+    "front": "Prompt guidance vs programmatic enforcement — when does each apply?",
+    "back": "Prompt guidance: tone, style, soft preferences — occasional deviation acceptable. Programmatic enforcement (hooks, gates): financial limits, compliance requirements, security controls — 'must always' requirements where failure has material consequences. Programmatic is deterministic; prompts are probabilistic.",
+    "tag": "Decision Rule"
+  },
+  {
+    "id": "d1-f10", "domain": "d1",
+    "front": "What is the minimal footprint principle for agents?",
+    "back": "Request only permissions needed for the current task. Prefer reversible over irreversible actions. Err on the side of doing less and confirming when uncertain about scope. Avoid acquiring resources, influence, or capabilities beyond what the task requires.",
+    "tag": "Decision Rule"
+  },
+  {
+    "id": "d1-f11", "domain": "d1",
+    "front": "What is the observe-think-act loop and what breaks it?",
+    "back": "Observe (read tool results), Think (reason about next step), Act (call tool or return). Breaks: acting without observing (skipping tool results), thinking without acting (infinite reasoning loops), observing without thinking (passing raw results directly).",
+    "tag": "Fact"
+  },
+  {
+    "id": "d1-f12", "domain": "d1",
+    "front": "What is crash recovery and what must be saved for it to work?",
+    "back": "Checkpointing structured state after each significant operation: completed task IDs, confirmed findings, decisions made, remaining tasks. NOT raw conversation history. On restart, inject structured state as a briefing prompt. Without checkpoints, crash loses all progress.",
+    "tag": "Anti-Pattern"
+  },
+  {
+    "id": "d1-f13", "domain": "d1",
+    "front": "When should a coordinator NOT retry a failed subagent?",
+    "back": "When the subagent's error has is_retryable: false. Categories: permission errors (authorization hasn't changed), validation errors (fix the input), business rule violations (different workflow needed). Only transient errors (timeouts, rate limits) are retryable.",
+    "tag": "Decision Rule"
+  },
+  {
+    "id": "d1-f14", "domain": "d1",
+    "front": "What does max_tokens == stop_reason signal and how should the loop handle it?",
+    "back": "Claude hit the token limit mid-response. The response was truncated. Options: request continuation ('please continue'), reduce scope of current task, or treat as an error depending on context. Never treat a max_tokens stop as task completion.",
+    "tag": "Fact"
+  },
+  {
+    "id": "d1-f15", "domain": "d1",
+    "front": "What is the difference between a Task tool subagent and an Explore subagent?",
+    "back": "Task subagent: executes a specific defined task, returns structured result, used for implementation work. Explore subagent: reads/searches/discovers with context: fork (isolated context), returns only a structured summary. Explore keeps verbose discovery out of the main context.",
+    "tag": "Fact"
+  }
+]

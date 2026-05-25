@@ -1,0 +1,227 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Architect Zero — CCA Mastery',
+  description = 'The Quantum Learn presents Architect Zero — Claude Certified Architect exam mastery',
+} = Astro.props;
+
+const currentPath = Astro.url.pathname;
+
+const navItems = [
+  { href: '/',           icon: '◈',  emoji: '🏠', label: 'Dashboard'  },
+  { href: '/learn',      icon: '▤',  emoji: '📚', label: 'Learn'       },
+  { href: '/academy',    icon: '✦',  emoji: '🎓', label: 'Academy'     },
+  { href: '/quiz',       icon: '◉',  emoji: '🎯', label: 'Quiz'        },
+  { href: '/flashcards', icon: '◫',  emoji: '🃏', label: 'Flashcards'  },
+  { href: '/progress',   icon: '◑',  emoji: '📈', label: 'Progress'    },
+];
+
+function isActive(href: string) {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href);
+}
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="Architect Zero"/>
+  <meta name="theme-color" content="#04040a"/>
+  <meta name="description" content={description}/>
+  <link rel="manifest" href="/manifest.json"/>
+  <title>{title}</title>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ══════════════════════════════════
+       SIDEBAR — desktop only
+       ══════════════════════════════════ -->
+  <aside id="sidebar">
+
+    <!-- Logo -->
+    <a href="/" class="sidebar-logo">
+      <svg width="28" height="28" viewBox="0 0 32 32" fill="none" class="sidebar-logo-mark">
+        <polygon points="16,2 30,28 2,28" stroke="#00e5ff" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+        <line x1="8" y1="20" x2="24" y2="20" stroke="#00e5ff" stroke-width="2"/>
+        <circle cx="16" cy="16" r="3.5" stroke="white" stroke-width="1.5" fill="none"/>
+        <circle cx="16" cy="16" r="1.5" fill="#00e5ff"/>
+      </svg>
+      <div class="sidebar-logo-text">
+        <div class="sidebar-logo-name">ARCHITECT</div>
+        <div class="sidebar-logo-zero">ZERO</div>
+      </div>
+    </a>
+
+    <!-- Channel badge -->
+    <div class="sidebar-channel">
+      <span class="sidebar-channel-dot"></span>
+      The Quantum Learn
+    </div>
+
+    <!-- XP block -->
+    <div class="sidebar-xp-block">
+      <div class="sidebar-xp-top">
+        <span id="sb-level" class="sidebar-level-label">Lv.1 Curious</span>
+        <span id="sb-xp" class="sidebar-xp-val">0 XP</span>
+      </div>
+      <div class="sidebar-xp-track">
+        <div class="sidebar-xp-fill" id="sb-xp-fill"></div>
+      </div>
+      <div id="sb-next" class="sidebar-xp-next">200 XP → Explorer</div>
+    </div>
+
+    <!-- Divider -->
+    <div class="sidebar-divider"></div>
+
+    <!-- Navigation -->
+    <nav class="sidebar-nav">
+      {navItems.map(({ href, icon, label }) => (
+        <a href={href} class={`sidebar-link ${isActive(href) ? 'is-active' : ''}`}>
+          <span class="sidebar-link-icon">{icon}</span>
+          <span class="sidebar-link-label">{label}</span>
+        </a>
+      ))}
+    </nav>
+
+    <!-- Footer -->
+    <div class="sidebar-footer">
+      <div class="sidebar-streak">
+        <span>🔥</span>
+        <span id="sb-streak">0 day streak</span>
+      </div>
+      <div class="sidebar-exam-tag">CCA Certified Architect</div>
+    </div>
+
+  </aside>
+
+  <!-- ══════════════════════════════════
+       MAIN AREA
+       ══════════════════════════════════ -->
+  <div id="main-wrap">
+
+    <!-- TOP BAR — mobile only, hidden on desktop -->
+    <header id="topbar">
+      <a href="/" class="topbar-logo">
+        ARCHITECT <span class="text-electric">ZERO</span>
+      </a>
+      <div class="topbar-right">
+        <span id="tb-level" class="topbar-level">Lv.1</span>
+        <span id="tb-xp" class="topbar-xp">0 XP</span>
+        <button id="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Menu">☰</button>
+      </div>
+      <div class="topbar-xp-track">
+        <div class="topbar-xp-fill" id="tb-xp-fill"></div>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main id="content">
+      <slot/>
+    </main>
+
+  </div>
+
+  <!-- ══════════════════════════════════
+       BOTTOM NAV — mobile only
+       ══════════════════════════════════ -->
+  <nav id="bottom-nav">
+    {navItems.slice(0, 6).map(({ href, emoji, label }) => (
+      <a href={href} class={`bottom-link ${isActive(href) ? 'is-active' : ''}`}>
+        <span class="bottom-icon">{emoji}</span>
+        <span class="bottom-label">{label}</span>
+      </a>
+    ))}
+  </nav>
+
+  <!-- MOBILE MENU OVERLAY -->
+  <div id="mobile-menu" style="display:none">
+    <div class="mobile-menu-header">
+      <span class="font-display text-white tracking-widest" style="font-size:18px">
+        ARCHITECT <span class="text-electric">ZERO</span>
+      </span>
+      <button onclick="toggleMobileMenu()" style="background:none;border:none;color:#6a6a9a;font-size:20px;cursor:pointer">✕</button>
+    </div>
+    {navItems.map(({ href, emoji, label }) => (
+      <a href={href} class={`mobile-menu-link ${isActive(href) ? 'is-active' : ''}`}
+        onclick="toggleMobileMenu()">
+        <span>{emoji}</span>
+        <span>{label}</span>
+      </a>
+    ))}
+  </div>
+
+</div>
+
+<!-- LEVEL UP OVERLAY -->
+<div id="level-up-overlay" style="display:none;position:fixed;inset:0;background:#04040a;z-index:200;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px">
+  <div style="font-size:72px;margin-bottom:16px">🎉</div>
+  <div id="lu-label" style="font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;font-family:monospace">Level Up!</div>
+  <div style="font-size:28px;font-weight:900;color:white;margin-bottom:4px">You're now a</div>
+  <div id="lu-title" style="font-size:40px;font-weight:900;font-family:'Bebas Neue',Impact,sans-serif;letter-spacing:2px;margin-bottom:32px">Architect</div>
+  <button onclick="document.getElementById('level-up-overlay').style.display='none'"
+    style="background:#00e5ff;border:none;color:#04040a;padding:14px 48px;border-radius:8px;font-size:16px;font-weight:800;cursor:pointer">
+    Keep Going →
+  </button>
+</div>
+
+<script>
+  // ── LEVELS ───────────────────────────────────────────
+  const LEVELS = [
+    {level:1,title:'Curious',   xpNeeded:0,   color:'#94a3b8'},
+    {level:2,title:'Explorer',  xpNeeded:200, color:'#60a5fa'},
+    {level:3,title:'Builder',   xpNeeded:500, color:'#34d399'},
+    {level:4,title:'Designer',  xpNeeded:1000,color:'#fbbf24'},
+    {level:5,title:'Architect', xpNeeded:1800,color:'#f97316'},
+    {level:6,title:'Master',    xpNeeded:2800,color:'#e879f9'},
+    {level:7,title:'CCA Ready', xpNeeded:4000,color:'#00e5ff'},
+  ];
+  function getLevel(xp) {
+    return LEVELS.reduce((a,l) => xp >= l.xpNeeded ? l : a, LEVELS[0]);
+  }
+  function updateXP() {
+    const xp  = Number(localStorage.getItem('az_xp') || '0');
+    const str = Number(localStorage.getItem('az_streak') || '0');
+    const cur = getLevel(xp);
+    const next = LEVELS[cur.level] || null;
+    const pct  = next ? Math.round(((xp-cur.xpNeeded)/(next.xpNeeded-cur.xpNeeded))*100) : 100;
+    const grad = `linear-gradient(90deg, ${cur.color}, #00e5ff)`;
+    // sidebar
+    const s = (id, v) => { const e=document.getElementById(id); if(e) e.textContent=v; };
+    const sc = (id, c) => { const e=document.getElementById(id); if(e) e.style.color=c; };
+    const sw = (id, w, bg) => { const e=document.getElementById(id); if(e){e.style.width=w;if(bg)e.style.background=bg;} };
+    s('sb-level', `Lv.${cur.level} ${cur.title}`); sc('sb-level', cur.color);
+    s('sb-xp', `${xp} XP`);
+    sw('sb-xp-fill', pct+'%', grad);
+    s('sb-next', next ? `${next.xpNeeded-xp} XP → ${next.title}` : 'MAX LEVEL');
+    s('sb-streak', `${str} day streak`);
+    // topbar
+    s('tb-level', `Lv.${cur.level}`); sc('tb-level', cur.color);
+    s('tb-xp', `${xp} XP`);
+    sw('tb-xp-fill', pct+'%', grad);
+  }
+  updateXP();
+  window.addEventListener('xp-updated', updateXP);
+
+  // ── MOBILE MENU ──────────────────────────────────────
+  function toggleMobileMenu() {
+    const m = document.getElementById('mobile-menu');
+    if (!m) return;
+    m.style.display = m.style.display === 'none' || !m.style.display ? 'flex' : 'none';
+  }
+  window.toggleMobileMenu = toggleMobileMenu;
+</script>
+
+</body>
+</html>

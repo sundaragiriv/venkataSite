@@ -1,0 +1,92 @@
+[
+  {
+    "id": "d3-f01", "domain": "d3",
+    "front": "What is the -p / --print flag and when is it required?",
+    "back": "Makes Claude Code run in non-interactive mode: processes the prompt, prints output, exits. REQUIRED for any non-interactive use: CI/CD pipelines, scripts, automation. Without it, Claude Code waits for keyboard input — pipeline hangs indefinitely.",
+    "tag": "Exam Trap"
+  },
+  {
+    "id": "d3-f02", "domain": "d3",
+    "front": "What are the three CLAUDE.md levels and which is committed to git?",
+    "back": "User-level (~/.claude/CLAUDE.md): personal preferences, NOT git. Project-level (.claude/CLAUDE.md): team conventions, IS git. Directory-level (CLAUDE.md in subdirs): conditional rules for that path, IS git. New team members get project + directory levels instantly from git clone.",
+    "tag": "Fact"
+  },
+  {
+    "id": "d3-f03", "domain": "d3",
+    "front": "What is the difference between a Slash Command and a Skill?",
+    "back": "Slash Command: injects a prompt into the CURRENT session context. Skill with context:fork: runs in an ISOLATED sub-session — verbose work stays isolated, main context gets only the structured result. Use Skills for verbose discovery tasks to prevent context pollution.",
+    "tag": "Decision Rule"
+  },
+  {
+    "id": "d3-f04", "domain": "d3",
+    "front": "What does $ARGUMENTS do in a slash command file?",
+    "back": "Captures text typed after the command name. Example: /review src/api/payments.ts — $ARGUMENTS = 'src/api/payments.ts'. This lets slash commands accept dynamic input without hard-coding values in the command file.",
+    "tag": "Fact"
+  },
+  {
+    "id": "d3-f05", "domain": "d3",
+    "front": "When should plan mode be used vs direct execution?",
+    "back": "Plan mode: 45+ files affected, multiple valid architectural approaches, high risk if wrong approach. Direct execution: single clear task, obvious implementation, low blast radius. Plan mode creates a reviewable plan BEFORE modifying any files.",
+    "tag": "Decision Rule"
+  },
+  {
+    "id": "d3-f06", "domain": "d3",
+    "front": "What is the --output-format json flag used for?",
+    "back": "Returns Claude Code's findings as structured JSON for programmatic parsing. Required for CI/CD automated gating (block merge if CRITICAL findings). Plain text output requires fragile regex. JSON enables reliable: findings.filter(f => f.severity === 'CRITICAL').length > 0.",
+    "tag": "Fact"
+  },
+  {
+    "id": "d3-f07", "domain": "d3",
+    "front": "How does CLAUDE.md relate to D4 prompt engineering principles?",
+    "back": "CLAUDE.md IS a system prompt. D4 principles apply when writing it: specific and verifiable criteria (not 'write good code'), both positive AND negative examples, explicit scope exclusions. Vague CLAUDE.md rules produce vague behavior. Explicit criteria produce consistent behavior.",
+    "tag": "Exam Trap"
+  },
+  {
+    "id": "d3-f08", "domain": "d3",
+    "front": "What is the CLAUDE.md hierarchy conflict resolution rule?",
+    "back": "Runtime session prompt wins over CLAUDE.md for specific task instructions. CLAUDE.md sets defaults that apply when no session prompt says otherwise. Session prompts can override CLAUDE.md for the current task. CLAUDE.md cannot override session prompts.",
+    "tag": "Decision Rule"
+  },
+  {
+    "id": "d3-f09", "domain": "d3",
+    "front": "What belongs in project CLAUDE.md vs session system prompt?",
+    "back": "Project CLAUDE.md: team conventions (repo patterns, testing standards, coding style) — committed, permanent, all sessions. Session system prompt: task-specific context ('you are reviewing Q3 refund data for fraud') — runtime, ephemeral, one task. Never mix: task context in CLAUDE.md pollutes all sessions.",
+    "tag": "Decision Rule"
+  },
+  {
+    "id": "d3-f10", "domain": "d3",
+    "front": "What is the /compact command and when should it be used?",
+    "back": "Compresses conversation history while preserving key decisions and findings. Use when context exceeds ~50-60% full. Claude reads the full history, generates a structured summary, replaces the verbose history. Session continues with more available context space.",
+    "tag": "Fact"
+  },
+  {
+    "id": "d3-f11", "domain": "d3",
+    "front": "What is the test-driven development loop in Claude Code?",
+    "back": "Write test → run test (fails) → implement to make test pass → run test (passes) → run full suite (no regressions) → next test. Tests define correct behavior. Never modify tests to make them pass — fix the implementation. Never skip the full suite regression check.",
+    "tag": "Fact"
+  },
+  {
+    "id": "d3-f12", "domain": "d3",
+    "front": "What is the interview pattern and why is it better than one-question-at-a-time?",
+    "back": "Claude lists ALL questions and ambiguities upfront before writing any code. Developer answers all at once. Implementation proceeds without interruption. Better than one-at-a-time: surfaces all decisions before coding starts, prevents mid-implementation backtracking, respects developer workflow.",
+    "tag": "Fact"
+  },
+  {
+    "id": "d3-f13", "domain": "d3",
+    "front": "What does --allowedTools do and why use it in CI/CD?",
+    "back": "Restricts which tools Claude Code can invoke. Example: --allowedTools 'file_read,grep,glob' for a review step — prevents file_write and file_delete in non-interactive mode where no human can intervene. Minimum footprint for automated contexts.",
+    "tag": "Decision Rule"
+  },
+  {
+    "id": "d3-f14", "domain": "d3",
+    "front": "What is path-specific rule targeting and how is exclusion done?",
+    "back": "Path-specific rules apply only to files matching glob patterns. Exclusion with '!': paths: ['src/api/**/*.ts', '!src/api/**/*.test.ts'] applies to TypeScript files in src/api/ EXCEPT test files. More precise than directory CLAUDE.md which applies to everything.",
+    "tag": "Fact"
+  },
+  {
+    "id": "d3-f15", "domain": "d3",
+    "front": "What is specialized review staging in CI/CD?",
+    "back": "Multiple Claude Code pipeline steps, each focused on one dimension: Stage 1: security (security rules + changed files). Stage 2: coverage (coverage data + tests). Stage 3: architecture (CLAUDE.md + interfaces). Each receives only relevant context — no dilution. Better findings than one generalist review.",
+    "tag": "Decision Rule"
+  }
+]

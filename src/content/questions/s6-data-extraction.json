@@ -1,0 +1,146 @@
+[
+  {
+    "id": "s6-q01", "scenario": "S6", "scenarioName": "Large-Scale Data Extraction", "domain": "d4", "difficulty": "Hard", "taskRef": "T4.3",
+    "question": "A schema marks 'contract_end_date' as required. 40% of contracts are open-ended with no end date. What will Claude do and what is the correct schema fix?",
+    "options": ["Claude will skip open-ended contracts and flag them as errors", "Claude will fabricate plausible end dates to satisfy the required field; fix: make the field type ['string', 'null'] and remove from required array", "Claude will return the contract start date as a proxy for the end date", "The schema is correct — contracts without end dates are invalid and should be rejected"],
+    "correct": 1, "xp": 20,
+    "explanation": "Required fields with no source data cause Claude to fabricate plausible values. For contract_end_date, this means inventing end dates — a critical data integrity failure. Fix: type: ['string', 'null'] (nullable) and remove from required. Claude returns null for open-ended contracts, which is accurate.",
+    "whyWrong": ["Claude doesn't skip documents — it attempts to satisfy the schema", "This is the correct answer", "Proxy values (start date for end date) are fabrication — the field should be null", "Open-ended contracts are valid business documents — the schema must handle them correctly"]
+  },
+  {
+    "id": "s6-q02", "scenario": "S6", "scenarioName": "Large-Scale Data Extraction", "domain": "d4", "difficulty": "Medium", "taskRef": "T4.3",
+    "question": "An extraction schema uses: 'contract_type': {'type': 'string'} for a field that can only be 'fixed_price', 'time_and_materials', 'retainer', or 'project_based'. What is wrong and what is the correct schema?",
+    "options": ["Nothing is wrong — the description clarifies the valid values", "Using type: 'string' when enum values are known allows Claude to return invalid values; use enum with 'other' for unknown types", "Add a pattern constraint to validate the string format", "Add the valid values to the field description only"],
+    "correct": 1, "xp": 15,
+    "explanation": "When valid values are known, use enum instead of open string. Claude may return 'fixed price' (without underscore), 'T&M', 'retainer agreement', or other variations with plain string. Enum enforces exact values. Add 'other' to the enum for contracts with unknown types to prevent fabrication.",
+    "whyWrong": ["Description clarifies to humans but doesn't constrain Claude's output — enum does", "This is the correct answer", "Pattern constraints validate format (regex) but not the specific allowed values", "Description-only doesn't enforce the constraint — enum enforces it at the schema level"]
+  },
+  {
+    "id": "s6-q03", "scenario": "S6", "scenarioName": "Large-Scale Data Extraction", "domain": "d4", "difficulty": "Hard", "taskRef": "T4.5",
+    "question": "An extraction retry receives the same wrong output as the first attempt. What is wrong with the retry?",
+    "options": ["The model needs more tokens to correct its output", "The retry prompt contains only the original document — it must include the failed output AND specific errors to enable correction", "The schema needs to be simplified before retrying", "Two identical attempts confirm the extraction is correct — the validation has a bug"],
+    "correct": 1, "xp": 20,
+    "explanation": "Retrying with only the original document produces identical output — nothing changed. The retry prompt requires all three components: (1) original document, (2) previous failed output (Claude needs to see what it got wrong), (3) specific error descriptions ('invoice_date must be YYYY-MM-DD, got January 15'). Missing any component degrades retry effectiveness.",
+    "whyWrong": ["Token limits aren't the issue — the prompt structure is", "This is the correct answer", "Schema changes affect future extractions but don't help Claude fix THIS specific error", "Two identical wrong answers confirm a systematic error — not that the answer is correct"]
+  },
+  {
+    "id": "s6-q04", "scenario": "S6", "scenarioName": "Large-Scale Data Extraction", "domain": "d5", "difficulty": "Hard", "taskRef": "T5.5",
+    "question": "An extraction pipeline processes 8,000 documents daily. You can afford 80 human reviews per day (1%). Which sampling strategy provides the most reliable quality signal?",
+    "options": ["Random sample of 80 documents", "Stratified sample: 40 from low-confidence, 20 from medium-confidence, 10 from high-confidence, 10 from unusual document types", "Sample the 80 most recently processed documents", "Sample 80 documents that failed any validation rule"],
+    "correct": 1, "xp": 20,
+    "explanation": "Stratified sampling: 40 from low-confidence (highest risk, needs most validation), 20 from medium-confidence, 10 from high-confidence (calibration check — are high-confidence extractions actually accurate?), 10 from unusual types (edge cases). Random sampling under-represents rare categories. Recent documents may not represent the full distribution.",
+    "whyWrong": ["Random sampling under-represents rare high-risk categories like low-confidence extractions", "This is the correct answer", "Recent documents introduce temporal bias — doesn't represent the full document distribution", "Sampling only failures misses quality problems in the vast majority that passed validation"]
+  },
+  {
+    "id": "s6-q05", "scenario": "S6", "scenarioName": "Large-Scale Data Extraction", "domain": "d4", "difficulty": "Medium", "taskRef": "T4.5",
+    "question": "Extraction returns total_value='$1,245,000' (string). Schema requires number. Which approach correctly identifies this as retryable vs non-retryable?",
+    "options": ["Non-retryable — the schema mismatch indicates a fundamental incompatibility", "Retryable — format error (string with currency symbol instead of decimal number): value exists in source, just needs format correction", "Retryable only if the document is in English", "Non-retryable — switching to a different extraction schema is required"],
+    "correct": 1, "xp": 15,
+    "explanation": "Format errors are retryable: the data (1,245,000) IS in the source document, Claude just extracted it in the wrong format (with $ and commas). The retry prompt specifies: 'total_value must be a decimal number (1245000.00), got string $1,245,000'. Claude can correct format errors when given specific feedback. Missing-data errors are non-retryable.",
+    "whyWrong": ["Format mismatch is specifically retryable — the data exists, just needs format correction", "This is the correct answer", "Language doesn't affect retryability — format errors are retryable in any language", "Schema changes don't help fix THIS extraction — specific error feedback in the retry prompt does"]
+  },
+  {
+    "id": "s6-q06", "scenario": "S6", "scenarioName": "Large-Scale Data Extraction", "domain": "d5", "difficulty": "Hard", "taskRef": "T5.5",
+    "question": "You need to process 100,000 contracts for a one-time legal migration. The work must complete within 24 hours and cost must be minimized. Which approach is correct?",
+    "options": ["Real-time API with 100 concurrent workers", "Batch API — 50% cost reduction, 24-hour window is acceptable for overnight processing", "Real-time API to ensure completion within the time window", "Batch API for the first 50,000, real-time for the remaining 50,000 to meet deadline"],
+    "correct": 1, "xp": 20,
+    "explanation": "Batch API: 50% cost reduction, supports up to 24-hour processing which meets the deadline. For 100,000 contracts where cost minimization is specified and 24-hour completion is acceptable, Batch API is the correct choice. Real-time API is for latency-sensitive work — this is a batch overnight job.",
+    "whyWrong": ["Real-time API at this volume is significantly more expensive — Batch API saves 50%", "This is the correct answer", "Real-time ensures faster completion but costs 2x more — the requirement explicitly minimizes cost with 24h acceptable", "Splitting is unnecessarily complex — Batch API can handle 100,000 documents in a single batch within 24 hours"]
+  },
+  {
+    "id": "s6-q07", "scenario": "S6", "scenarioName": "Large-Scale Data Extraction", "domain": "d5", "difficulty": "Medium", "taskRef": "T5.3",
+    "question": "Batch processing returns 100,000 extraction results with confidence scores. 60% are high-confidence, 30% medium, 10% low. For the 10% low-confidence, what is correct?",
+    "options": ["Auto-process the low-confidence — 10% is an acceptable error rate for bulk processing", "Route all low-confidence to human review — do not auto-process uncertain extractions for legal documents", "Resend the low-confidence documents to Claude with increased temperature for variation", "Sample 10% of low-confidence documents and assume the rest are correct"],
+    "correct": 1, "xp": 15,
+    "explanation": "For legal documents, low-confidence extractions must go to human review — not auto-process, not sample. Legal documents have high stakes where incorrect extraction could have contractual or legal implications. The routing is: high-confidence → auto-process, medium → spot-check, low → human review. No exceptions for legal documents.",
+    "whyWrong": ["10% error rate on legal documents (10,000 contracts) is unacceptable — errors have real legal consequences", "This is the correct answer", "Temperature affects output variation, not extraction accuracy — this doesn't improve confidence", "Sampling and assuming the rest are correct introduces unknown errors into legal data — unacceptable"]
+  },
+  {
+    "id": "s6-q08", "scenario": "S6", "scenarioName": "Large-Scale Data Extraction", "domain": "d4", "difficulty": "Hard", "taskRef": "T4.4",
+    "question": "Why is the chain validation pattern (validate output before passing to next step) important for multi-step extraction pipelines?",
+    "options": ["Validation adds latency — it's better to validate only at the end", "Early validation prevents bad extractions from flowing through expensive downstream steps, compounding errors", "End-to-end validation is sufficient — intermediate validation adds unnecessary complexity", "Validation should only occur for high-value documents to minimize cost"],
+    "correct": 1, "xp": 15,
+    "explanation": "Early validation is cheaper than late detection. A bad Step 2 extraction that passes into Step 3 causes Step 3 to produce a confidently wrong result from bad input. Detecting the Step 2 failure after Step 3 completes wastes Step 3's computation. Catching errors at each step boundary prevents compounding and enables targeted retry.",
+    "whyWrong": ["Validation latency is small compared to the cost of reprocessing from a late-detected error", "This is the correct answer", "End-to-end validation requires reprocessing the entire chain on failure — step validation enables targeted retry", "High-stakes documents need MORE validation, not less — and low-value documents also benefit from early error detection"]
+  },
+  {
+    "id": "s6-q09", "scenario": "S6", "scenarioName": "Large-Scale Data Extraction", "domain": "d4", "difficulty": "Medium", "taskRef": "T4.2",
+    "question": "How many few-shot examples optimally improve extraction accuracy for most tasks?",
+    "options": ["1 — minimal context overhead, maximum efficiency", "2-4 — covers main variation and allows generalization without overfitting", "10+ — more examples always improve accuracy", "0 — zero-shot extraction with explicit schema is sufficient"],
+    "correct": 1, "xp": 15,
+    "explanation": "2-4 examples is the sweet spot: enough to demonstrate the pattern and handle key variations, without overfitting to specific example formats. 1 example helps with format but not judgment calls. 10+ examples risks pattern-matching to examples rather than reasoning. Zero-shot works for simple structured documents but misses ambiguous cases.",
+    "whyWrong": ["1 example teaches format but insufficient for judgment calls on ambiguous cases", "This is the correct answer", "10+ examples risks overfitting — Claude pattern-matches examples rather than reasoning about the document", "Zero-shot misses hard/ambiguous cases that few-shot examples specifically target"]
+  },
+  {
+    "id": "s6-q10", "scenario": "S6", "scenarioName": "Large-Scale Data Extraction", "domain": "d4", "difficulty": "Hard", "taskRef": "T4.3",
+    "question": "A Batch API batch of 1,000 extractions returns with 50 failures. What is the correct recovery approach?",
+    "options": ["Resubmit the entire 1,000-document batch to ensure consistency", "Use custom_id to identify the 50 failed requests and resubmit only those", "Treat the 50 failures as acceptable loss — 95% success rate is sufficient", "Switch to real-time API for the failed 50 to get immediate results"],
+    "correct": 1, "xp": 20,
+    "explanation": "The custom_id field in Batch API requests correlates requests with responses, enabling partial failure recovery: identify the 50 failed request custom_ids, create a new batch with only those 50 requests. Resubmitting all 1,000 wastes 950 successful extractions. Treating failures as loss leaves 50 documents unprocessed.",
+    "whyWrong": ["Resubmitting all 1,000 wastes cost and time on the 950 that already succeeded", "This is the correct answer", "50 unprocessed documents may represent significant business value depending on the use case", "Switching to real-time for 50 documents is fine but more expensive — Batch API resubmission is simpler"]
+  },
+  {
+    "id": "s6-q11", "scenario": "S6", "scenarioName": "Large-Scale Data Extraction", "domain": "d4", "difficulty": "Medium", "taskRef": "T4.3",
+    "question": "What is the correct tool_choice setting for a pipeline that processes documents where each document type has its own extraction schema and the type is not known in advance?",
+    "options": ["tool_choice: auto — Claude determines if extraction is needed", "tool_choice: any — Claude must call a tool and selects the schema based on document content", "tool_choice forced to the most common schema — 80% of documents are invoices", "No tool_choice — include schema selection logic in the system prompt"],
+    "correct": 1, "xp": 15,
+    "explanation": "Unknown document type + multiple schemas = tool_choice: 'any'. This forces Claude to call a tool (guaranteed extraction, no text response) while allowing Claude to read the document and select the appropriate schema. 'auto' risks text responses. Forced schema produces wrong output for other document types.",
+    "whyWrong": ["auto means Claude may return text — for an extraction pipeline, guaranteed tool invocation is required", "This is the correct answer", "Forcing the most common schema produces wrong output for the 20% that aren't invoices", "System prompt schema selection is prompt guidance (probabilistic) — tool_choice enforcement is deterministic"]
+  },
+  {
+    "id": "s6-q12", "scenario": "S6", "scenarioName": "Large-Scale Data Extraction", "domain": "d5", "difficulty": "Hard", "taskRef": "T5.3",
+    "question": "A calibration study shows 'high confidence' extractions are 91% accurate and 'medium confidence' are 73% accurate. Are these tiers well-calibrated?",
+    "options": ["No — both should be above 90% for production use", "High confidence is well-calibrated (>90%); medium is slightly below the expected 70-90% range — consider minor threshold adjustment", "Yes — both are above 70% which is sufficient for automated processing", "No — the gap between tiers (91% vs 73%) is too large and indicates a calibration problem"],
+    "correct": 1, "xp": 20,
+    "explanation": "Well-calibrated ranges: high > 90% (91% ✓), medium 70-90% (73% is technically in range but at the lower end — a minor threshold adjustment may improve routing). Both tiers are reasonably well-calibrated. The question tests understanding of what 'calibrated' means for each tier.",
+    "whyWrong": ["The expected range for medium is 70-90%, not 90% — 73% is within the acceptable medium range", "This is the correct answer", "73% medium confidence means 27% error rate — for automated processing of medium-confidence, spot-checking is appropriate, not full auto-process", "The gap between tiers is expected — different confidence tiers should have different accuracy levels"]
+  },
+  {
+    "id": "s6-q13", "scenario": "S6", "scenarioName": "Large-Scale Data Extraction", "domain": "d4", "difficulty": "Medium", "taskRef": "T4.1",
+    "question": "An extraction prompt says 'extract all important financial data from this contract.' Why will this produce inconsistent results?",
+    "options": ["The word 'important' requires domain expertise to interpret — Claude lacks this expertise", "'All important' is vague criteria — Claude's interpretation of 'important' varies by document and produces inconsistent field coverage", "Financial data extraction requires specialized financial models, not general Claude", "The prompt is too short — longer prompts produce more consistent results"],
+    "correct": 1, "xp": 15,
+    "explanation": "Vague criteria ('all important') produce variable output because Claude's interpretation of importance varies by document, context, and phrasing. Some contracts will have payment_terms extracted, others won't. Explicit criteria specifies exactly which fields to extract: 'Extract these specific fields: total_value, payment_schedule, termination_clause, liability_cap.'",
+    "whyWrong": ["Claude does have domain knowledge — the issue is instruction specificity, not expertise", "This is the correct answer", "Claude handles financial extraction well — specific criteria, not specialized models, is what's needed", "Prompt length doesn't determine consistency — specificity does"]
+  },
+  {
+    "id": "s6-q14", "scenario": "S6", "scenarioName": "Large-Scale Data Extraction", "domain": "d5", "difficulty": "Medium", "taskRef": "T5.2",
+    "question": "An extraction pipeline processes 1,000 documents. 200 fail with 'field not found in document' errors. What is the correct handling?",
+    "options": ["Retry all 200 — they may succeed on a second attempt", "Route to human review — 'field not found' means the source document lacks the required data, retrying causes fabrication", "Mark as low-quality documents and exclude from the dataset", "Lower the extraction requirements for these 200 documents"],
+    "correct": 1, "xp": 15,
+    "explanation": "'Field not found in document' is a non-retryable error — retrying causes Claude to fabricate a plausible value to satisfy the required field. These 200 documents need human review to determine: does the field genuinely not exist in these documents (and should be null), or is the extraction failing to find it?",
+    "whyWrong": ["Retrying source-missing errors causes fabrication — the data isn't there to extract", "This is the correct answer", "Documents without certain fields may be valid edge cases — don't exclude them without human review", "Lowering requirements introduces systematic inconsistency — determine correct schema treatment through human review"]
+  },
+  {
+    "id": "s6-q15", "scenario": "S6", "scenarioName": "Large-Scale Data Extraction", "domain": "d4", "difficulty": "Hard", "taskRef": "T4.4",
+    "question": "A 5-step extraction chain crashes at step 3. Steps 1 and 2 produced valid results. What is the correct recovery?",
+    "options": ["Restart from step 1 — ensure consistent processing across all steps", "Resume from step 3 using the checkpointed results from steps 1 and 2", "Skip step 3 and continue from step 4 using step 2's results", "Reprocess only step 3, using the saved outputs from steps 1 and 2"],
+    "correct": 3, "xp": 20,
+    "explanation": "Step-level failure isolation: checkpointed results from steps 1 and 2 are valid and should be preserved. Reprocess only the failed step 3, using steps 1 and 2 outputs as inputs. Restarting from step 1 wastes completed work. Skipping step 3 breaks the pipeline's data flow — step 4 needs step 3's output.",
+    "whyWrong": ["Restarting from step 1 wastes the valid work from steps 1 and 2", "Resume from step 3 is the same as reprocess step 3 — both are correct descriptions of the same action", "Skipping step 3 means step 4 receives step 2's output instead of step 3's — breaking the data flow", "This is the correct answer"]
+  },
+  {
+    "id": "s6-q16", "scenario": "S6", "scenarioName": "Large-Scale Data Extraction", "domain": "d4", "difficulty": "Medium", "taskRef": "T4.2",
+    "question": "Few-shot examples for contract extraction should prioritize which type of examples?",
+    "options": ["Simple, clear contracts with all standard fields present", "Contracts where Claude makes specific known errors — the hard, ambiguous cases the model gets wrong without examples", "The most commonly occurring contract type in the dataset", "Contracts with the most fields to demonstrate comprehensive extraction"],
+    "correct": 1, "xp": 15,
+    "explanation": "The highest-value few-shot examples target cases where Claude fails without examples. If Claude confuses indemnification and liability clauses 30% of the time, that confusion is the #1 target for examples. Clear standard contracts add zero value — Claude handles them correctly without any examples.",
+    "whyWrong": ["Simple clear contracts are handled correctly without examples — they add no value to few-shot prompts", "This is the correct answer", "Common contract types are likely already well-handled — target failure modes, not frequency", "More fields demonstrate coverage but don't teach judgment — hard ambiguous cases teach judgment"]
+  },
+  {
+    "id": "s6-q17", "scenario": "S6", "scenarioName": "Large-Scale Data Extraction", "domain": "d4", "difficulty": "Hard", "taskRef": "T4.6",
+    "question": "A multi-pass extraction system uses Pass 1 for per-document extraction and Pass 2 to identify extraction inconsistencies across documents. Why must Pass 2 receive structured summaries from Pass 1, not the raw documents?",
+    "options": ["Structured summaries are easier for humans to read during audits", "Passing raw documents to Pass 2 re-introduces attention dilution — Pass 2 can't effectively compare 100 documents simultaneously", "Structured summaries are smaller files that reduce API costs", "Raw documents contain PII that should be removed before cross-document analysis"],
+    "correct": 1, "xp": 20,
+    "explanation": "Pass 2's effectiveness depends on comparing per-document findings — not re-reading all documents simultaneously. If Pass 2 receives all 100 raw documents, it suffers attention dilution. Structured summaries from Pass 1 (key extracted fields, confidence, notable patterns) give Pass 2 exactly what it needs for cross-document comparison without the dilution problem.",
+    "whyWrong": ["Human readability is a benefit but not the reason to use summaries over raw documents for Pass 2", "This is the correct answer", "API cost reduction is a side benefit — the primary reason is maintaining Pass 2's effectiveness", "PII handling may be relevant but is not the architectural reason for using summaries"]
+  },
+  {
+    "id": "s6-q18", "scenario": "S6", "scenarioName": "Large-Scale Data Extraction", "domain": "d5", "difficulty": "Medium", "taskRef": "T5.5",
+    "question": "An extraction system reports confidence scores but never uses them for routing — all extractions auto-process regardless of confidence. What is the primary problem?",
+    "options": ["Confidence scoring adds latency that could be eliminated by removing it", "Confident and uncertain extractions are treated identically, sending wrong data to downstream systems without review", "The confidence scores need to be stored for future model training", "Auto-processing is acceptable if accuracy is above 80% overall"],
+    "correct": 1, "xp": 15,
+    "explanation": "Confidence scoring without routing is wasted computation. The value of confidence scores is enabling tiered routing: high → auto-process, medium → spot-check, low → human review. If all extractions auto-process regardless of confidence, uncertain extractions with incorrect data flow unreviewed into downstream systems, causing errors.",
+    "whyWrong": ["Removing confidence scoring loses the quality signal needed for routing — the solution is to USE the scores", "This is the correct answer", "Training future models is a secondary benefit — the primary value is operational routing decisions", "80% overall accuracy means 20% error rate — if all 20% errors auto-process, downstream systems receive bad data at scale"]
+  }
+]

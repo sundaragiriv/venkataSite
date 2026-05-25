@@ -1,0 +1,319 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import type { Domain } from '../lib/domains';
+
+interface Props {
+  domain: Domain;
+  lessons: CollectionEntry<'lessons'>[];
+  currentLessonId?: string;
+}
+
+const { domain, lessons, currentLessonId } = Astro.props;
+
+const taskMap = Object.fromEntries(
+  (domain.taskStatements || []).map(t => [t.ref, t])
+);
+
+const groups: Record<string, typeof lessons> = {};
+const noTask: typeof lessons = [];
+for (const l of lessons) {
+  const ref = l.data.taskRef;
+  if (!ref) noTask.push(l);
+  else (groups[ref] ||= []).push(l);
+}
+
+interface Section {
+  ref: string;
+  title: string;
+  lessons: typeof lessons;
+}
+
+const sections: Section[] = [];
+if (noTask.length) {
+  sections.push({ ref: 'foundations', title: 'Foundations', lessons: noTask });
+}
+for (const ref of Object.keys(groups).sort()) {
+  sections.push({
+    ref,
+    title: taskMap[ref]?.title || ref,
+    lessons: groups[ref],
+  });
+}
+
+const totalLessons = lessons.length;
+const currentSectionRef = currentLessonId
+  ? sections.find(s => s.lessons.some(l => l.data.id === currentLessonId))?.ref
+  : null;
+---
+
+<aside class="course-rail" data-domain-id={domain.id}>
+
+  <div class="course-rail-head">
+    <a href={`/learn/${domain.id}`} class="course-rail-domain"
+      style={`border-left:3px solid ${domain.color}`}>
+      <span class="course-rail-code" style={`color:${domain.color}`}>{domain.code}</span>
+      <span class="course-rail-title">{domain.title}</span>
+    </a>
+    <div class="course-rail-progress">
+      <div class="course-rail-progress-text">
+        <span class="course-rail-done" data-rail-done="0">0</span>
+        <span class="course-rail-progress-total"> / {totalLessons} lessons</span>
+      </div>
+      <div class="course-rail-bar">
+        <div class="course-rail-fill" style={`background:${domain.color}`}></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="course-rail-sections">
+    {sections.map((sec, idx) => {
+      const isOpen = currentSectionRef
+        ? sec.ref === currentSectionRef
+        : idx === 0;
+      return (
+        <details class="course-section" data-section-ref={sec.ref} open={isOpen}>
+          <summary class="course-section-head">
+            <span class="course-section-ref" style={`color:${domain.color}`}>
+              {sec.ref === 'foundations' ? '✦' : sec.ref}
+            </span>
+            <span class="course-section-title">{sec.title}</span>
+            <span class="course-section-meta">
+              <span class="course-section-count" data-section-count={sec.ref}>
+                0/{sec.lessons.length}
+              </span>
+              <span class="course-section-chev">›</span>
+            </span>
+          </summary>
+          <div class="course-section-body">
+            {sec.lessons.map((l, li) => {
+              const slug = l.slug.split('/').pop();
+              const isCurrent = currentLessonId === l.data.id;
+              return (
+                <a href={`/learn/${domain.id}/${slug}`}
+                  class={`course-lesson ${isCurrent ? 'is-current' : ''}`}
+                  data-lesson-id={l.data.id}
+                  style={isCurrent ? `border-left-color:${domain.color}` : ''}>
+                  <span class="course-lesson-marker">
+                    <span class="course-lesson-num">{li + 1}</span>
+                    <span class="course-lesson-check" style={`color:${domain.color}`}>✓</span>
+                  </span>
+                  <span class="course-lesson-info">
+                    <span class="course-lesson-title">{l.data.title}</span>
+                    <span class="course-lesson-meta-row">
+                      <span class="course-lesson-dur">{l.data.duration}</span>
+                      <span class="course-lesson-xp">+{l.data.xp} XP</span>
+                    </span>
+                  </span>
+                </a>
+              );
+            })}
+          </div>
+        </details>
+      );
+    })}
+  </div>
+
+</aside>
+
+<style>
+.course-rail {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  font-size: 14px;
+}
+
+.course-rail-head {
+  padding: 16px 18px 18px;
+  border-bottom: 1px solid var(--border);
+  background: var(--deep);
+}
+.course-rail-domain {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 0 6px 12px;
+  margin-bottom: 14px;
+  text-decoration: none;
+}
+.course-rail-code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+.course-rail-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.3;
+}
+.course-rail-progress { padding: 0 4px; }
+.course-rail-progress-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--subtle);
+  margin-bottom: 6px;
+}
+.course-rail-done { color: var(--white); font-weight: 700; }
+.course-rail-bar {
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.course-rail-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 2px;
+  transition: width 0.4s;
+}
+
+.course-rail-sections { padding: 4px 0; }
+
+.course-section { border-bottom: 1px solid var(--border); }
+.course-section:last-child { border-bottom: none; }
+
+.course-section-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+  transition: background 0.15s;
+}
+.course-section-head::-webkit-details-marker { display: none; }
+.course-section-head:hover { background: var(--card); }
+
+.course-section-ref {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  flex-shrink: 0;
+  min-width: 36px;
+}
+.course-section-title {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.4;
+}
+.course-section-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.course-section-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+}
+.course-section-chev {
+  font-size: 16px;
+  color: var(--muted);
+  transition: transform 0.2s;
+  line-height: 1;
+}
+.course-section[open] > .course-section-head .course-section-chev {
+  transform: rotate(90deg);
+}
+
+.course-section-body {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 6px;
+}
+
+.course-lesson {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 18px 10px 22px;
+  border-left: 3px solid transparent;
+  text-decoration: none;
+  transition: background 0.15s, border-left-color 0.15s;
+}
+.course-lesson:hover { background: var(--card); }
+.course-lesson.is-current { background: var(--card); }
+.course-lesson.is-current .course-lesson-title { color: var(--white); }
+
+.course-lesson-marker {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  position: relative;
+}
+.course-lesson-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--muted);
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.course-lesson-check { display: none; font-size: 16px; font-weight: 900; line-height: 24px; }
+.course-lesson.completed .course-lesson-num { display: none; }
+.course-lesson.completed .course-lesson-check { display: block; }
+
+.course-lesson-info { flex: 1; min-width: 0; }
+.course-lesson-title {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--subtle);
+  line-height: 1.45;
+  margin-bottom: 4px;
+}
+.course-lesson-meta-row {
+  display: flex;
+  gap: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+}
+</style>
+
+<script>
+  const completed: string[] = JSON.parse(localStorage.getItem('az_completed') || '[]');
+  const rails = document.querySelectorAll<HTMLElement>('.course-rail');
+
+  rails.forEach(rail => {
+    const lessonLinks = rail.querySelectorAll<HTMLAnchorElement>('.course-lesson');
+    let totalDone = 0;
+
+    lessonLinks.forEach(a => {
+      const id = a.dataset.lessonId || '';
+      if (id && completed.includes(id)) {
+        a.classList.add('completed');
+        totalDone++;
+      }
+    });
+
+    const total = lessonLinks.length;
+    const doneEl = rail.querySelector('[data-rail-done]') as HTMLElement | null;
+    if (doneEl) doneEl.textContent = String(totalDone);
+    const fill = rail.querySelector('.course-rail-fill') as HTMLElement | null;
+    if (fill) fill.style.width = total ? Math.round(totalDone / total * 100) + '%' : '0%';
+
+    rail.querySelectorAll<HTMLElement>('.course-section').forEach(sec => {
+      const links = sec.querySelectorAll<HTMLAnchorElement>('.course-lesson');
+      let done = 0;
+      links.forEach(a => { if (a.classList.contains('completed')) done++; });
+      const ref = sec.dataset.sectionRef || '';
+      const countEl = sec.querySelector(`[data-section-count="${ref}"]`) as HTMLElement | null;
+      if (countEl) countEl.textContent = `${done}/${links.length}`;
+    });
+  });
+</script>
