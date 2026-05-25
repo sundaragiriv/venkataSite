@@ -11,6 +11,19 @@
 
 /* ── CSS VARIABLES ──────────────────────────────── */
 :root {
+  --bg-0: #020403;
+  --bg-1: #050807;
+  --bg-2: #09110d;
+  --bg-3: #0d1a13;
+  --bg-4: #12251a;
+  --brand: #00ff41;
+  --brand-dim: rgba(0, 255, 65, 0.12);
+  --brand-mid: rgba(0, 255, 65, 0.34);
+  --electric-brand: #8affc1;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-snap: cubic-bezier(0.34, 1.56, 0.64, 1);
+
   --black:    #04040a;
   --deep:     #07070f;
   --surface:  #0d0d1c;
