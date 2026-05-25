@@ -1,0 +1,79 @@
+---
+import BrandLayout from '../layouts/BrandLayout.astro';
+---
+
+<BrandLayout
+  title="Not Found - Venkata.Info"
+  description="The requested page was not found on Venkata.Info."
+>
+  <section class="not-found-page">
+    <div class="not-found-shell reveal visible">
+      <div class="not-found-kicker">404</div>
+      <h1>Page Not Found</h1>
+      <p>
+        This route is not part of the current Venkata.Info site. Return to the brand homepage
+        or open Architect Zero.
+      </p>
+      <div class="not-found-actions">
+        <a href="/" class="btn-primary">Venkata.Info</a>
+        <a href="/architect-zero/" class="btn-secondary">Architect Zero</a>
+      </div>
+    </div>
+  </section>
+</BrandLayout>
+
+<style>
+  .not-found-page {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 100px 24px;
+  }
+
+  .not-found-shell {
+    width: min(720px, 100%);
+    padding: 56px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.035);
+    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.28);
+  }
+
+  .not-found-kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--brand);
+    margin-bottom: 18px;
+  }
+
+  .not-found-shell h1 {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: clamp(56px, 9vw, 96px);
+    line-height: 0.92;
+    letter-spacing: 2px;
+    color: var(--white);
+    margin: 0 0 20px;
+  }
+
+  .not-found-shell p {
+    max-width: 540px;
+    color: var(--subtle);
+    font-size: 17px;
+    line-height: 1.75;
+    margin: 0 0 32px;
+  }
+
+  .not-found-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 560px) {
+    .not-found-shell {
+      padding: 36px 24px;
+    }
+  }
+</style>

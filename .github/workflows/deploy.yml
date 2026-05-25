@@ -31,7 +31,6 @@ jobs:
 
       - name: Prepare files
         run: |
-          cp dist/index.html dist/404.html
           touch dist/.nojekyll
           echo "venkata.info" > dist/CNAME
 
