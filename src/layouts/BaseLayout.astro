@@ -55,10 +55,10 @@ function isActive(href: string) {
     <!-- Logo -->
     <a href="/architect-zero/" class="sidebar-logo">
       <svg width="28" height="28" viewBox="0 0 32 32" fill="none" class="sidebar-logo-mark">
-        <polygon points="16,2 30,28 2,28" stroke="#00e5ff" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
-        <line x1="8" y1="20" x2="24" y2="20" stroke="#00e5ff" stroke-width="2"/>
+        <polygon points="16,2 30,28 2,28" stroke="#06b6d4" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+        <line x1="8" y1="20" x2="24" y2="20" stroke="#06b6d4" stroke-width="2"/>
         <circle cx="16" cy="16" r="3.5" stroke="white" stroke-width="1.5" fill="none"/>
-        <circle cx="16" cy="16" r="1.5" fill="#00e5ff"/>
+        <circle cx="16" cy="16" r="1.5" fill="#06b6d4"/>
       </svg>
       <div class="sidebar-logo-text">
         <div class="sidebar-logo-name">ARCHITECT</div>
@@ -173,7 +173,7 @@ function isActive(href: string) {
   <div style="font-size:28px;font-weight:900;color:white;margin-bottom:4px">You're now a</div>
   <div id="lu-title" style="font-size:40px;font-weight:900;font-family:'Bebas Neue',Impact,sans-serif;letter-spacing:2px;margin-bottom:32px">Architect</div>
   <button onclick="document.getElementById('level-up-overlay').style.display='none'"
-    style="background:#00e5ff;border:none;color:#04040a;padding:14px 48px;border-radius:8px;font-size:16px;font-weight:800;cursor:pointer">
+    style="background:#06b6d4;border:none;color:#04040a;padding:14px 48px;border-radius:8px;font-size:16px;font-weight:800;cursor:pointer">
     Keep Going →
   </button>
 </div>
@@ -187,7 +187,7 @@ function isActive(href: string) {
     {level:4,title:'Designer',  xpNeeded:1000,color:'#fbbf24'},
     {level:5,title:'Architect', xpNeeded:1800,color:'#f97316'},
     {level:6,title:'Master',    xpNeeded:2800,color:'#e879f9'},
-    {level:7,title:'CCA Ready', xpNeeded:4000,color:'#00e5ff'},
+    {level:7,title:'CCA Ready', xpNeeded:4000,color:'#06b6d4'},
   ];
   function getLevel(xp) {
     return LEVELS.reduce((a,l) => xp >= l.xpNeeded ? l : a, LEVELS[0]);
@@ -198,7 +198,7 @@ function isActive(href: string) {
     const cur = getLevel(xp);
     const next = LEVELS[cur.level] || null;
     const pct  = next ? Math.round(((xp-cur.xpNeeded)/(next.xpNeeded-cur.xpNeeded))*100) : 100;
-    const grad = `linear-gradient(90deg, ${cur.color}, #00e5ff)`;
+    const grad = `linear-gradient(90deg, ${cur.color}, #06b6d4)`;
     // sidebar
     const s = (id, v) => { const e=document.getElementById(id); if(e) e.textContent=v; };
     const sc = (id, c) => { const e=document.getElementById(id); if(e) e.style.color=c; };

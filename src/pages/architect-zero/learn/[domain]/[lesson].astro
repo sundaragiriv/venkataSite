@@ -308,9 +308,9 @@ const nextLesson = currentIdx < domainLessons.length - 1 ? domainLessons[current
 }
 
 .exam-trap-box {
-  background: rgba(255,61,113,0.05);
-  border: 1px solid rgba(255,61,113,0.25);
-  border-left: 3px solid #ff3d71;
+  background: var(--signal-dim);
+  border: 1px solid var(--signal-mid);
+  border-left: 3px solid var(--signal);
   border-radius: 10px;
   padding: 18px 22px;
   margin-bottom: 18px;
@@ -320,7 +320,7 @@ const nextLesson = currentIdx < domainLessons.length - 1 ? domainLessons[current
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 2px;
-  color: #ff3d71;
+  color: var(--signal);
   margin-bottom: 8px;
   text-transform: uppercase;
 }
@@ -348,8 +348,8 @@ const nextLesson = currentIdx < domainLessons.length - 1 ? domainLessons[current
 .key-point-text { font-size: 15px; color: var(--subtle); line-height: 1.75; }
 
 .anti-patterns-box {
-  background: rgba(255,61,113,0.05);
-  border: 1px solid rgba(255,61,113,0.2);
+  background: var(--signal-dim);
+  border: 1px solid var(--signal-mid);
   border-radius: 10px;
   padding: 18px 22px;
   margin-bottom: 18px;
@@ -359,7 +359,7 @@ const nextLesson = currentIdx < domainLessons.length - 1 ? domainLessons[current
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 2px;
-  color: #ff3d71;
+  color: var(--signal);
   text-transform: uppercase;
   margin-bottom: 12px;
 }
@@ -474,7 +474,7 @@ const nextLesson = currentIdx < domainLessons.length - 1 ? domainLessons[current
     });
     const tabsEl = document.querySelector('.lesson-step-tabs') as HTMLElement | null;
     if (tabsEl) {
-      const accent = tabsEl.dataset.accent || '#00e5ff';
+      const accent = tabsEl.dataset.accent || '#06b6d4';
       tabsEl.querySelectorAll<HTMLButtonElement>('.lesson-step-btn').forEach(btn => {
         const isActive = btn.dataset.tabKey === tab;
         if (isActive) {

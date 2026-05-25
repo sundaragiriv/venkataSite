@@ -60,7 +60,7 @@ const {
         {level:4,title:'Designer',  xpNeeded:1000,color:'#fbbf24'},
         {level:5,title:'Architect', xpNeeded:1800,color:'#f97316'},
         {level:6,title:'Master',    xpNeeded:2800,color:'#e879f9'},
-        {level:7,title:'CCA Ready', xpNeeded:4000,color:'#00e5ff'},
+        {level:7,title:'CCA Ready', xpNeeded:4000,color:'#06b6d4'},
       ];
       const cur = levels.reduce((acc, l) => xp >= l.xpNeeded ? l : acc, levels[0]);
       const next = levels[cur.level] || null;
@@ -78,7 +78,7 @@ const {
       if (lvl) { lvl.textContent = `Lv.${cur.level}`; lvl.style.color = cur.color; }
       if (fill) {
         fill.style.width = pct + '%';
-        fill.style.background = `linear-gradient(90deg, ${cur.color}, #00e5ff)`;
+        fill.style.background = `linear-gradient(90deg, ${cur.color}, #06b6d4)`;
       }
       if (left) left.textContent = `Level ${cur.level}`;
       if (right) right.textContent = next

@@ -86,8 +86,8 @@ import { DOMAINS } from '../../../lib/domains';
 
 .fc-filters { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px; }
 .fc-filter { padding:6px 14px; border-radius:20px; border:1px solid var(--border); background:transparent; color:var(--muted); font-size:12px; font-weight:700; cursor:pointer; font-family:'JetBrains Mono',monospace; transition:all 0.15s; }
-.fc-filter:hover { border-color:var(--fc-color,#00e5ff); color:var(--fc-color,#00e5ff); }
-.fc-filter.active { background:var(--fc-color,#00e5ff); border-color:var(--fc-color,#00e5ff); color:#04040a; }
+.fc-filter:hover { border-color:var(--fc-color,#06b6d4); color:var(--fc-color,#06b6d4); }
+.fc-filter.active { background:var(--fc-color,#06b6d4); border-color:var(--fc-color,#06b6d4); color:var(--bg-0); }
 
 .fc-tag-filters { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:16px; }
 .fc-tag-btn { padding:4px 12px; border-radius:6px; border:1px solid var(--border); background:transparent; color:var(--muted); font-size:11px; cursor:pointer; transition:all 0.15s; font-family:'JetBrains Mono',monospace; }
@@ -123,8 +123,8 @@ import { DOMAINS } from '../../../lib/domains';
 .fc-nav-center { flex:1; display:flex; flex-direction:column; align-items:center; gap:10px; }
 .fc-nav-pos { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); }
 .fc-master-btn { padding:8px 20px; border-radius:8px; border:1px solid var(--border); background:transparent; color:var(--muted); font-size:12px; font-weight:700; cursor:pointer; transition:all 0.15s; }
-.fc-master-btn:hover { border-color:#00f593; color:#00f593; }
-.fc-master-btn.mastered { background:rgba(0,245,147,0.12); border-color:#00f593; color:#00f593; }
+.fc-master-btn:hover { border-color:var(--mint); color:var(--mint); }
+.fc-master-btn.mastered { background:rgba(16, 185, 129, 0.12); border-color:var(--mint); color:var(--mint); }
 
 .fc-empty { text-align:center; padding:60px; color:var(--muted); font-size:14px; }
 .fc-empty.hidden { display:none; }
@@ -140,10 +140,10 @@ let activeTag = 'All';
 let mastered: Set<string> = new Set();
 
 const TAG_COLORS: Record<string,string> = {
-  'Fact': '#00e5ff',
-  'Decision Rule': '#00f593',
-  'Anti-Pattern': '#ff3d71',
-  'Exam Trap': '#ffd60a',
+  'Fact': '#06b6d4',
+  'Decision Rule': '#10b981',
+  'Anti-Pattern': '#f43f5e',
+  'Exam Trap': '#eab308',
 };
 
 async function loadCards() {
@@ -180,7 +180,7 @@ function renderCard() {
   if (filteredCards.length === 0) return;
   const card = filteredCards[currentIdx];
   const isMastered = mastered.has(card.id);
-  const color = TAG_COLORS[card.tag] || '#00e5ff';
+  const color = TAG_COLORS[card.tag] || '#06b6d4';
 
   document.getElementById('fc-question')!.textContent = card.front;
   document.getElementById('fc-answer')!.textContent = card.back;

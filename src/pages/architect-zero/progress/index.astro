@@ -89,11 +89,11 @@ const LEVELS = [
       <div class="prog-quiz-label">Questions Answered</div>
     </div>
     <div class="prog-quiz-card">
-      <div class="prog-quiz-num" id="quiz-accuracy" style="color:#00f593">—</div>
+      <div class="prog-quiz-num" id="quiz-accuracy" style="color:#10b981">—</div>
       <div class="prog-quiz-label">Accuracy</div>
     </div>
     <div class="prog-quiz-card">
-      <div class="prog-quiz-num" id="flash-mastered" style="color:#ffd60a">0</div>
+      <div class="prog-quiz-num" id="flash-mastered" style="color:#eab308">0</div>
       <div class="prog-quiz-label">Cards Mastered</div>
     </div>
     <div class="prog-quiz-card">
@@ -140,11 +140,11 @@ const LEVELS = [
 .prog-track-min { font-family:'JetBrains Mono',monospace; font-size:8px; color:var(--muted); }
 
 /* EXAM CARD */
-.prog-exam-card { background:rgba(0,229,255,0.05); border:1px solid rgba(0,229,255,0.2); border-radius:14px; padding:24px; margin-bottom:28px; }
-.prog-exam-label { font-family:'JetBrains Mono',monospace; font-size:9px; font-weight:800; letter-spacing:3px; color:#00e5ff; text-transform:uppercase; margin-bottom:12px; }
+.prog-exam-card { background:rgba(6, 182, 212, 0.06); border:1px solid var(--electric-mid); border-radius:14px; padding:24px; margin-bottom:28px; }
+.prog-exam-label { font-family:'JetBrains Mono',monospace; font-size:9px; font-weight:800; letter-spacing:3px; color:var(--electric); text-transform:uppercase; margin-bottom:12px; }
 .prog-exam-score { font-family:'Bebas Neue',Impact,sans-serif; font-size:56px; color:var(--white); letter-spacing:2px; line-height:1; margin-bottom:12px; }
 .prog-exam-bar { height:8px; background:var(--border); border-radius:4px; overflow:hidden; margin-bottom:8px; }
-.prog-exam-fill { height:100%; background:#00e5ff; border-radius:4px; transition:width 0.5s; }
+.prog-exam-fill { height:100%; background:var(--electric); border-radius:4px; transition:width 0.5s; }
 .prog-exam-detail { font-size:12px; color:var(--muted); line-height:1.6; }
 
 /* DOMAINS */
@@ -160,7 +160,7 @@ const LEVELS = [
 .prog-domain-fill { height:100%; border-radius:2px; transition:width 0.4s; }
 .prog-domain-lessons { display:flex; flex-wrap:wrap; gap:4px; }
 .prog-lesson-dot { width:8px; height:8px; border-radius:50%; background:var(--border); display:inline-block; transition:background 0.2s; }
-.prog-lesson-dot.done { background:#00f593; }
+.prog-lesson-dot.done { background:var(--mint); }
 
 /* QUIZ GRID */
 .prog-quiz-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-bottom:28px; }

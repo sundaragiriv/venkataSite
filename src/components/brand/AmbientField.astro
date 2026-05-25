@@ -5,7 +5,7 @@ interface Props {
   domainColor?: string;
 }
 
-const { variant = 'brand', bubbles = false, domainColor = '#00e5ff' } = Astro.props;
+const { variant = 'brand', bubbles = false, domainColor = '#06b6d4' } = Astro.props;
 const rand = (min: number, max: number) => Math.random() * (max - min) + min;
 const bubbleConfigs = bubbles
   ? Array.from({ length: 32 }, () => ({

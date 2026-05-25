@@ -11,37 +11,72 @@
 
 /* ── CSS VARIABLES ──────────────────────────────── */
 :root {
-  --bg-0: #020403;
-  --bg-1: #050807;
-  --bg-2: #09110d;
-  --bg-3: #0d1a13;
-  --bg-4: #12251a;
-  --brand: #00ff41;
-  --brand-dim: rgba(0, 255, 65, 0.12);
-  --brand-mid: rgba(0, 255, 65, 0.34);
-  --electric-brand: #8affc1;
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-snap: cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* Base layers — single source of truth */
+  --bg-0:    #04040a;
+  --bg-1:    #07070f;
+  --bg-2:    #0d0d1c;
+  --bg-3:    #111125;
+  --bg-4:    #1a1a30;
 
-  --black:    #04040a;
-  --deep:     #07070f;
-  --surface:  #0d0d1c;
-  --card:     #111125;
-  --border:   #1a1a30;
-  --muted:    #5a5a88;
-  --subtle:   #9898c8;
-  --text:     #eef0fa;
-  --white:    #ffffff;
-  --electric: #00e5ff;
-  --signal:   #ff3d71;
-  --gold:     #ffd60a;
-  --green:    #00f593;
-  --indigo:   #6366f1;
-  --purple:   #8b5cf6;
-  --amber:    #f59e0b;
-  --red:      #ef4444;
-  --cyan:     #06b6d4;
+  /* Legacy aliases — AZ-style code references these names */
+  --black:   var(--bg-0);
+  --deep:    var(--bg-1);
+  --surface: var(--bg-2);
+  --card:    var(--bg-3);
+  --border:  var(--bg-4);
+
+  /* BRAND — indigo + violet (replaces neon green) */
+  --brand-primary:     #6366f1;            /* indigo-500 */
+  --brand-accent:      #a855f7;            /* violet-500 */
+  --brand-primary-dim: rgba(99, 102, 241, 0.12);
+  --brand-primary-mid: rgba(99, 102, 241, 0.32);
+  --brand-accent-dim:  rgba(168, 85, 247, 0.12);
+  --brand-accent-mid:  rgba(168, 85, 247, 0.32);
+  --brand-gradient:    linear-gradient(135deg, #6366f1, #a855f7);
+
+  /* Legacy --brand alias — every existing var(--brand) now resolves to indigo */
+  --brand:         var(--brand-primary);
+  --brand-dim:     var(--brand-primary-dim);
+  --brand-mid:     var(--brand-primary-mid);
+  --electric-brand: var(--brand-accent);
+
+  /* ARCHITECT ZERO — softened cyan (was #00e5ff) */
+  --electric:     #06b6d4;                 /* cyan-500 */
+  --electric-dim: rgba(6, 182, 212, 0.12);
+  --electric-mid: rgba(6, 182, 212, 0.32);
+
+  /* Support — refreshed to harmonize */
+  --signal:     #f43f5e;                   /* rose-500 (was #ff3d71) */
+  --signal-dim: rgba(244, 63, 94, 0.12);
+  --signal-mid: rgba(244, 63, 94, 0.32);
+  --gold:       #eab308;                   /* yellow-500 (was #ffd60a) */
+  --gold-dim:   rgba(234, 179, 8, 0.12);
+  --mint:       #10b981;                   /* emerald-500 (was #00f593) */
+  --green:      var(--mint);
+
+  /* Domain palette (utility refs; canonical source is DOMAINS[] in src/lib/domains.ts) */
+  --indigo: #6366f1;
+  --purple: #8b5cf6;
+  --amber:  #f59e0b;
+  --red:    #ef4444;
+  --cyan:   #06b6d4;
+
+  /* Text */
+  --text:   #eef0fa;
+  --white:  #ffffff;
+  --subtle: #9898c8;
+  --muted:  #5a5a88;
+
+  /* Easing */
+  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-soft:   cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-snap:   cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Timing */
+  --t-fast: 150ms;
+  --t-base: 250ms;
+  --t-slow: 450ms;
 
   /* Layout */
   --sidebar-w:    240px;
@@ -187,7 +222,7 @@ body::before {
 .sidebar-xp-fill {
   height: 100%;
   border-radius: 4px;
-  background: linear-gradient(90deg, #6366f1, #00e5ff);
+  background: linear-gradient(90deg, var(--brand-primary), var(--electric));
   transition: width 0.5s ease;
   width: 0%;
 }
@@ -229,9 +264,9 @@ body::before {
 }
 .sidebar-link.is-active {
   background: var(--electric);
-  background: linear-gradient(135deg, #6366f120, #00e5ff10);
+  background: linear-gradient(135deg, var(--brand-primary-dim), var(--electric-dim));
   border: 1px solid var(--electric);
-  border-color: #6366f133;
+  border-color: var(--brand-primary-mid);
   color: var(--white);
 }
 .sidebar-link.is-active .sidebar-link-icon {
@@ -331,7 +366,7 @@ body::before {
 .topbar-xp-fill {
   height: 100%;
   border-radius: 4px;
-  background: linear-gradient(90deg, #6366f1, #00e5ff);
+  background: linear-gradient(90deg, var(--brand-primary), var(--electric));
   transition: width 0.5s;
   width: 0%;
 }
@@ -389,7 +424,7 @@ body::before {
 .mobile-menu-link.is-active {
   color: var(--electric);
   border: 1px solid var(--electric);
-  border-color: #00e5ff33;
+  border-color: var(--electric-mid);
 }
 
 /* ════════════════════════════════════════════════════
@@ -488,9 +523,9 @@ body::before {
   transition: all 0.15s;
 }
 .az-card-hover:hover {
-  border-color: rgba(0, 229, 255, 0.3);
+  border-color: var(--electric-mid);
   transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(0, 229, 255, 0.06);
+  box-shadow: 0 8px 32px rgba(6, 182, 212, 0.08);
 }
 
 /* ── BUTTONS ─────────────────────────────────────── */
@@ -557,7 +592,7 @@ body::before {
 .xp-bar-fill {
   height: 100%;
   border-radius: 4px;
-  background: linear-gradient(90deg, #6366f1, #00e5ff);
+  background: linear-gradient(90deg, var(--brand-primary), var(--electric));
   transition: width 0.5s ease;
 }
 
@@ -608,7 +643,7 @@ body::before {
   gap: 12px;
   align-items: flex-start;
 }
-.quiz-opt:hover { border-color: rgba(99, 102, 241, 0.4); }
+.quiz-opt:hover { border-color: var(--brand-primary-mid); }
 .quiz-opt-letter {
   width: 28px;
   height: 28px;
@@ -800,7 +835,7 @@ body::before {
   border-left: 3px solid var(--electric);
   padding: 14px 22px;
   margin: 22px 0;
-  background: rgba(0,229,255,0.04);
+  background: rgba(6, 182, 212, 0.06);
   border-radius: 0 8px 8px 0;
   color: var(--text);
   font-size: 16px;
@@ -887,8 +922,8 @@ body::before {
   to   { opacity: 1; transform: translateY(0); }
 }
 @keyframes glowPulse {
-  0%, 100% { box-shadow: 0 0 8px rgba(0,229,255,0.3); }
-  50%       { box-shadow: 0 0 20px rgba(0,229,255,0.6); }
+  0%, 100% { box-shadow: 0 0 8px rgba(6, 182, 212, 0.35); }
+  50%       { box-shadow: 0 0 20px rgba(6, 182, 212, 0.65); }
 }
 .animate-fade-up { animation: fadeUp 0.5s ease forwards; }
 .glow-electric   { animation: glowPulse 2s ease-in-out infinite; }
