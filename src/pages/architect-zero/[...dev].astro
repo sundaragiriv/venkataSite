@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export function getStaticPaths() {
+  return import.meta.env.DEV ? [{ params: { dev: '_dev/smoke' } }] : [];
+}
+
+const isSmokePath = Astro.params.dev === '_dev/smoke';
+
+if (!import.meta.env.DEV || !isSmokePath) {
+  return Astro.redirect('/architect-zero/');
+}
+---
+
+<BaseLayout title="Smoke test">
+  <section class="smoke-shell">
+    <h1>Smoke test</h1>
+    <p>Creates a disposable Supabase auth user, then verifies profile, stats, and leaderboard reads.</p>
+    <button id="signup" type="button">Sign up test user</button>
+    <pre id="output">Ready.</pre>
+  </section>
+
+  {import.meta.env.DEV && (
+    <script>
+      import { supabase } from '../../lib/supabase';
+
+      const button = document.getElementById('signup');
+      const output = document.getElementById('output');
+
+      const print = (value: unknown) => {
+        if (output) output.textContent = JSON.stringify(value, null, 2);
+      };
+
+      button?.addEventListener('click', async () => {
+        const email = `smoke-${Date.now()}@example.com`;
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password: 'smoketest1234',
+        });
+
+        const profile = await supabase.from('profiles').select('*').single();
+        const stats = await supabase.from('user_stats').select('*').single();
+        const leaderboard = await supabase.from('leaderboard').select('*');
+
+        print({
+          email,
+          userId: data.user?.id,
+          signUpError: error,
+          profile: profile.data,
+          profileError: profile.error,
+          stats: stats.data,
+          statsError: stats.error,
+          leaderboard: leaderboard.data,
+          leaderboardError: leaderboard.error,
+        });
+      });
+    </script>
+  )}
+</BaseLayout>
+
+<style>
+  .smoke-shell {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 40px 32px;
+  }
+
+  .smoke-shell h1 {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 48px;
+    letter-spacing: 2px;
+    color: white;
+    margin-bottom: 12px;
+  }
+
+  .smoke-shell p {
+    color: var(--subtle);
+    margin-bottom: 24px;
+  }
+
+  .smoke-shell button {
+    border: 0;
+    border-radius: 8px;
+    background: var(--electric);
+    color: var(--black);
+    cursor: pointer;
+    font-weight: 800;
+    padding: 12px 24px;
+  }
+
+  .smoke-shell pre {
+    margin-top: 24px;
+    min-height: 240px;
+    white-space: pre-wrap;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    color: var(--text);
+    padding: 20px;
+    overflow-x: auto;
+  }
+</style>
