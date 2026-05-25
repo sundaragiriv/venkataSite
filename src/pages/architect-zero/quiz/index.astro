@@ -194,7 +194,7 @@ let selectedScenario = 'all';
 async function loadQuestions() {
   const scenarios = ['s1-agentic-coding','s2-document-processing','s3-customer-support','s4-research','s5-code-review','s6-data-extraction'];
   const results = await Promise.all(
-    scenarios.map(s => fetch(`/content/questions/${s}.json`).then(r => r.json()).catch(() => []))
+    scenarios.map(s => fetch(`/architect-zero/content/questions/${s}.json`).then(r => r.json()).catch(() => []))
   );
   allQuestions = results.flat();
 

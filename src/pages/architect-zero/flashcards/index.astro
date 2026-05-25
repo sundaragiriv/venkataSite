@@ -149,7 +149,7 @@ const TAG_COLORS: Record<string,string> = {
 async function loadCards() {
   const domains = ['d1','d2','d3','d4','d5','d6'];
   const results = await Promise.all(
-    domains.map(d => fetch(`/content/flashcards/${d}-flashcards.json`).then(r=>r.json()).catch(()=>[]))
+    domains.map(d => fetch(`/architect-zero/content/flashcards/${d}-flashcards.json`).then(r=>r.json()).catch(()=>[]))
   );
   allCards = results.flat();
   mastered = new Set(JSON.parse(localStorage.getItem('az_mastered') || '[]'));
