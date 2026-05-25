@@ -11,6 +11,12 @@ export default function SignalPost() {
   const { slug } = useParams();
   const key = `../../content/signals/${slug}.mdx`;
   const module = modules[key];
+
+  // Keep hook order stable even when the module is missing.
+  const readingTime = useMemo(() => {
+    const content = module?.frontmatter?.summary ?? "";
+    return content ? formatReadingTime(calculateReadingTime(content)) : "";
+  }, [module?.frontmatter?.summary]);
   
   if (!module) {
     return (
@@ -43,12 +49,6 @@ export default function SignalPost() {
 
   const Post = module.default;
   const meta = module.frontmatter;
-
-  // Calculate reading time from summary and content
-  const readingTime = useMemo(() => {
-    const content = meta.summary || '';
-    return formatReadingTime(calculateReadingTime(content));
-  }, [meta.summary]);
 
   return (
     <article className="container max-w-wrap py-12">

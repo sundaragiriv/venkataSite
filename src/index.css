@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -17,6 +18,8 @@
   --accent-green: #00ff41;
   --accent-green-dark: #00e639;
   --accent-green-light: #33ff66;
+  --font-support: 'Barlow', 'Inter', sans-serif;
+  --font-mono: 'Space Mono', 'JetBrains Mono', 'Courier New', monospace;
 }
 
 * {
@@ -25,7 +28,7 @@
 
 html, body, #root { 
   height: 100%; 
-  font-family: 'Space Mono', 'JetBrains Mono', 'Courier New', monospace;
+  font-family: var(--font-support);
   scroll-behavior: smooth;
   font-weight: 400;
   letter-spacing: 0.025em;
@@ -83,7 +86,7 @@ html {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-size: 13px;
   letter-spacing: 0.5px;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-support);
   text-transform: lowercase;
 }
 
@@ -101,7 +104,7 @@ html {
   font-weight: 400;
   padding: 14px 32px;
   transition: all 0.3s ease;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-support);
   font-size: 13px;
   letter-spacing: 0.5px;
   text-transform: lowercase;
@@ -143,25 +146,25 @@ html {
 .text-primary {
   color: var(--text-white);
   font-weight: 400;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-support);
 }
 
 .text-secondary {
   color: var(--text-light);
   font-weight: 400;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-support);
 }
 
 .text-muted {
   color: var(--text-grey);
   font-weight: 400;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-support);
 }
 
 .text-accent {
   color: var(--accent-green);
   font-weight: 400;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-support);
 }
 
 /* Additional utility classes */
@@ -201,8 +204,12 @@ h1, h2, h3, h4, h5, h6 {
   position: relative;
   font-weight: 400;
   letter-spacing: 0.5px;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-support);
   text-transform: lowercase;
+}
+
+code, pre, kbd, samp {
+  font-family: var(--font-mono);
 }
 
 .nav-link::after {

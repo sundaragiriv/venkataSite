@@ -3,8 +3,10 @@ import { MDXProvider } from "@mdx-js/react";
 import { blueprints, fmt } from "../lib/blueprints";
 import SEO from "../components/SEO";
 import { FadeIn } from "../components/FadeIn";
+import AdBanner from "../components/AdBanner";
+import type { MDXModule } from "../lib/mdxTypes";
 
-const modules = import.meta.glob("../../content/blueprints/*.mdx", { eager: true }) as Record<string, any>;
+const modules = import.meta.glob("../../content/blueprints/*.mdx", { eager: true }) as Record<string, MDXModule>;
 
 export default function BlueprintSlug() {
   const { slug } = useParams();

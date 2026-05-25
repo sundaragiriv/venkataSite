@@ -34,7 +34,7 @@ const socialLinks = [
     )
   },
   {
-    href: "https://youtube.com/@sundaragiri",
+    href: "https://youtube.com/@TheQuantumLearn",
     label: "YouTube",
     icon: (
       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

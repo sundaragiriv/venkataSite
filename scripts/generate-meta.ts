@@ -1,6 +1,15 @@
 import { writeFileSync, readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
 
+type FrontmatterMap = Record<string, string>;
+
+interface RssItem {
+  title: string;
+  link: string;
+  description: string;
+  pubDate: string;
+}
+
 // Generate sitemap.xml
 const routes = [
   '/',
@@ -48,7 +57,7 @@ ${routes.map(route => `  <url>
 writeFileSync('public/sitemap.xml', sitemap);
 
 // Generate RSS feed
-let rssItems: any[] = [];
+let rssItems: RssItem[] = [];
 try {
   const signalFiles = readdirSync('content/signals').filter(f => f.endsWith('.mdx'));
   rssItems = signalFiles.map(file => {
@@ -56,7 +65,7 @@ try {
     const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
     if (!frontmatterMatch) return null;
     
-    const frontmatter: any = {};
+    const frontmatter: FrontmatterMap = {};
     frontmatterMatch[1].split('\n').forEach(line => {
       const [key, ...valueParts] = line.split(':');
       if (key && valueParts.length) {
@@ -71,7 +80,7 @@ try {
       description: frontmatter.summary || '',
       pubDate: new Date(frontmatter.date || Date.now()).toUTCString()
     };
-  }).filter(Boolean);
+  }).filter((item): item is RssItem => item !== null);
 } catch (e) {
   console.log('No signals found for RSS');
 }

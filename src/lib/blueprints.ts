@@ -23,7 +23,7 @@ const BlueprintMetaSchema = z.object({
 
 export type BlueprintMeta = z.infer<typeof BlueprintMetaSchema> & { slug: string };
 
-const modules = import.meta.glob('../../content/blueprints/*.mdx', { eager: true }) as Record<string, any>
+const modules = import.meta.glob('../../content/blueprints/*.mdx', { eager: true }) as Record<string, { frontmatter?: unknown; meta?: unknown }>
 
 function toISO(d?: string) {
   if (!d) return ''
