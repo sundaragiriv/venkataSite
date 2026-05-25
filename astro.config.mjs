@@ -17,7 +17,6 @@ export default defineConfig({
     plugins: [
       VitePWA({
         registerType: 'autoUpdate',
-        includeAssets: ['favicon.svg', 'icons/*.png'],
         manifest: {
           name: 'Architect Zero - CCA Mastery',
           short_name: 'ArchitectZero',
@@ -35,7 +34,18 @@ export default defineConfig({
           ],
         },
         workbox: {
-          globPatterns: ['**/*.{js,css,html,svg,png,ico,txt}'],
+          navigateFallback: null,
+          globPatterns: ['**/*.{js,css,html,svg,png,ico,txt,json}'],
+          manifestTransforms: [
+            async (entries) => ({
+              manifest: entries.filter(({ url }) =>
+                url.startsWith('architect-zero/')
+                || url.startsWith('icons/')
+                || url === 'manifest.webmanifest'
+              ),
+              warnings: [],
+            }),
+          ],
           runtimeCaching: [
             {
               urlPattern: /^https:\/\/api\.anthropic\.com\/.*/i,
