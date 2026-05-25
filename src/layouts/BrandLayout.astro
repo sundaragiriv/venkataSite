@@ -509,11 +509,27 @@ const {
   .btn-primary {
     background: var(--brand);
     color: var(--black);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(45deg, transparent 20%, rgba(255, 255, 255, 0.15), transparent 80%);
+    transform: translateX(-120%);
+    transition: transform 0.6s var(--ease-out);
+    pointer-events: none;
   }
 
   .btn-primary:hover {
     background: var(--white);
     transform: translateY(-2px);
+  }
+
+  .btn-primary:hover::before {
+    transform: translateX(120%);
   }
 
   .btn-secondary {
@@ -810,8 +826,12 @@ const {
     margin-bottom: 6px;
   }
 
-  .stat-num span {
+  .stat-num .stat-affix {
     color: var(--brand);
+  }
+
+  .stat-num .stat-value {
+    color: var(--white);
   }
 
   .stat-label {
@@ -838,7 +858,7 @@ const {
 
   .building-card {
     padding: 32px;
-    transition: transform 0.25s var(--ease-out), border-color 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
+    transition: transform 250ms var(--ease-snap), border-color 250ms ease, box-shadow 250ms ease;
     position: relative;
     overflow: hidden;
   }
@@ -856,7 +876,7 @@ const {
   }
 
   .building-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-3px);
     border-color: var(--brand-mid);
     box-shadow: 0 16px 48px rgba(0, 255, 65, 0.08);
   }
@@ -868,6 +888,9 @@ const {
   .bc-electric::before { background: var(--brand); }
   .bc-signal::before { background: var(--signal); }
   .bc-gold::before { background: var(--gold); }
+  .bc-electric:hover { border-color: var(--brand-mid); box-shadow: 0 16px 48px rgba(0, 255, 65, 0.10); }
+  .bc-signal:hover { border-color: rgba(255, 79, 126, 0.34); box-shadow: 0 16px 48px rgba(255, 79, 126, 0.10); }
+  .bc-gold:hover { border-color: rgba(255, 209, 102, 0.34); box-shadow: 0 16px 48px rgba(255, 209, 102, 0.10); }
   .bc-icon { font-size: 32px; margin-bottom: 20px; }
   .bc-electric .bc-tag, .bc-electric .bc-link { color: var(--brand); }
   .bc-signal .bc-tag, .bc-signal .bc-link { color: var(--signal); }
@@ -1350,6 +1373,19 @@ const {
     .az-ep-domain {
       width: 100%;
       margin-left: 46px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn-primary::before {
+      transition: none;
+      transform: translateX(-120%);
+    }
+
+    .btn-primary:hover,
+    .btn-secondary:hover,
+    .building-card:hover {
+      transform: none;
     }
   }
 </style>
