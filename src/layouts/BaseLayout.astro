@@ -1,5 +1,6 @@
 ---
 import { ViewTransitions } from 'astro:transitions';
+import ImportPrompt from '../components/auth/ImportPrompt.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -225,6 +226,9 @@ function isActive(href: string) {
 
 </div>
 
+<!-- IMPORT PROMPT (shown after sign-in when local progress exists but cloud is empty) -->
+<ImportPrompt />
+
 <!-- LEVEL UP OVERLAY -->
 <div id="level-up-overlay" style="display:none;position:fixed;inset:0;background:#04040a;z-index:200;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px">
   <div style="font-size:72px;margin-bottom:16px">🎉</div>
@@ -288,6 +292,14 @@ function isActive(href: string) {
 <script>
   import { supabase } from '../lib/supabase';
   import { getDisplayName, getAvatarUrl, rememberIntendedUrl, AUTH_ROUTES } from '../lib/auth';
+  import {
+    reconcileOnSignIn,
+    installAutoSync,
+    pushLocal,
+    clearLocal,
+    readLocal,
+    markImportPrompted,
+  } from '../lib/progress';
 
   function currentPath() {
     const here = window.location.pathname;
@@ -333,6 +345,69 @@ function isActive(href: string) {
         avatarEl.textContent = (name[0] || '?').toUpperCase();
       }
     }
+
+    // Cloud sync — runs once per page load. reconcileOnSignIn is idempotent
+    // for the cross-device pull and merge cases.
+    if (!(window as any).__azReconciledFor || (window as any).__azReconciledFor !== user.id) {
+      (window as any).__azReconciledFor = user.id;
+      try {
+        const { promptImport } = await reconcileOnSignIn(user.id);
+        if (promptImport) showImportPrompt(user.id);
+      } catch (err) {
+        console.warn('[az] reconcile failed', err);
+      }
+      installAutoSync(user.id);
+    }
+  }
+
+  function showImportPrompt(userId: string) {
+    const prompt = document.getElementById('az-import-prompt');
+    if (!prompt) return;
+
+    const local = readLocal();
+    const list = document.getElementById('az-import-list');
+    if (list) {
+      list.innerHTML = '';
+      const rows: Array<[string, string]> = [];
+      if (local.xp > 0) rows.push(['Total XP', String(local.xp)]);
+      if (local.completed.length > 0) rows.push(['Lessons completed', String(local.completed.length)]);
+      if (local.mastered.length > 0) rows.push(['Flashcards mastered', String(local.mastered.length)]);
+      const answered = Object.keys(local.quizHistory).length;
+      if (answered > 0) rows.push(['Quiz questions answered', String(answered)]);
+      if (local.streak > 0) rows.push(['Day streak', String(local.streak)]);
+      for (const [k, v] of rows) {
+        const li = document.createElement('li');
+        const a = document.createElement('span'); a.textContent = k;
+        const b = document.createElement('span'); b.textContent = v;
+        li.appendChild(a); li.appendChild(b);
+        list.appendChild(li);
+      }
+    }
+
+    prompt.hidden = false;
+
+    const confirm = document.getElementById('az-import-confirm') as HTMLButtonElement | null;
+    const skip = document.getElementById('az-import-skip') as HTMLButtonElement | null;
+
+    confirm?.addEventListener('click', async () => {
+      if (!confirm || !skip) return;
+      confirm.disabled = true; skip.disabled = true;
+      confirm.textContent = 'Importing...';
+      try {
+        await pushLocal(userId);
+        markImportPrompted();
+      } catch (err) {
+        console.warn('[az] import push failed', err);
+      } finally {
+        prompt.hidden = true;
+      }
+    }, { once: true });
+
+    skip?.addEventListener('click', () => {
+      clearLocal();
+      markImportPrompted();
+      prompt.hidden = true;
+    }, { once: true });
   }
 
   function hasCachedSession() {
@@ -374,8 +449,15 @@ function isActive(href: string) {
   applyGate();
 
   supabase.auth.onAuthStateChange((event) => {
-    if (event === 'SIGNED_OUT' && !isAuthRoute(currentPath())) {
-      window.location.replace(AUTH_ROUTES.signIn);
+    if (event === 'SIGNED_OUT') {
+      // Clear local progress + reset reconcile flag so the next user on this
+      // device doesn't inherit the previous user's state.
+      clearLocal();
+      localStorage.removeItem('az_import_prompted');
+      (window as any).__azReconciledFor = null;
+      if (!isAuthRoute(currentPath())) {
+        window.location.replace(AUTH_ROUTES.signIn);
+      }
     }
   });
 </script>

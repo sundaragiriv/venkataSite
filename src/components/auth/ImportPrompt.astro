@@ -1,0 +1,142 @@
+---
+// Rendered into BaseLayout. Hidden by default; shown by JS after sign-in
+// reconciliation determines local progress exists but cloud is empty.
+---
+
+<div id="az-import-prompt" class="az-import-prompt" role="dialog" aria-labelledby="az-import-title" hidden>
+  <div class="az-import-card">
+    <div class="az-import-eyebrow">Welcome back</div>
+    <h2 id="az-import-title">Import your study progress?</h2>
+    <p>We found existing progress on this device that hasn't been linked to an account.</p>
+    <ul id="az-import-list" class="az-import-list"></ul>
+    <p class="az-import-fine">Choose Import to save it to your account and sync across devices. Choose Start fresh to discard local progress and begin clean.</p>
+    <div class="az-import-actions">
+      <button type="button" id="az-import-skip" class="az-import-btn-secondary">Start fresh</button>
+      <button type="button" id="az-import-confirm" class="az-import-btn-primary">Import</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .az-import-prompt {
+    position: fixed;
+    inset: 0;
+    background: rgba(4, 4, 10, 0.78);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 250;
+    padding: 24px;
+    animation: az-prompt-in 200ms ease-out;
+  }
+  .az-import-prompt[hidden] { display: none; }
+
+  @keyframes az-prompt-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  .az-import-card {
+    background: var(--bg-2);
+    border: 1px solid var(--bg-4);
+    border-radius: 16px;
+    padding: 32px;
+    max-width: 460px;
+    width: 100%;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  }
+
+  .az-import-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--electric);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .az-import-card h2 {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 26px;
+    letter-spacing: 1.5px;
+    color: var(--white);
+    margin: 0 0 12px;
+  }
+
+  .az-import-card p {
+    margin: 0 0 12px;
+    color: var(--subtle);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .az-import-list {
+    list-style: none;
+    margin: 8px 0 14px;
+    padding: 14px 16px;
+    background: var(--bg-3);
+    border: 1px solid var(--bg-4);
+    border-radius: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text);
+  }
+  .az-import-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 0;
+  }
+  .az-import-list li span:last-child {
+    color: var(--electric);
+    font-weight: 700;
+  }
+  .az-import-list:empty { display: none; }
+
+  .az-import-fine {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .az-import-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 18px;
+  }
+
+  .az-import-btn-primary,
+  .az-import-btn-secondary {
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: filter 150ms ease, background 150ms ease, border-color 150ms ease;
+  }
+
+  .az-import-btn-primary {
+    background: var(--electric);
+    border: 1px solid var(--electric);
+    color: var(--bg-0);
+  }
+  .az-import-btn-primary:hover:not(:disabled) { filter: brightness(1.08); }
+  .az-import-btn-primary:disabled { opacity: 0.6; cursor: progress; }
+
+  .az-import-btn-secondary {
+    background: transparent;
+    border: 1px solid var(--bg-4);
+    color: var(--subtle);
+  }
+  .az-import-btn-secondary:hover:not(:disabled) {
+    border-color: var(--muted);
+    color: var(--text);
+  }
+  .az-import-btn-secondary:disabled { opacity: 0.6; cursor: progress; }
+
+  @media (max-width: 480px) {
+    .az-import-card { padding: 24px 20px; }
+  }
+</style>
