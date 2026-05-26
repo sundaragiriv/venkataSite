@@ -194,8 +194,11 @@ const {
   @media (max-width: 480px) {
     .auth-card { padding: 28px 22px; }
   }
+</style>
 
-  /* ── Shared auth form styles (sign-in / sign-up / reset / forgot) ── */
+<!-- Form styles must be GLOBAL — they target slot content from each
+     auth page, which Astro's default scoped styles can't see. -->
+<style is:global>
   .auth-header {
     margin-bottom: 24px;
     text-align: center;
