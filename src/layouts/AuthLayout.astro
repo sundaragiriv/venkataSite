@@ -106,22 +106,26 @@ const {
   }
 
   /* Corporate robot mascot — page-wide guardian (matches dashboard treatment).
-     mix-blend-mode screen burns through the JPEG's solid background. */
+     mix-blend-mode screen burns through the JPEG's solid background;
+     mask-image feathers the left edge so the robot dissolves into the canvas
+     instead of cutting against a hard line. */
   .auth-mascot {
     position: absolute;
-    right: -8vw;
+    right: 2vw;
     bottom: 0;
     height: 100vh;
     width: auto;
     max-width: 60vw;
-    opacity: 0.16;
-    filter: saturate(0.8) brightness(1.1) contrast(0.95);
+    opacity: 0.12;
+    filter: saturate(0.75) brightness(1.05) contrast(1.05);
     mix-blend-mode: screen;
     pointer-events: none;
     user-select: none;
+    -webkit-mask-image: radial-gradient(ellipse 70% 80% at 75% 50%, black 50%, transparent 92%);
+            mask-image: radial-gradient(ellipse 70% 80% at 75% 50%, black 50%, transparent 92%);
   }
   @media (max-width: 1100px) {
-    .auth-mascot { right: -22vw; opacity: 0.10; }
+    .auth-mascot { right: -12vw; opacity: 0.09; }
   }
   @media (max-width: 720px) {
     .auth-mascot { display: none; }

@@ -217,26 +217,29 @@ const courseLd = {
 .dash-hero > :global(.brand-ambient) { position: absolute; z-index: 0; }
 .dash-hero-left, .dash-hero-right { position: relative; z-index: 2; }
 /* Page-wide guardian mascot — fixed to right side of viewport.
-   Sits in the empty canvas to the right of the 1100px content max-width
-   (and bleeds in slightly on narrower screens). Hidden on mobile so it
-   doesn't dominate the small viewport. */
+   Sits in the empty canvas to the right of the 1100px content max-width.
+   mask-image feathers all edges so the robot dissolves into the canvas
+   instead of cutting against a hard rectangular boundary.
+   Hidden on mobile so it doesn't dominate the small viewport. */
 .dash-guardian {
   position: fixed;
-  right: -8vw;
+  right: 2vw;
   bottom: 0;
   height: 100vh;
   width: auto;
   max-width: 60vw;
-  opacity: 0.16;
-  filter: saturate(0.8) brightness(1.1) contrast(0.95);
+  opacity: 0.12;
+  filter: saturate(0.75) brightness(1.05) contrast(1.05);
   mix-blend-mode: screen;
   pointer-events: none;
   user-select: none;
   z-index: 0;
+  -webkit-mask-image: radial-gradient(ellipse 70% 80% at 75% 50%, black 50%, transparent 92%);
+          mask-image: radial-gradient(ellipse 70% 80% at 75% 50%, black 50%, transparent 92%);
 }
 .dash { position: relative; z-index: 1; }
 @media (max-width: 1100px) {
-  .dash-guardian { right: -22vw; opacity: 0.10; }
+  .dash-guardian { right: -12vw; opacity: 0.09; }
 }
 @media (max-width: 720px) {
   .dash-guardian { display: none; }
