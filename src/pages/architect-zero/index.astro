@@ -10,20 +10,35 @@ const d0 = DOMAINS.find(d => d.id === 'd0')!;
 <BaseLayout title="Dashboard — Architect Zero">
 <div class="dash">
 
+  <!-- Platform header band — ties dashboard to brand surveillance aesthetic -->
+  <div class="dash-platform-band">
+    <span class="dash-band-segment dash-band-channel">
+      <span class="dash-band-dot"></span>
+      ARCHITECT ZERO
+    </span>
+    <span class="dash-band-sep">//</span>
+    <span class="dash-band-segment">CCA SERIES · 01</span>
+    <span class="dash-band-sep">//</span>
+    <span class="dash-band-segment dash-band-status">TX // ONLINE</span>
+  </div>
+
   <!-- Hero banner -->
   <div class="dash-hero">
     <AmbientField variant="az" bubbles />
     <div class="dash-hero-left">
-      <div class="dash-eyebrow">CCA FOUNDATIONS CERTIFICATION</div>
+      <div class="dash-eyebrow">CCA Foundations Certification</div>
       <h1 class="dash-title">Welcome back,<br/><span class="dash-title-electric">Architect.</span></h1>
       <p class="dash-subtitle">Pick up where you left off. Every lesson completed moves you closer to CCA.</p>
       <a href="/architect-zero/learn" class="dash-cta">Continue Learning →</a>
     </div>
     <div class="dash-hero-right">
-      <div class="dash-score-ring">
-        <div class="dash-score-inner">
-          <div class="dash-score-pct" id="dash-readiness">0%</div>
-          <div class="dash-score-label">Exam Ready</div>
+      <div class="dash-score-frame">
+        <span class="dash-score-rec" aria-hidden="true"></span>
+        <div class="dash-score-ring">
+          <div class="dash-score-inner">
+            <div class="dash-score-pct" id="dash-readiness">0%</div>
+            <div class="dash-score-label">Exam Ready</div>
+          </div>
         </div>
       </div>
     </div>
@@ -114,6 +129,60 @@ const d0 = DOMAINS.find(d => d.id === 'd0')!;
 
 <style>
 .dash { max-width: 1100px; margin: 0 auto; padding: 32px 32px 80px; }
+
+/* PLATFORM HEADER BAND */
+.dash-platform-band {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 8px 14px;
+  margin-bottom: 16px;
+  background: var(--bg-2);
+  border: 1px solid var(--bg-4);
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--subtle);
+}
+.dash-band-segment { display: inline-flex; align-items: center; gap: 8px; }
+.dash-band-channel { color: var(--white); font-weight: 700; }
+.dash-band-status  { color: var(--electric); font-weight: 700; }
+.dash-band-sep     { color: var(--muted); font-weight: 700; }
+.dash-band-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--electric);
+  box-shadow: 0 0 6px var(--electric);
+  animation: dash-band-pulse 1.6s ease-in-out infinite;
+}
+@keyframes dash-band-pulse {
+  0%, 100% { opacity: 1;   box-shadow: 0 0 6px var(--electric); }
+  50%      { opacity: 0.4; box-shadow: 0 0 2px var(--electric); }
+}
+
+/* SCORE FRAME — wraps the readiness ring with a REC indicator */
+.dash-score-frame { position: relative; }
+.dash-score-rec {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--signal);
+  box-shadow: 0 0 8px var(--signal);
+  z-index: 2;
+  animation: dash-band-pulse 1.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dash-band-dot,
+  .dash-score-rec { animation: none; }
+}
 
 /* HERO */
 .dash-hero { display: flex; align-items: center; justify-content: space-between; gap: 32px; margin-bottom: 32px; background: linear-gradient(135deg, #0d0d1c 0%, #111125 100%); border: 1px solid #1a1a30; border-radius: 20px; padding: 40px 48px; position: relative; overflow: hidden; }
