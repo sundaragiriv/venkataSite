@@ -25,14 +25,14 @@
   --card:    var(--bg-3);
   --border:  var(--bg-4);
 
-  /* BRAND — indigo + violet (replaces neon green) */
-  --brand-primary:     #6366f1;            /* indigo-500 */
-  --brand-accent:      #a855f7;            /* violet-500 */
-  --brand-primary-dim: rgba(99, 102, 241, 0.12);
-  --brand-primary-mid: rgba(99, 102, 241, 0.32);
-  --brand-accent-dim:  rgba(168, 85, 247, 0.12);
-  --brand-accent-mid:  rgba(168, 85, 247, 0.32);
-  --brand-gradient:    linear-gradient(135deg, #6366f1, #a855f7);
+  /* BRAND — venkata.info blue family (umbrella brand) */
+  --brand-primary:     #3b82f6;            /* blue-500 */
+  --brand-accent:      #2563eb;            /* blue-600 */
+  --brand-primary-dim: rgba(59, 130, 246, 0.12);
+  --brand-primary-mid: rgba(59, 130, 246, 0.32);
+  --brand-accent-dim:  rgba(37, 99, 235, 0.12);
+  --brand-accent-mid:  rgba(37, 99, 235, 0.32);
+  --brand-gradient:    linear-gradient(135deg, #3b82f6, #2563eb);
 
   /* Legacy --brand alias — every existing var(--brand) now resolves to indigo */
   --brand:         var(--brand-primary);
@@ -146,11 +146,27 @@ body::before {
   overflow-x: hidden;
 }
 
+.sidebar-umbrella {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 20px 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+.sidebar-umbrella:hover {
+  color: var(--text);
+}
+
 .sidebar-logo {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 24px 20px 16px;
+  padding: 12px 20px 16px;
   border-bottom: 1px solid var(--border);
   text-decoration: none;
 }
@@ -321,10 +337,26 @@ body::before {
   top: 0;
   z-index: 40;
   background: rgba(7, 7, 15, 0.95);
+  -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
   padding: 10px 16px 8px;
 }
+.topbar-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1;
+}
+.topbar-umbrella {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+.topbar-umbrella:hover { color: var(--text); }
 .topbar-logo {
   font-family: 'Bebas Neue', Impact, sans-serif;
   font-size: 18px;
@@ -391,6 +423,7 @@ body::before {
   position: fixed;
   inset: 0;
   background: rgba(4, 4, 10, 0.98);
+  -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
   z-index: 100;
   padding: 24px 20px;

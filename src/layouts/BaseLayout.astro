@@ -98,6 +98,12 @@ function isActive(href: string) {
        ══════════════════════════════════ -->
   <aside id="sidebar">
 
+    <!-- Umbrella back-link -->
+    <a href="/" class="sidebar-umbrella" aria-label="Back to venkata.info">
+      <span aria-hidden="true">&larr;</span>
+      <span>venkata.info</span>
+    </a>
+
     <!-- Logo -->
     <a href="/architect-zero/" class="sidebar-logo">
       <svg width="28" height="28" viewBox="0 0 32 32" fill="none" class="sidebar-logo-mark">
@@ -165,9 +171,12 @@ function isActive(href: string) {
 
     <!-- TOP BAR — mobile only, hidden on desktop -->
     <header id="topbar">
-      <a href="/architect-zero/" class="topbar-logo">
-        ARCHITECT <span class="text-electric">ZERO</span>
-      </a>
+      <div class="topbar-left">
+        <a href="/" class="topbar-umbrella" aria-label="venkata.info">venkata.info</a>
+        <a href="/architect-zero/" class="topbar-logo">
+          ARCHITECT <span class="text-electric">ZERO</span>
+        </a>
+      </div>
       <div class="topbar-right">
         <span id="tb-level" class="topbar-level">Lv.1</span>
         <span id="tb-xp" class="topbar-xp">0 XP</span>
@@ -219,7 +228,7 @@ function isActive(href: string) {
 <!-- LEVEL UP OVERLAY -->
 <div id="level-up-overlay" style="display:none;position:fixed;inset:0;background:#04040a;z-index:200;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px">
   <div style="font-size:72px;margin-bottom:16px">🎉</div>
-  <div id="lu-label" style="font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;font-family:monospace">Level Up!</div>
+  <div id="lu-label" style="font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;font-family:'JetBrains Mono',monospace">Level Up!</div>
   <div style="font-size:28px;font-weight:900;color:white;margin-bottom:4px">You're now a</div>
   <div id="lu-title" style="font-size:40px;font-weight:900;font-family:'Bebas Neue',Impact,sans-serif;letter-spacing:2px;margin-bottom:32px">Architect</div>
   <button onclick="document.getElementById('level-up-overlay').style.display='none'"
