@@ -27,6 +27,14 @@ import OAuthButtons from '../../../components/auth/OAuthButtons.astro';
       <input type="password" name="password" autocomplete="new-password" required minlength="8" placeholder="At least 8 characters" />
     </label>
 
+    <label class="field-check">
+      <input type="checkbox" name="newsletter" checked />
+      <span class="field-check-label">
+        Send me updates on new lessons, episodes, and future series.
+        Unsubscribe anytime.
+      </span>
+    </label>
+
     <p id="auth-error" class="auth-error" role="alert" aria-live="polite"></p>
     <p id="auth-info" class="auth-info" style="display:none"></p>
 
@@ -65,9 +73,10 @@ import OAuthButtons from '../../../components/auth/OAuthButtons.astro';
       if (infoEl) { infoEl.style.display = 'none'; infoEl.textContent = ''; }
 
       const data = new FormData(form);
-      const email = String(data.get('email') || '').trim();
+      const email = String(data.get('email') || '').trim().toLowerCase();
       const password = String(data.get('password') || '');
       const displayName = String(data.get('displayName') || '').trim();
+      const newsletterOptIn = data.get('newsletter') === 'on';
 
       const submit = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
       if (submit) { submit.disabled = true; submit.textContent = 'Creating account...'; }
@@ -85,6 +94,18 @@ import OAuthButtons from '../../../components/auth/OAuthButtons.astro';
         if (errEl) errEl.textContent = error.message;
         if (submit) { submit.disabled = false; submit.textContent = 'Create account'; }
         return;
+      }
+
+      // Newsletter opt-in: fire-and-forget. Doesn't block account creation.
+      if (newsletterOptIn) {
+        supabase.from('newsletter_subscribers').insert({
+          email,
+          source: 'sign-up',
+          user_id: result.user?.id ?? null,
+        }).then(({ error: nlErr }) => {
+          // Ignore unique_violation (already subscribed) and silently log others.
+          if (nlErr && nlErr.code !== '23505') console.warn('[newsletter] opt-in failed', nlErr.message);
+        });
       }
 
       if (result.session) {
