@@ -114,6 +114,27 @@ export interface Database {
         Insert: { comment_id: string; flagger_id: string; reason?: string | null; flagged_at?: string };
         Update: { reason?: string | null };
       };
+      newsletter_subscribers: {
+        Row: {
+          id: string;
+          email: string;
+          source: string | null;
+          user_id: string | null;
+          unsubscribed: boolean;
+          unsubscribed_at: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          email: string;
+          source?: string | null;
+          user_id?: string | null;
+        };
+        Update: {
+          unsubscribed?: boolean;
+          unsubscribed_at?: string | null;
+        };
+      };
     };
     Views: {
       leaderboard: {
