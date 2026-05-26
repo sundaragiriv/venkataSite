@@ -1,0 +1,185 @@
+---
+import BrandLayout from '../../layouts/BrandLayout.astro';
+
+const updated = '2026-05-26';
+---
+
+<BrandLayout title="Terms of Service — venkata.info" description="Terms that govern your use of Architect Zero.">
+  <article class="legal-page">
+    <header class="legal-head">
+      <div class="legal-eyebrow">Legal</div>
+      <h1>Terms of Service</h1>
+      <p class="legal-updated">Last updated: {updated}</p>
+    </header>
+
+    <section>
+      <p>
+        These Terms of Service ("Terms") govern your access to and use of
+        <strong>venkata.info</strong> and the <strong>Architect Zero</strong> learning
+        platform (collectively, the "Service"), operated by Venkata Sundaragiri ("we",
+        "us"). By using the Service, you agree to these Terms.
+      </p>
+    </section>
+
+    <section>
+      <h2>1. Eligibility</h2>
+      <p>You must be at least 13 years old to use the Service. If you are under the
+        age of majority in your jurisdiction, you must have permission from a parent or
+        guardian.</p>
+    </section>
+
+    <section>
+      <h2>2. Your account</h2>
+      <ul>
+        <li>You are responsible for keeping your account credentials secure.</li>
+        <li>You may not impersonate another person, use a false identity, or share
+          your account with others.</li>
+        <li>You may delete your account at any time; we may suspend or terminate your
+          account if you violate these Terms.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>3. Acceptable use</h2>
+      <p>You agree not to:</p>
+      <ul>
+        <li>Scrape, mirror, or republish lesson content without written permission.</li>
+        <li>Reverse engineer or attempt to extract source from the platform beyond
+          what is publicly visible.</li>
+        <li>Submit spam, malware, or abusive content via any user-generated input
+          (comments, display names, newsletter forms, support emails).</li>
+        <li>Use the Service to harass, threaten, or harm others.</li>
+        <li>Attempt to gain unauthorized access to other users' accounts or to the
+          underlying infrastructure.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>4. Content and intellectual property</h2>
+      <p>All lesson content, quiz questions, flashcards, videos, code samples, and
+        original materials on the Service are © Venkata Sundaragiri, unless otherwise
+        attributed. You may:</p>
+      <ul>
+        <li>Use the materials personally to study for the Claude Certified Architect
+          exam or related certifications.</li>
+        <li>Share short excerpts with attribution and a link back to the source page.</li>
+      </ul>
+      <p>You may not redistribute the lessons or course materials in bulk, sell them,
+        or use them to train commercial models without written permission.</p>
+      <p>
+        References to Anthropic's Claude Certified Architect (CCA) exam are made for
+        educational purposes. Anthropic and Claude are trademarks of Anthropic, PBC,
+        and this Service is not affiliated with or endorsed by Anthropic.
+      </p>
+    </section>
+
+    <section>
+      <h2>5. User-generated content</h2>
+      <p>If you post comments, display names, or other user-generated content, you
+        grant us a non-exclusive, royalty-free license to display that content on the
+        Service. You retain ownership. You are responsible for what you post. We may
+        remove content that violates these Terms or applicable law.</p>
+    </section>
+
+    <section>
+      <h2>6. Free service, no warranty</h2>
+      <p>The Service is provided free of charge, "as is" and "as available", without
+        warranty of any kind, express or implied. We do not guarantee that the
+        Service will be uninterrupted, error-free, accurate, or fit for any particular
+        purpose.</p>
+      <p>Architect Zero is a study aid. It is not a guarantee that you will pass the
+        CCA exam or any other certification. Exam outcomes depend on your own
+        preparation and Anthropic's evaluation.</p>
+    </section>
+
+    <section>
+      <h2>7. Limitation of liability</h2>
+      <p>To the maximum extent permitted by law, we will not be liable for any
+        indirect, incidental, consequential, or punitive damages arising from your
+        use of the Service. Our aggregate liability for any direct damages is limited
+        to USD 100.</p>
+    </section>
+
+    <section>
+      <h2>8. Changes to the Service</h2>
+      <p>We may add, remove, or modify features of the Service at any time. We will
+        make reasonable effort to communicate material changes to active users.</p>
+    </section>
+
+    <section>
+      <h2>9. Changes to these Terms</h2>
+      <p>We may update these Terms from time to time. The "Last updated" date at the
+        top reflects the most recent revision. Continued use of the Service after a
+        change constitutes acceptance.</p>
+    </section>
+
+    <section>
+      <h2>10. Governing law</h2>
+      <p>These Terms are governed by the laws of the State of New Jersey, USA,
+        without regard to its conflict-of-laws principles. Disputes will be resolved
+        in the state or federal courts located in New Jersey, USA.</p>
+    </section>
+
+    <section>
+      <h2>11. Contact</h2>
+      <p>For questions about these Terms, email
+        <a href="mailto:sundaragiriv@gmail.com">sundaragiriv@gmail.com</a>.</p>
+    </section>
+  </article>
+</BrandLayout>
+
+<style>
+  .legal-page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 120px 24px 96px;
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    line-height: 1.7;
+    color: var(--text);
+  }
+  .legal-head { margin-bottom: 48px; }
+  .legal-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--brand);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .legal-head h1 {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: clamp(40px, 6vw, 64px);
+    letter-spacing: 2px;
+    color: var(--white);
+    line-height: 1.05;
+    margin: 0 0 8px;
+  }
+  .legal-updated {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1.5px;
+    margin: 0;
+  }
+  .legal-page section { margin-bottom: 32px; }
+  .legal-page h2 {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 22px;
+    letter-spacing: 1.5px;
+    color: var(--white);
+    margin: 0 0 14px;
+  }
+  .legal-page p { margin: 0 0 12px; }
+  .legal-page ul {
+    padding-left: 20px;
+    margin: 0 0 14px;
+  }
+  .legal-page li { margin-bottom: 8px; }
+  .legal-page strong { color: var(--white); font-weight: 600; }
+  .legal-page a {
+    color: var(--brand);
+    text-decoration: underline;
+    text-decoration-color: rgba(59, 130, 246, 0.4);
+  }
+  .legal-page a:hover { text-decoration-color: var(--brand); }
+</style>

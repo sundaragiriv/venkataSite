@@ -1,0 +1,187 @@
+---
+import BrandLayout from '../../layouts/BrandLayout.astro';
+
+const updated = '2026-05-26';
+---
+
+<BrandLayout title="Privacy Policy — venkata.info" description="How Architect Zero handles personal data.">
+  <article class="legal-page">
+    <header class="legal-head">
+      <div class="legal-eyebrow">Legal</div>
+      <h1>Privacy Policy</h1>
+      <p class="legal-updated">Last updated: {updated}</p>
+    </header>
+
+    <section>
+      <p>
+        This Privacy Policy describes how Venkata Sundaragiri ("we", "us") collects, uses,
+        and discloses information when you use <strong>venkata.info</strong> and the
+        <strong>Architect Zero</strong> learning platform (collectively, the "Service").
+      </p>
+    </section>
+
+    <section>
+      <h2>1. Information we collect</h2>
+      <p>We collect only the data needed to operate the Service:</p>
+      <ul>
+        <li><strong>Account data:</strong> email address, display name (optional), and
+          authentication metadata when you sign in via email + password, Google, or GitHub.</li>
+        <li><strong>Progress data:</strong> lessons completed, quiz answers, flashcards
+          mastered, XP earned, streak counts. Stored against your account so it syncs
+          across devices.</li>
+        <li><strong>Anonymous browsing:</strong> if you browse the venkata.info marketing
+          pages without signing in, we do not set tracking cookies or collect identifying
+          data.</li>
+        <li><strong>Local-only data:</strong> until you sign in, your progress lives in
+          your browser's localStorage only and is never sent to us.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>2. How we use it</h2>
+      <ul>
+        <li>To provide the study app — show your progress, score your quizzes, sync
+          across devices.</li>
+        <li>To authenticate you and keep your account secure.</li>
+        <li>To send transactional emails (password resets, email verification).</li>
+        <li>To send the venkata.info newsletter — only if you explicitly opt in via the
+          footer signup. You can unsubscribe at any time.</li>
+      </ul>
+      <p>We do not sell, rent, or share your personal data with advertisers or data
+        brokers. We do not run third-party tracking pixels.</p>
+    </section>
+
+    <section>
+      <h2>3. Subprocessors</h2>
+      <p>We rely on the following services to operate the Service:</p>
+      <ul>
+        <li><strong>Supabase</strong> (database + authentication hosting)</li>
+        <li><strong>Google</strong> (OAuth sign-in, if you choose Google)</li>
+        <li><strong>GitHub</strong> (OAuth sign-in, if you choose GitHub)</li>
+        <li><strong>GitHub Pages</strong> (static site hosting)</li>
+        <li><strong>Cloudflare / GitHub</strong> (HTTPS termination, CDN)</li>
+      </ul>
+      <p>Each subprocessor has its own privacy policy. We only share with them the data
+        strictly required for their function.</p>
+    </section>
+
+    <section>
+      <h2>4. Cookies and storage</h2>
+      <p>We do not use tracking cookies. We use:</p>
+      <ul>
+        <li><strong>localStorage</strong> on your device to cache progress and remember
+          your authenticated session.</li>
+        <li><strong>Session tokens</strong> issued by Supabase to keep you signed in.</li>
+      </ul>
+      <p>You can clear both at any time via your browser's settings.</p>
+    </section>
+
+    <section>
+      <h2>5. Your rights</h2>
+      <p>You may at any time:</p>
+      <ul>
+        <li><strong>Access</strong> your data — visible in your account page and exportable
+          on request.</li>
+        <li><strong>Correct</strong> your display name or other profile data via the
+          account page.</li>
+        <li><strong>Delete</strong> your account and all associated data — email us and
+          we will action within 30 days. Account deletion is permanent.</li>
+        <li><strong>Withdraw consent</strong> for the newsletter by clicking unsubscribe
+          in any newsletter email or emailing us.</li>
+      </ul>
+      <p>Under GDPR (EU/EEA), CCPA/CPRA (California), and similar laws, you have the
+        rights to access, rectification, erasure, restriction, and portability of your
+        personal data. We honor these regardless of your location.</p>
+    </section>
+
+    <section>
+      <h2>6. Data retention</h2>
+      <p>Progress and account data is retained for as long as your account is active.
+        Once you delete your account, we erase your data within 30 days, except where we
+        are required by law to retain certain records.</p>
+    </section>
+
+    <section>
+      <h2>7. Children</h2>
+      <p>The Service is intended for users aged 13 and older. We do not knowingly
+        collect personal data from children under 13. If you believe a child under 13
+        has created an account, please contact us and we will delete the account.</p>
+    </section>
+
+    <section>
+      <h2>8. Security</h2>
+      <p>Data is encrypted in transit (HTTPS) and at rest by our subprocessors. We follow
+        reasonable engineering practices to protect your data, but no system is perfectly
+        secure. If you suspect a breach, contact us immediately.</p>
+    </section>
+
+    <section>
+      <h2>9. Changes to this policy</h2>
+      <p>We may update this Privacy Policy from time to time. We will note the new
+        "Last updated" date at the top of this page. Material changes will be announced
+        on the homepage or via newsletter to subscribers.</p>
+    </section>
+
+    <section>
+      <h2>10. Contact</h2>
+      <p>For privacy questions or to exercise your rights, email
+        <a href="mailto:sundaragiriv@gmail.com">sundaragiriv@gmail.com</a>.</p>
+    </section>
+  </article>
+</BrandLayout>
+
+<style>
+  .legal-page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 120px 24px 96px;
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    line-height: 1.7;
+    color: var(--text);
+  }
+  .legal-head { margin-bottom: 48px; }
+  .legal-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--brand);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .legal-head h1 {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: clamp(40px, 6vw, 64px);
+    letter-spacing: 2px;
+    color: var(--white);
+    line-height: 1.05;
+    margin: 0 0 8px;
+  }
+  .legal-updated {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1.5px;
+    margin: 0;
+  }
+  .legal-page section { margin-bottom: 32px; }
+  .legal-page h2 {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 22px;
+    letter-spacing: 1.5px;
+    color: var(--white);
+    margin: 0 0 14px;
+  }
+  .legal-page p { margin: 0 0 12px; }
+  .legal-page ul {
+    padding-left: 20px;
+    margin: 0 0 14px;
+  }
+  .legal-page li { margin-bottom: 8px; }
+  .legal-page strong { color: var(--white); font-weight: 600; }
+  .legal-page a {
+    color: var(--brand);
+    text-decoration: underline;
+    text-decoration-color: rgba(59, 130, 246, 0.4);
+  }
+  .legal-page a:hover { text-decoration-color: var(--brand); }
+</style>

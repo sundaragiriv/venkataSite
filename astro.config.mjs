@@ -18,9 +18,9 @@ export default defineConfig({
       VitePWA({
         registerType: 'autoUpdate',
         manifest: {
-          name: 'Architect Zero - CCA Mastery',
-          short_name: 'ArchitectZero',
-          description: 'The Quantum Learn presents Architect Zero - CCA exam mastery app',
+          name: 'Architect Zero',
+          short_name: 'Architect Zero',
+          description: 'Architect Zero — an LMS platform for technical certifications. First series: Claude Certified Architect (CCA) exam prep.',
           theme_color: '#04040a',
           background_color: '#04040a',
           display: 'standalone',
