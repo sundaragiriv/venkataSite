@@ -5,9 +5,34 @@ import { DOMAINS } from '../../lib/domains';
 
 const studyDomains = DOMAINS.filter(d => d.id !== 'd0');
 const d0 = DOMAINS.find(d => d.id === 'd0')!;
+
+const courseLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Course',
+  name: 'Architect Zero — CCA Foundations',
+  description: 'A free LMS series preparing engineers for Anthropic\'s Claude Certified Architect exam. 114 lessons across 7 domains, 108 practice questions, 90 flashcards.',
+  provider: {
+    '@type': 'EducationalOrganization',
+    name: 'Architect Zero',
+    url: 'https://venkata.info/architect-zero/',
+  },
+  inLanguage: 'en',
+  isAccessibleForFree: true,
+  educationalLevel: 'Professional',
+  about: 'Claude Certified Architect exam preparation',
+  hasCourseInstance: {
+    '@type': 'CourseInstance',
+    courseMode: 'online',
+    courseWorkload: 'PT40H',
+  },
+};
 ---
 
-<BaseLayout title="Dashboard — Architect Zero">
+<BaseLayout
+  title="Architect Zero — CCA Foundations Dashboard"
+  description="Free LMS for the Claude Certified Architect exam. 114 lessons, 108 quiz questions, 90 flashcards. Progress syncs across devices."
+  jsonLd={courseLd}
+>
 <div class="dash">
 
   <!-- Platform header band — ties dashboard to brand surveillance aesthetic -->

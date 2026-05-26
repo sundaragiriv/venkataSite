@@ -9,9 +9,43 @@ import InstallSection from '../components/brand/InstallSection.astro';
 import ExpertiseSection from '../components/brand/ExpertiseSection.astro';
 import ContactSection from '../components/brand/ContactSection.astro';
 import BrandFooter from '../components/brand/BrandFooter.astro';
+
+const personLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Venkata Sundaragiri',
+  url: 'https://venkata.info',
+  image: 'https://venkata.info/Avatar.jpeg',
+  jobTitle: 'Solution Architect, AI Educator',
+  description: '23 years of enterprise architecture; creator of Architect Zero — an LMS for technical certifications.',
+  sameAs: [
+    'https://linkedin.com/in/venkata-sundaragiri',
+    'https://youtube.com/@architectzero',
+  ],
+  knowsAbout: [
+    'SAP S/4HANA',
+    'Enterprise Architecture',
+    'AI Architecture',
+    'Claude API',
+    'Anthropic Claude Certified Architect (CCA)',
+    'Multi-Agent Systems',
+    'Production Systems Design',
+  ],
+};
+
+const orgLd = {
+  '@context': 'https://schema.org',
+  '@type': 'EducationalOrganization',
+  name: 'Architect Zero',
+  alternateName: 'Architect Zero — venkata.info',
+  url: 'https://venkata.info/architect-zero/',
+  logo: 'https://venkata.info/icons/icon-512.png',
+  description: 'A free LMS for technical certifications. First series: Claude Certified Architect (CCA) exam prep.',
+  founder: { '@type': 'Person', name: 'Venkata Sundaragiri' },
+};
 ---
 
-<BrandLayout>
+<BrandLayout jsonLd={[personLd, orgLd]}>
   <Hero />
   <StorySection />
   <BuildingSection />

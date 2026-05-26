@@ -2,10 +2,22 @@
 import { ViewTransitions } from 'astro:transitions';
 import '../styles/global.css';
 import AmbientField from '../components/brand/AmbientField.astro';
+import SeoMeta from '../components/SeoMeta.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article' | 'profile';
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[] | null;
+}
 
 const {
-  title = 'Venkata Sundaragiri - Architect Zero',
-  description = 'Venkata Sundaragiri - SAP Solution Architect and AI Educator. 23 years enterprise architecture. Creator of Architect Zero.',
+  title = 'Venkata Sundaragiri — Architect Zero',
+  description = 'Venkata Sundaragiri — Solution Architect and AI Educator. 23 years of production architecture, now building Architect Zero: a free LMS for technical certifications, starting with CCA.',
+  ogImage,
+  ogType = 'website',
+  jsonLd = null,
 } = Astro.props;
 ---
 
@@ -14,13 +26,9 @@ const {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content={description} />
-    <meta property="og:title" content="Venkata Sundaragiri - Architect Zero" />
-    <meta property="og:description" content="SAP is my bread and butter. AI is my future. 23 years building enterprise systems. Now building on the frontier." />
-    <meta property="og:url" content="https://venkata.info" />
-    <meta name="theme-color" content="#020403" />
+    <meta name="theme-color" content="#04040a" />
     <ViewTransitions />
-    <title>{title}</title>
+    <SeoMeta title={title} description={description} ogImage={ogImage} ogType={ogType} jsonLd={jsonLd} />
   </head>
   <body class="brand-page">
     <AmbientField />

@@ -1,0 +1,55 @@
+---
+// Reusable head meta partial — call once per layout, drives:
+//  - <title>, <meta description>, canonical
+//  - OpenGraph (Facebook/LinkedIn/Slack/Discord previews)
+//  - Twitter Card (X previews)
+//  - Optional JSON-LD structured data block
+// Site canonical comes from astro.config.mjs `site` field.
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;       // path, relative or absolute. Default: /Avatar.jpeg
+  ogType?: 'website' | 'article' | 'profile';
+  noIndex?: boolean;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[] | null;
+}
+
+const {
+  title,
+  description,
+  ogImage = '/Avatar.jpeg',
+  ogType = 'website',
+  noIndex = false,
+  jsonLd = null,
+} = Astro.props;
+
+const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? 'https://venkata.info';
+const canonical = new URL(Astro.url.pathname, siteUrl).toString();
+const absoluteOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noIndex && <meta name="robots" content="noindex, nofollow" />}
+
+<!-- OpenGraph (Facebook, LinkedIn, Slack, Discord) -->
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:type" content={ogType} />
+<meta property="og:site_name" content="venkata.info" />
+<meta property="og:image" content={absoluteOgImage} />
+<meta property="og:image:alt" content="Architect Zero — an LMS platform for technical certifications" />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={absoluteOgImage} />
+
+<!-- JSON-LD structured data -->
+{jsonLd && (
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+)}

@@ -1,16 +1,21 @@
 ---
 import { ViewTransitions } from 'astro:transitions';
 import ImportPrompt from '../components/auth/ImportPrompt.astro';
+import SeoMeta from '../components/SeoMeta.astro';
 import '../styles/global.css';
 
 interface Props {
   title?: string;
   description?: string;
+  ogImage?: string;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[] | null;
 }
 
 const {
-  title = 'Architect Zero — CCA Mastery',
-  description = 'Architect Zero — an LMS platform for technical certifications. First series: Claude Certified Architect (CCA) exam prep.',
+  title = 'Architect Zero — CCA Foundations',
+  description = 'Architect Zero — an LMS for technical certifications. First series: Claude Certified Architect (CCA) exam prep. 114 lessons, 108 quiz questions, 90 flashcards, free.',
+  ogImage,
+  jsonLd = null,
 } = Astro.props;
 
 const currentPath = Astro.url.pathname;
@@ -39,10 +44,9 @@ function isActive(href: string) {
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
   <meta name="apple-mobile-web-app-title" content="Architect Zero"/>
   <meta name="theme-color" content="#04040a"/>
-  <meta name="description" content={description}/>
   <link rel="manifest" href="/manifest.webmanifest"/>
   <ViewTransitions />
-  <title>{title}</title>
+  <SeoMeta title={title} description={description} ogImage={ogImage} jsonLd={jsonLd} />
   <style is:inline>
     body.az-gating #app,
     body.az-gating #level-up-overlay { visibility: hidden; }
