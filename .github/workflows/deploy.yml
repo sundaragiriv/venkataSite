@@ -43,11 +43,18 @@ jobs:
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git checkout --orphan gh-pages
           git rm -rf .
+          # Remove every untracked file/dir except the build output.
+          # Without this, node_modules/, .astro/ cache, etc. get swept into
+          # the orphan commit by `git add -A` (because we just deleted the
+          # .gitignore in `git rm -rf .`).
+          git clean -fdx -e dist
           # cp -r dist/. .  copies everything INCLUDING dotfiles like .nojekyll
           # (cp -r dist/* . skips dotfiles, which causes GitHub Pages to run
           # Jekyll and strip the _astro/ folder because Jekyll excludes
           # any path starting with an underscore. Result: all CSS 404s.)
           cp -r dist/. .
+          # Drop the source dist/ so we don't commit a nested duplicate.
+          rm -rf dist
           git add -A
           git commit -m "Deploy site - $(date)"
           git push origin gh-pages --force
