@@ -47,7 +47,10 @@ jobs:
           # Without this, node_modules/, .astro/ cache, etc. get swept into
           # the orphan commit by `git add -A` (because we just deleted the
           # .gitignore in `git rm -rf .`).
-          git clean -fdx -e dist
+          # -ff (force twice) is required to descend into directories that
+          # contain their own .git (some npm deps install with one); plain
+          # -f leaves those untouched and node_modules survives.
+          git clean -ffdx -e dist
           # cp -r dist/. .  copies everything INCLUDING dotfiles like .nojekyll
           # (cp -r dist/* . skips dotfiles, which causes GitHub Pages to run
           # Jekyll and strip the _astro/ folder because Jekyll excludes
