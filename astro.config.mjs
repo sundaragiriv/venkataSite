@@ -35,9 +35,6 @@ export default defineConfig({
         },
         workbox: {
           navigateFallback: null,
-          // Default is 2 MiB; bumped because Azero.png is a 7.6 MB watermark
-          // (filtered out of the actual precache by manifestTransforms below).
-          maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
           globPatterns: ['**/*.{js,css,html,svg,png,ico,txt,json}'],
           manifestTransforms: [
             async (entries) => ({

@@ -29,7 +29,7 @@ const {
 <div class="auth-bg">
   <div class="auth-orb auth-orb-1"></div>
   <div class="auth-orb auth-orb-2"></div>
-  <img src="/Azero.png" alt="" aria-hidden="true" class="auth-mascot" />
+  <img src="/AzeroC.jpg" alt="" aria-hidden="true" class="auth-mascot" />
 </div>
 
 <main class="auth-main">
@@ -105,15 +105,17 @@ const {
     right: -100px;
   }
 
-  /* Corporate robot mascot — subtle bottom-right watermark. */
+  /* Corporate robot mascot — subtle bottom-right watermark.
+     mix-blend-mode screen burns through the JPEG's solid background. */
   .auth-mascot {
     position: absolute;
     bottom: -32px;
     right: -48px;
     height: min(78vh, 720px);
     width: auto;
-    opacity: 0.14;
-    filter: saturate(0.7) brightness(1.05);
+    opacity: 0.22;
+    filter: saturate(0.8) brightness(1.1) contrast(0.95);
+    mix-blend-mode: screen;
     pointer-events: none;
     user-select: none;
   }
