@@ -162,10 +162,19 @@ function isActive(href: string) {
         <span id="sb-streak">0 day streak</span>
       </div>
       <div class="sidebar-exam-tag">CCA Certified Architect</div>
-      <a href="/architect-zero/auth/account" class="sidebar-account" id="sb-account" aria-label="Account">
-        <span class="sidebar-account-avatar" id="sb-avatar" aria-hidden="true">?</span>
-        <span class="sidebar-account-name" id="sb-name">Account</span>
-      </a>
+      <div class="sidebar-account-row">
+        <a href="/architect-zero/auth/account" class="sidebar-account" id="sb-account" aria-label="Account">
+          <span class="sidebar-account-avatar" id="sb-avatar" aria-hidden="true">?</span>
+          <span class="sidebar-account-name" id="sb-name">Account</span>
+        </a>
+        <button id="sb-signout" class="sidebar-signout" type="button" aria-label="Sign out" title="Sign out">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
+        </button>
+      </div>
     </div>
 
   </aside>
@@ -353,6 +362,25 @@ function isActive(href: string) {
       }
     }
 
+    // Personalize any page-level greeting (e.g. dashboard hero) that
+    // exposes a [data-user-name] element. First name only — fits the
+    // hero typography better than "Welcome back, Venkata Sundaragiri".
+    const firstName = name.split(' ')[0] || name;
+    document.querySelectorAll<HTMLElement>('[data-user-name]').forEach((el) => {
+      el.textContent = firstName;
+    });
+
+    // Wire the sidebar sign-out button.
+    const signOutBtn = document.getElementById('sb-signout') as HTMLButtonElement | null;
+    if (signOutBtn && !signOutBtn.dataset.bound) {
+      signOutBtn.dataset.bound = 'true';
+      signOutBtn.addEventListener('click', async () => {
+        signOutBtn.disabled = true;
+        // onAuthStateChange SIGNED_OUT handler clears local + redirects.
+        await supabase.auth.signOut();
+      });
+    }
+
     // Cloud sync — runs once per page load. reconcileOnSignIn is idempotent
     // for the cross-device pull and merge cases.
     if (!(window as any).__azReconciledFor || (window as any).__azReconciledFor !== user.id) {
@@ -470,11 +498,18 @@ function isActive(href: string) {
 </script>
 
 <style is:global>
+  .sidebar-account-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 14px;
+  }
   .sidebar-account {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-top: 14px;
+    flex: 1;
+    min-width: 0;
     padding: 8px 10px;
     border-radius: 8px;
     border: 1px solid transparent;
@@ -485,6 +520,29 @@ function isActive(href: string) {
   .sidebar-account:hover {
     background: var(--bg-2);
     border-color: var(--bg-4);
+  }
+  .sidebar-signout {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: color 150ms ease, background 150ms ease, border-color 150ms ease;
+  }
+  .sidebar-signout:hover {
+    color: var(--signal);
+    background: var(--signal-dim);
+    border-color: var(--signal-mid);
+  }
+  .sidebar-signout:disabled {
+    opacity: 0.5;
+    cursor: progress;
   }
   .sidebar-account-avatar {
     width: 28px;
