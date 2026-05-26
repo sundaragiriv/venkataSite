@@ -1,0 +1,335 @@
+---
+import BrandLayout from '../../layouts/BrandLayout.astro';
+import SocialIcons from '../../components/SocialIcons.astro';
+---
+
+<BrandLayout
+  title="Contact — venkata.info"
+  description="Get in touch with Venkata Sundaragiri about Architect Zero, consulting, or partnerships."
+>
+  <article class="contact-page">
+    <header class="contact-head">
+      <div class="contact-eyebrow">Reach out</div>
+      <h1>Get in touch</h1>
+      <p class="contact-sub">
+        Architect Zero feedback, consulting inquiries, partnerships, or just
+        a hello &mdash; pick a channel that fits.
+      </p>
+    </header>
+
+    <div class="contact-grid">
+      <section class="contact-form-card">
+        <div class="contact-card-label">Send a message</div>
+        <form id="contact-form" class="contact-form" novalidate>
+          <div class="contact-form-row">
+            <label class="field">
+              <span>Name</span>
+              <input type="text" name="name" autocomplete="name" maxlength="80" placeholder="Optional" />
+            </label>
+            <label class="field">
+              <span>Email <em>*</em></span>
+              <input type="email" name="email" autocomplete="email" required placeholder="you@example.com" />
+            </label>
+          </div>
+          <label class="field">
+            <span>Subject</span>
+            <input type="text" name="subject" maxlength="140" placeholder="What is this about?" />
+          </label>
+          <label class="field">
+            <span>Message <em>*</em></span>
+            <textarea name="message" required minlength="5" maxlength="5000" rows="6"
+              placeholder="A few sentences is plenty."></textarea>
+          </label>
+
+          <p id="contact-error" class="form-error" role="alert" aria-live="polite"></p>
+          <p id="contact-info" class="form-info" style="display:none"></p>
+
+          <button type="submit" class="contact-submit">Send message &rarr;</button>
+        </form>
+      </section>
+
+      <aside class="contact-side">
+        <div class="side-card">
+          <div class="contact-card-label">Direct channels</div>
+          <ul class="contact-list">
+            <li>
+              <span class="contact-list-label">Email</span>
+              <a href="mailto:sundaragiriv@gmail.com">sundaragiriv@gmail.com</a>
+            </li>
+            <li>
+              <span class="contact-list-label">LinkedIn</span>
+              <a href="https://linkedin.com/in/venkata-sundaragiri" target="_blank" rel="noopener noreferrer">/in/venkata-sundaragiri</a>
+            </li>
+            <li>
+              <span class="contact-list-label">YouTube</span>
+              <a href="https://youtube.com/@architectzero" target="_blank" rel="noopener noreferrer">@architectzero</a>
+            </li>
+            <li>
+              <span class="contact-list-label">X / Twitter</span>
+              <a href="https://x.com/architectzero" target="_blank" rel="noopener noreferrer">@architectzero</a>
+            </li>
+          </ul>
+          <div class="side-card-social">
+            <SocialIcons size={20} variant="bright" />
+          </div>
+        </div>
+
+        <div class="side-card">
+          <div class="contact-card-label">Expect a reply</div>
+          <p class="side-card-body">
+            Most messages get a response within 2&ndash;3 business days. Architect Zero
+            product feedback often gets a same-day reply, especially anything that
+            looks like a bug.
+          </p>
+        </div>
+      </aside>
+    </div>
+  </article>
+</BrandLayout>
+
+<script>
+  import { supabase } from '../../lib/supabase';
+
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const errEl = document.getElementById('contact-error');
+  const infoEl = document.getElementById('contact-info');
+
+  function showError(text: string) {
+    if (errEl) errEl.textContent = text;
+    if (infoEl) { infoEl.style.display = 'none'; infoEl.textContent = ''; }
+  }
+
+  function showInfo(text: string) {
+    if (errEl) errEl.textContent = '';
+    if (infoEl) { infoEl.style.display = 'block'; infoEl.textContent = text; }
+  }
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    showError('');
+
+    const data = new FormData(form);
+    const name = String(data.get('name') || '').trim() || null;
+    const email = String(data.get('email') || '').trim().toLowerCase();
+    const subject = String(data.get('subject') || '').trim() || null;
+    const message = String(data.get('message') || '').trim();
+
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      showError('Enter a valid email address.');
+      return;
+    }
+    if (message.length < 5) {
+      showError('Message is too short.');
+      return;
+    }
+
+    const submit = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+    if (submit) { submit.disabled = true; submit.textContent = 'Sending...'; }
+
+    const { data: session } = await supabase.auth.getSession();
+    const userId = session.session?.user.id ?? null;
+
+    const { error } = await supabase.from('contact_messages').insert({
+      name,
+      email,
+      subject,
+      message,
+      user_id: userId,
+      source: 'contact-page',
+      user_agent: navigator.userAgent.slice(0, 280),
+    });
+
+    if (error) {
+      showError('Could not send message right now. Please email sundaragiriv@gmail.com directly.');
+      if (submit) { submit.disabled = false; submit.textContent = 'Send message →'; }
+      return;
+    }
+
+    showInfo("Message sent. I'll be in touch.");
+    form.reset();
+    if (submit) { submit.disabled = false; submit.textContent = 'Send message →'; }
+  });
+</script>
+
+<style>
+  .contact-page {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 120px 24px 96px;
+  }
+  .contact-head { text-align: center; margin-bottom: 48px; }
+  .contact-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--brand);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .contact-head h1 {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: clamp(40px, 6vw, 64px);
+    letter-spacing: 2px;
+    color: var(--white);
+    line-height: 1.05;
+    margin: 0 0 12px;
+  }
+  .contact-sub {
+    max-width: 540px;
+    margin: 0 auto;
+    color: var(--subtle);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+  @media (max-width: 880px) {
+    .contact-grid { grid-template-columns: 1fr; }
+  }
+
+  .contact-form-card,
+  .side-card {
+    background: var(--bg-2);
+    border: 1px solid var(--bg-4);
+    border-radius: 14px;
+    padding: 28px;
+  }
+
+  .contact-card-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    color: var(--electric);
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+
+  .contact-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  @media (max-width: 480px) {
+    .contact-form-row { grid-template-columns: 1fr; }
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  .field > span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--subtle);
+  }
+  .field > span em { color: var(--signal); font-style: normal; }
+  .field input,
+  .field textarea {
+    padding: 11px 14px;
+    background: var(--bg-3);
+    border: 1px solid var(--bg-4);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    transition: border-color 150ms ease, background 150ms ease;
+    resize: vertical;
+  }
+  .field input:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: var(--brand);
+    background: var(--bg-2);
+  }
+
+  .form-error {
+    min-height: 18px;
+    margin: 4px 0 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--signal);
+  }
+  .form-info {
+    margin: 4px 0 12px;
+    padding: 12px 14px;
+    background: rgba(16, 185, 129, 0.08);
+    border: 1px solid rgba(16, 185, 129, 0.32);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--mint);
+  }
+
+  .contact-submit {
+    padding: 12px 22px;
+    background: var(--brand-gradient);
+    border: 0;
+    border-radius: 8px;
+    color: var(--white);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: filter 150ms ease, transform 150ms var(--ease-out);
+  }
+  .contact-submit:hover:not(:disabled) {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+  }
+  .contact-submit:disabled { opacity: 0.6; cursor: progress; }
+
+  .contact-side {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .contact-list {
+    list-style: none;
+    margin: 0 0 18px;
+    padding: 0;
+  }
+  .contact-list li {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--bg-4);
+  }
+  .contact-list li:last-child { border-bottom: 0; }
+  .contact-list-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .contact-list a {
+    font-size: 13px;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .contact-list a:hover { color: var(--brand); }
+
+  .side-card-social {
+    padding-top: 6px;
+    border-top: 1px solid var(--bg-4);
+  }
+
+  .side-card-body {
+    margin: 0;
+    color: var(--subtle);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+</style>

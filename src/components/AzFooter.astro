@@ -1,0 +1,100 @@
+---
+import SocialIcons from './SocialIcons.astro';
+---
+
+<footer class="az-footer">
+  <div class="az-footer-inner">
+    <div class="az-footer-brand">
+      <a href="/" class="az-footer-umbrella">venkata.info</a>
+      <span class="az-footer-sep">||</span>
+      <a href="/architect-zero/" class="az-footer-brand-name">ARCHITECT <span>ZERO</span></a>
+    </div>
+    <nav class="az-footer-links" aria-label="Footer">
+      <a href="/contact/">Contact</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="/terms/">Terms</a>
+    </nav>
+    <div class="az-footer-social"><SocialIcons size={16} variant="muted" /></div>
+    <div class="az-footer-copy">© 2026 Venkata Sundaragiri</div>
+  </div>
+</footer>
+
+<style>
+  .az-footer {
+    margin-top: 64px;
+    border-top: 1px solid var(--bg-4);
+    background: var(--bg-0);
+  }
+  .az-footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px 32px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px 28px;
+  }
+  .az-footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 14px;
+    letter-spacing: 2.5px;
+  }
+  .az-footer-umbrella {
+    color: var(--subtle);
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+  .az-footer-umbrella:hover { color: var(--white); }
+  .az-footer-sep {
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .az-footer-brand-name {
+    color: var(--white);
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+  .az-footer-brand-name span { color: var(--electric); }
+  .az-footer-brand-name:hover { color: var(--electric); }
+
+  .az-footer-links {
+    display: flex;
+    gap: 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .az-footer-links a {
+    color: var(--subtle);
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+  .az-footer-links a:hover { color: var(--electric); }
+
+  .az-footer-copy {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 1.2px;
+    color: var(--muted);
+  }
+
+  @media (max-width: 720px) {
+    .az-footer-inner {
+      padding: 20px 18px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+  }
+
+  /* Lesson pages have a sticky course rail — push the footer below the rail
+     by clearing the main content properly. */
+  .course-shell + .az-footer { margin-top: 0; }
+</style>

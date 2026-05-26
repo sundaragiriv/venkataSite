@@ -1,6 +1,7 @@
 ---
 import { ViewTransitions } from 'astro:transitions';
 import ImportPrompt from '../components/auth/ImportPrompt.astro';
+import AzFooter from '../components/AzFooter.astro';
 import SeoMeta from '../components/SeoMeta.astro';
 import '../styles/global.css';
 
@@ -196,6 +197,8 @@ function isActive(href: string) {
     <main id="content">
       <slot/>
     </main>
+
+    <AzFooter />
 
   </div>
 

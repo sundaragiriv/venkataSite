@@ -135,6 +135,34 @@ export interface Database {
           unsubscribed_at?: string | null;
         };
       };
+      contact_messages: {
+        Row: {
+          id: string;
+          name: string | null;
+          email: string;
+          subject: string | null;
+          message: string;
+          user_id: string | null;
+          source: string | null;
+          user_agent: string | null;
+          responded: boolean;
+          responded_at: string | null;
+          created_at: string;
+        };
+        Insert: {
+          name?: string | null;
+          email: string;
+          subject?: string | null;
+          message: string;
+          user_id?: string | null;
+          source?: string | null;
+          user_agent?: string | null;
+        };
+        Update: {
+          responded?: boolean;
+          responded_at?: string | null;
+        };
+      };
     };
     Views: {
       leaderboard: {
