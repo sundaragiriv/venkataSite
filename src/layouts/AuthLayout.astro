@@ -29,6 +29,7 @@ const {
 <div class="auth-bg">
   <div class="auth-orb auth-orb-1"></div>
   <div class="auth-orb auth-orb-2"></div>
+  <img src="/Azero.png" alt="" aria-hidden="true" class="auth-mascot" />
 </div>
 
 <main class="auth-main">
@@ -103,6 +104,31 @@ const {
     bottom: -100px;
     right: -100px;
   }
+
+  /* Corporate robot mascot — subtle bottom-right watermark. */
+  .auth-mascot {
+    position: absolute;
+    bottom: -32px;
+    right: -48px;
+    height: min(78vh, 720px);
+    width: auto;
+    opacity: 0.14;
+    filter: saturate(0.7) brightness(1.05);
+    pointer-events: none;
+    user-select: none;
+  }
+  @media (max-width: 720px) {
+    .auth-mascot {
+      bottom: -8vh;
+      right: -18vw;
+      height: 60vh;
+      opacity: 0.10;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .auth-mascot { opacity: 0.10; }
+  }
+
   .auth-main {
     position: relative;
     z-index: 1;
