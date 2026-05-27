@@ -1,0 +1,434 @@
+[
+  {
+    "id": "s2-q01",
+    "scenario": "S2",
+    "scenarioName": "Document Processing Pipeline",
+    "domain": "d4",
+    "difficulty": "Hard",
+    "taskRef": "T4.3",
+    "question": "A document processing pipeline receives invoices, contracts, and purchase orders. Each document type requires a different extraction schema. Claude should automatically select the correct schema. Which tool_choice setting is correct?",
+    "options": [
+      "tool_choice: 'auto' — Claude decides whether to call a tool based on the document",
+      "tool_choice: 'any' — Claude must call a tool and selects which schema based on document type",
+      "tool_choice: forced to 'extract_invoice' — the most common document type",
+      "No tool_choice needed — include all three schemas in the prompt"
+    ],
+    "correct": 1,
+    "xp": 20,
+    "explanation": "When document type is unknown and multiple extraction schemas exist, tool_choice: 'any' is correct. Claude reads the document, determines its type, and selects the appropriate schema. 'auto' risks returning text instead of calling a tool. Forcing a specific schema produces wrong output for other document types.",
+    "whyWrong": [
+      "auto means Claude MAY return text — for an extraction pipeline you need guaranteed tool invocation",
+      "This is the correct answer",
+      "Forcing extract_invoice on a contract produces wrong structured output — document type determines schema",
+      "Including schemas in the prompt doesn't guarantee Claude calls the extraction tool — use tool_choice"
+    ]
+  },
+  {
+    "id": "s2-q02",
+    "scenario": "S2",
+    "scenarioName": "Document Processing Pipeline",
+    "domain": "d4",
+    "difficulty": "Hard",
+    "taskRef": "T4.5",
+    "question": "An extraction schema has 'po_number' marked as required. Many invoices don't have PO numbers. What happens and what is the correct fix?",
+    "options": [
+      "Claude will skip invoices without PO numbers and return an error",
+      "Claude will fabricate plausible PO numbers to satisfy the required field — fix by making the field nullable",
+      "Claude will ask the user to provide the PO number before extraction can complete",
+      "The schema validation will reject the extraction and trigger a retry"
+    ],
+    "correct": 1,
+    "xp": 20,
+    "explanation": "When a required field has no source data, Claude fabricates a plausible value to satisfy the schema. This is a critical reliability issue — the extraction appears successful but contains invented data. The fix: mark po_number as type: ['string', 'null'] and remove it from the required array. Claude returns null when the field is absent.",
+    "whyWrong": [
+      "Claude doesn't skip documents — it attempts to satisfy the schema, which means fabrication for missing required fields",
+      "This is the correct answer",
+      "Claude doesn't interrupt extraction to ask users for missing data",
+      "Schema validation validates format/type — it doesn't detect fabricated values"
+    ]
+  },
+  {
+    "id": "s2-q03",
+    "scenario": "S2",
+    "scenarioName": "Document Processing Pipeline",
+    "domain": "d4",
+    "difficulty": "Medium",
+    "taskRef": "T4.5",
+    "question": "An extractor returns total_amount as a string '$4,999.00' but the schema requires a number. After a retry with the same prompt, the same error occurs. What is wrong with the retry approach?",
+    "options": [
+      "The schema definition has a bug — strings should be acceptable for monetary amounts",
+      "The retry prompt must include the original document, the failed output, AND specific error descriptions — retrying with only the original prompt produces identical output",
+      "Retries are not supported for schema validation errors — escalate to human review immediately",
+      "The retry needs to use a different Claude model with better formatting capabilities"
+    ],
+    "correct": 1,
+    "xp": 20,
+    "explanation": "Retrying with the original prompt produces identical output because nothing changed. The retry prompt must include all three components: (1) original document, (2) failed output, (3) specific error: 'total_amount must be a decimal number in dollars, got string $4,999.00, expected 4999.00'. Claude needs to see what it got wrong and what's expected.",
+    "whyWrong": [
+      "Monetary amounts should be numbers for computation — string with currency symbols is a real error",
+      "This is the correct answer",
+      "Format errors (string vs number) are retryable — missing-data errors are not retryable",
+      "Model capability isn't the issue — the retry prompt structure is the issue"
+    ]
+  },
+  {
+    "id": "s2-q04",
+    "scenario": "S2",
+    "scenarioName": "Document Processing Pipeline",
+    "domain": "d5",
+    "difficulty": "Hard",
+    "taskRef": "T5.5",
+    "question": "Your invoice extraction system processes 5,000 invoices daily. You can afford 50 human reviews per day. Which sampling strategy gives the best quality signal?",
+    "options": [
+      "Simple random sample of 50 invoices from all 5,000",
+      "Stratified sample: 20 from low-confidence, 15 from medium-confidence, 10 from high-confidence, 5 from unusual document types",
+      "Sample only the invoices that failed schema validation",
+      "Sample the 50 highest-value invoices to focus on financial risk"
+    ],
+    "correct": 1,
+    "xp": 20,
+    "explanation": "Stratified sampling ensures every confidence tier and document type has representation. Simple random sampling will under-represent rare categories (low-confidence, unusual types). Sampling only failures misses quality issues in the auto-processed majority. Financial value doesn't correlate with extraction accuracy.",
+    "whyWrong": [
+      "Random sampling under-represents rare categories — low-confidence extractions are rare but highest-risk",
+      "This is the correct answer",
+      "Sampling only failures misses quality problems in successful extractions — what looks like success may not be",
+      "High-value invoices are important but extraction error rate doesn't correlate with invoice value"
+    ]
+  },
+  {
+    "id": "s2-q05",
+    "scenario": "S2",
+    "scenarioName": "Document Processing Pipeline",
+    "domain": "d4",
+    "difficulty": "Medium",
+    "taskRef": "T4.3",
+    "question": "What does JSON schema validation guarantee about Claude's extraction output?",
+    "options": [
+      "Both syntactic correctness (right types and fields) AND semantic correctness (right values)",
+      "Only syntactic correctness — values can be wrong but match the schema's type requirements",
+      "That Claude extracted from the source document rather than fabricating",
+      "That all required business rules were applied to the extracted data"
+    ],
+    "correct": 1,
+    "xp": 15,
+    "explanation": "JSON schema validation enforces syntax only: field presence, types, enum values, patterns. It cannot detect semantic errors: a total_amount of 999.00 (number, valid) when the invoice says $4,999.00 passes schema validation. Semantic validation (cross-checking values against source) requires a separate validation layer.",
+    "whyWrong": [
+      "Schema guarantees syntax (types, fields) but NOT semantics (correct values) — this is a critical exam concept",
+      "This is the correct answer",
+      "Schema cannot detect fabrication — a plausible fabricated value of the right type passes schema validation",
+      "Business rule validation requires additional code beyond schema validation"
+    ]
+  },
+  {
+    "id": "s2-q06",
+    "scenario": "S2",
+    "scenarioName": "Document Processing Pipeline",
+    "domain": "d5",
+    "difficulty": "Hard",
+    "taskRef": "T5.5",
+    "question": "You have 50,000 invoices to process overnight. Which processing approach is correct?",
+    "options": [
+      "Real-time API with 50 concurrent requests to process all invoices in parallel",
+      "Batch API — 50% cost reduction, results by morning, no latency SLA required for overnight work",
+      "Batch API for invoices under $1,000 and real-time API for invoices over $1,000",
+      "Real-time API in batches of 1,000 to avoid rate limits"
+    ],
+    "correct": 1,
+    "xp": 15,
+    "explanation": "Batch API is correct for overnight non-urgent processing: 50% cost reduction, supports up to 24-hour processing time which is acceptable for overnight work, and handles 50,000 requests in a single batch. The Batch API is specifically designed for this use case.",
+    "whyWrong": [
+      "Real-time API at scale is more expensive and rate-limited — Batch API is designed for this volume",
+      "This is the correct answer",
+      "Invoice value doesn't determine the processing API — urgency does. Neither tier requires real-time.",
+      "Real-time API in batches is still real-time pricing — doesn't get the 50% Batch API discount"
+    ]
+  },
+  {
+    "id": "s2-q07",
+    "scenario": "S2",
+    "scenarioName": "Document Processing Pipeline",
+    "domain": "d4",
+    "difficulty": "Medium",
+    "taskRef": "T4.2",
+    "question": "You're building a clause extractor for contracts. Your zero-shot extractor confuses liability limitation clauses with indemnification clauses 35% of the time. What should your few-shot examples target?",
+    "options": [
+      "Clear, obvious examples of each clause type to establish the baseline pattern",
+      "The specific ambiguous cases — indemnification clauses that look like liability limitations, and vice versa",
+      "A diverse mix of all clause types with equal representation",
+      "The most common clause types in your document corpus"
+    ],
+    "correct": 1,
+    "xp": 15,
+    "explanation": "Few-shot examples should target the cases where the model fails — hard, ambiguous cases. If liability/indemnification confusion is 35% of errors, the highest-value examples are ones that teach that specific distinction. Obvious examples add no value — Claude handles them correctly without examples.",
+    "whyWrong": [
+      "Obvious examples where Claude already succeeds add zero value to few-shot performance",
+      "This is the correct answer",
+      "Diverse examples are good for coverage but the primary value comes from targeting specific failure modes",
+      "Common clause types are likely already handled well — rare failure cases deserve the example budget"
+    ]
+  },
+  {
+    "id": "s2-q08",
+    "scenario": "S2",
+    "scenarioName": "Document Processing Pipeline",
+    "domain": "d5",
+    "difficulty": "Medium",
+    "taskRef": "T5.3",
+    "question": "Your calibration study shows high-confidence extractions are only 74% accurate (expected: >90%). What action does this require?",
+    "options": [
+      "Accept the lower accuracy — 74% is still better than random",
+      "Adjust routing thresholds to treat 'high' confidence as 'medium' until the confidence prompt is recalibrated",
+      "Switch to a more capable model for confidence assessment",
+      "Reduce the sample size to avoid skewing the calibration results"
+    ],
+    "correct": 1,
+    "xp": 20,
+    "explanation": "When self-reported 'high' confidence is only 74% accurate (expected >90%), the confidence is miscalibrated — Claude is overconfident. The immediate fix: adjust routing to treat 'high' as 'medium' (requiring spot-check rather than auto-process) until the underlying confidence prompt is recalibrated. Don't trust uncalibrated confidence scores.",
+    "whyWrong": [
+      "74% accuracy on 'high confidence' extractions is significantly miscalibrated — auto-processing them would produce too many errors",
+      "This is the correct answer",
+      "The issue is calibration of confidence reporting, not model capability for extraction",
+      "Reducing sample size reduces statistical reliability — you need MORE samples, not fewer, to detect calibration issues"
+    ]
+  },
+  {
+    "id": "s2-q09",
+    "scenario": "S2",
+    "scenarioName": "Document Processing Pipeline",
+    "domain": "d4",
+    "difficulty": "Hard",
+    "taskRef": "T4.4",
+    "question": "A document processing pipeline: Step 1 extracts raw text from PDFs, Step 2 identifies document type, Step 3 extracts structured data using type-specific schema, Step 4 validates semantic correctness. Which steps can run in parallel and which must chain?",
+    "options": [
+      "All steps can run in parallel since each has independent functionality",
+      "Steps 1→2→3→4 must all chain sequentially — each depends on the previous step's output",
+      "Step 1 can start immediately; Steps 2 and 3 chain sequentially after; Step 4 can run in parallel with a second validation approach",
+      "Steps 1→2→3 chain sequentially; Step 4 can start immediately after Step 3 completes"
+    ],
+    "correct": 1,
+    "xp": 20,
+    "explanation": "This is a pure sequential chain: Step 2 needs Step 1's text, Step 3 needs Step 2's type, Step 4 needs Step 3's structured data. There are no independent steps that could parallelize. Each step has a genuine data dependency on the previous step's output.",
+    "whyWrong": [
+      "These steps have genuine dependencies — Step 2 cannot determine document type without Step 1's extracted text",
+      "This is the correct answer",
+      "Step 1 is the only step that can start immediately — Step 2 must wait for Step 1's output",
+      "Same as the correct answer — this describes the same sequential chain correctly"
+    ]
+  },
+  {
+    "id": "s2-q10",
+    "scenario": "S2",
+    "scenarioName": "Document Processing Pipeline",
+    "domain": "d5",
+    "difficulty": "Medium",
+    "taskRef": "T5.5",
+    "question": "An invoice extraction returns: vendor (high confidence), date (high confidence), total_amount (low confidence). What does the routing logic do?",
+    "options": [
+      "Routes to human review because overall confidence is mixed",
+      "Routes to auto-process because majority of fields are high confidence",
+      "Routes to high-priority human review focused on total_amount — critical financial field with low confidence",
+      "Routes to spot-check — some fields are uncertain but none are clearly wrong"
+    ],
+    "correct": 2,
+    "xp": 15,
+    "explanation": "total_amount is a critical financial field — when it has low confidence, the extraction routes to high-priority human review focused specifically on that field. Critical fields (amounts, IDs, dates) always escalate when uncertain, regardless of overall confidence. This is different from all-fields-low which routes to standard human review.",
+    "whyWrong": [
+      "Mixed confidence doesn't automatically trigger human review — it depends on WHICH fields are uncertain",
+      "Majority rule doesn't apply — a critical field (total_amount) with low confidence overrides the majority",
+      "This is the correct answer",
+      "Spot-check is for non-critical uncertain fields — total_amount is a critical field requiring full human verification"
+    ]
+  },
+  {
+    "id": "s2-q11",
+    "scenario": "S2",
+    "scenarioName": "Document Processing Pipeline",
+    "domain": "d4",
+    "difficulty": "Medium",
+    "taskRef": "T4.5",
+    "question": "When should you NOT retry a failed extraction?",
+    "options": [
+      "When the extraction returned a string instead of a number",
+      "When the document source doesn't contain the information — retrying would cause fabrication",
+      "When the first retry failed — two attempts is the maximum",
+      "When the document is in a foreign language"
+    ],
+    "correct": 1,
+    "xp": 15,
+    "explanation": "If the source document doesn't contain the information, retrying causes Claude to fabricate a plausible value to satisfy the required field. Format errors (string vs number) are retryable — the data is there, just in the wrong format. Missing data should route to human review or return null, not retry.",
+    "whyWrong": [
+      "String vs number format errors are retryable — the data exists, just needs format correction",
+      "This is the correct answer",
+      "The number of retries is capped (2-3) but the specific condition (missing data) should stop retries earlier",
+      "Language is not a reason to skip retries — Claude handles multiple languages"
+    ]
+  },
+  {
+    "id": "s2-q12",
+    "scenario": "S2",
+    "scenarioName": "Document Processing Pipeline",
+    "domain": "d5",
+    "difficulty": "Hard",
+    "taskRef": "T5.5",
+    "question": "You need to use the Batch API for a pre-merge PR review pipeline that checks document extraction accuracy before allowing merges. What is wrong with this approach?",
+    "options": [
+      "The Batch API doesn't support code review use cases",
+      "The Batch API has no guaranteed latency SLA — processing can take up to 24 hours, blocking all PR merges",
+      "The Batch API costs more than the real-time API for small batches",
+      "The Batch API requires a special API key not available in CI/CD environments"
+    ],
+    "correct": 1,
+    "xp": 20,
+    "explanation": "The Batch API has no guaranteed latency SLA — processing can take up to 24 hours. Using it for pre-merge checks means PRs could be blocked for 24 hours waiting for a review. CI/CD pipeline steps require the real-time API for immediate results. Batch API is for non-urgent, non-blocking work only.",
+    "whyWrong": [
+      "The Batch API supports any use case — the problem is latency, not capability",
+      "This is the correct answer",
+      "Batch API is 50% cheaper than real-time, not more expensive",
+      "Batch API uses the same API key as real-time — no special key required"
+    ]
+  },
+  {
+    "id": "s2-q13",
+    "scenario": "S2",
+    "scenarioName": "Document Processing Pipeline",
+    "domain": "d4",
+    "difficulty": "Medium",
+    "taskRef": "T4.6",
+    "question": "Your document extraction pipeline has a multi-pass review: Pass 1 reviews each document individually, Pass 2 identifies cross-document patterns. Why is Pass 1 run in parallel and Pass 2 run sequentially after Pass 1?",
+    "options": [
+      "Pass 1 is faster in parallel; Pass 2 is slower so it runs after to balance load",
+      "Pass 1 documents are independent of each other; Pass 2 requires all Pass 1 results to identify cross-document patterns",
+      "Pass 1 uses cheaper models; Pass 2 uses more expensive models requiring sequential scheduling",
+      "This is the default Claude SDK behavior — parallel then sequential is automatic"
+    ],
+    "correct": 1,
+    "xp": 15,
+    "explanation": "Pass 1 documents are independent — Document 3's review doesn't depend on Document 1's review, so they can run in parallel. Pass 2 cross-document pattern analysis has a data dependency on ALL Pass 1 results — it cannot start until all per-document reviews are complete. This is the canonical parallel-then-sequential pattern.",
+    "whyWrong": [
+      "Speed and cost are not the reason — the dependency structure drives the execution order",
+      "This is the correct answer",
+      "Model selection doesn't drive execution order — data dependencies do",
+      "The SDK doesn't make this decision automatically — your orchestration code implements this pattern"
+    ]
+  },
+  {
+    "id": "s2-q14",
+    "scenario": "S2",
+    "scenarioName": "Document Processing Pipeline",
+    "domain": "d4",
+    "difficulty": "Hard",
+    "taskRef": "T4.2",
+    "question": "Which type of few-shot example has the highest value for improving extraction accuracy?",
+    "options": [
+      "A clear, unambiguous example of a standard invoice with all fields present",
+      "An example where one field is subtly wrong — showing what NOT to extract",
+      "An example of a document type where Claude frequently makes the specific mistake you're trying to correct",
+      "An example from the most common document type in your corpus"
+    ],
+    "correct": 2,
+    "xp": 20,
+    "explanation": "The highest-value few-shot examples target cases where Claude fails — the specific mistakes you're trying to correct. Standard obvious examples add zero value (Claude handles them without examples). The example that teaches the specific error pattern you've observed is the most impactful example you can include.",
+    "whyWrong": [
+      "Clear standard examples add no value — Claude handles them correctly without any examples",
+      "Showing wrong extractions can be valuable but the question asks for HIGHEST value — that's targeting known failures",
+      "This is the correct answer",
+      "Common document types are likely well-handled — rare failure cases deserve the example budget"
+    ]
+  },
+  {
+    "id": "s2-q15",
+    "scenario": "S2",
+    "scenarioName": "Document Processing Pipeline",
+    "domain": "d4",
+    "difficulty": "Medium",
+    "taskRef": "T4.3",
+    "question": "An extraction schema has a 'currency' field with enum values ['USD', 'EUR', 'GBP', 'CAD', 'AUD']. A Japanese yen invoice arrives. What does Claude do and is this correct behavior?",
+    "options": [
+      "Claude returns null for the currency field — enum prevents any non-listed value",
+      "Claude returns 'JPY' anyway, violating the schema — enum is not enforced",
+      "With enum + 'other' pattern, Claude would return 'other' and a separate detail field captures 'JPY'",
+      "Claude refuses to process the document because the schema doesn't support JPY"
+    ],
+    "correct": 2,
+    "xp": 15,
+    "explanation": "The correct schema design for enumerated categories with possible unknowns is: enum with 'other' as a valid value, plus a nullable detail field. For JPY, Claude returns currency='other' and currency_detail='JPY'. Without 'other' in the enum, Claude either fabricates a listed value or returns null — both are wrong.",
+    "whyWrong": [
+      "Null is inappropriate — the currency IS known (JPY), it's just not in the predefined list",
+      "Schema enums are enforced — Claude is designed to comply with the schema constraints",
+      "This is the correct answer — the enum + other pattern is the correct design",
+      "Claude doesn't refuse documents — it attempts to comply with the schema constraints"
+    ]
+  },
+  {
+    "id": "s2-q16",
+    "scenario": "S2",
+    "scenarioName": "Document Processing Pipeline",
+    "domain": "d5",
+    "difficulty": "Medium",
+    "taskRef": "T5.3",
+    "question": "A new confidence calibration study finds that low-confidence extractions are 85% accurate (expected: <70%). What does this mean and what should you do?",
+    "options": [
+      "The system is performing better than expected — no action needed",
+      "Claude is underconfident — routing low-confidence to human review is wasting reviewer capacity; adjust to treat 'low' as 'medium'",
+      "The calibration study sample size is too small — run a larger study before acting",
+      "Increase the extraction prompt quality to reduce the number of low-confidence reports"
+    ],
+    "correct": 1,
+    "xp": 15,
+    "explanation": "When 'low' confidence is 85% accurate, Claude is underconfident — it's flagging for human review extractions that are actually correct. This wastes human review capacity. The fix: adjust routing to treat 'low' as 'medium' (spot-check instead of full human review). Calibration mismatches in either direction require routing threshold adjustments.",
+    "whyWrong": [
+      "The calibration mismatch means reviewers are spending time on extractions that don't need review — action is needed",
+      "This is the correct answer",
+      "50+ samples per tier is sufficient for action — waiting for a larger study means continued waste",
+      "Reducing low-confidence reports doesn't fix the routing mismatch — the thresholds need adjustment"
+    ]
+  },
+  {
+    "id": "s2-q17",
+    "scenario": "S2",
+    "scenarioName": "Document Processing Pipeline",
+    "domain": "d4",
+    "difficulty": "Hard",
+    "taskRef": "T4.4",
+    "question": "A document processing chain has 5 sequential steps. Step 3 fails. Which approach is correct?",
+    "options": [
+      "Restart the entire chain from Step 1",
+      "Retry Step 3 specifically (transient errors), or route to human review (data issues); Steps 1 and 2 results are preserved",
+      "Skip Step 3 and continue from Step 4 with default values",
+      "Alert the user and wait for manual intervention before proceeding"
+    ],
+    "correct": 1,
+    "xp": 20,
+    "explanation": "Step-level failure isolation: retry the failing step (if transient error), escalate to human review (if data issue), but preserve work from completed steps 1 and 2. Restarting from step 1 wastes successful work. Skipping with default values produces false data downstream. Waiting indefinitely blocks the pipeline.",
+    "whyWrong": [
+      "Restarting from Step 1 wastes the successful work from Steps 1 and 2 — retry at step level",
+      "This is the correct answer",
+      "Default values for a failed step produce fabricated data that flows through steps 4 and 5",
+      "Waiting for manual intervention blocks the entire pipeline — use automated retry and routing instead"
+    ]
+  },
+  {
+    "id": "s2-q18",
+    "scenario": "S2",
+    "scenarioName": "Document Processing Pipeline",
+    "domain": "d4",
+    "difficulty": "Medium",
+    "taskRef": "T4.6",
+    "question": "Why is a multi-pass review (per-document then cross-document) more effective than reviewing all documents in a single Claude call?",
+    "options": [
+      "Multiple calls are cheaper because each call uses fewer tokens",
+      "Attention dilution — reviewing many documents simultaneously reduces effective attention per document",
+      "Cross-document patterns can only be detected after individual reviews are complete",
+      "The Claude API has a limit on the number of documents per single call"
+    ],
+    "correct": 1,
+    "xp": 15,
+    "explanation": "Attention dilution is the core issue: when 20 documents are reviewed simultaneously, each document receives roughly 1/20th of effective attention. Per-document reviews give each document the full context window. Cross-document synthesis then receives structured summaries (not raw documents) from each per-document review.",
+    "whyWrong": [
+      "Multiple calls are actually more expensive in total token count — the benefit is quality, not cost",
+      "This is the correct answer",
+      "True but this describes WHEN cross-document runs, not WHY per-document is better than all-at-once",
+      "The API doesn't have a document count limit — the issue is attention quality at scale"
+    ]
+  }
+]

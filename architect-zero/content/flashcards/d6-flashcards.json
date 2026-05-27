@@ -1,0 +1,92 @@
+[
+  {
+    "id": "d6-f01", "domain": "d6",
+    "front": "The 10 most-tested CCA exam concepts — name them all.",
+    "back": "1. stop_reason drives loop control 2. Programmatic enforcement > prompt guidance for compliance 3. tool_choice: auto/any/forced — when each applies 4. Minimal footprint principle 5. Hub-and-spoke — coordinator is the only hub 6. CLAUDE.md hierarchy (user/project/directory) 7. -p flag required for CI/CD 8. JSON schema = syntax only (not semantic) 9. Independent review instance (no shared context) 10. Batch API = 50% cost, up to 24h, never latency-sensitive",
+    "tag": "Exam Trap"
+  },
+  {
+    "id": "d6-f02", "domain": "d6",
+    "front": "Signal word 'must always' or 'never permitted' → which principle and which option wins?",
+    "back": "Principle: Determinism over probabilism. Option that wins: programmatic enforcement (PreToolUse hook, gate, code) over prompt guidance. 'Must always verify identity' → hook that blocks the action until verification is complete. Prompt guidance is probabilistic; hooks are deterministic.",
+    "tag": "Decision Rule"
+  },
+  {
+    "id": "d6-f03", "domain": "d6",
+    "front": "Signal word 'all available tools' → which principle and which option wins?",
+    "back": "Principle: Minimal footprint. Option that wins: scoped tool access (only tools necessary for this role/task). Benefits: (1) improves tool selection reliability, (2) reduces blast radius. The 'just in case' argument for all-tools violates minimal footprint.",
+    "tag": "Decision Rule"
+  },
+  {
+    "id": "d6-f04", "domain": "d6",
+    "front": "Signal word 'default values' or 'continue anyway' on failure → which principle?",
+    "back": "Principle: Fail loudly over silently. Option that wins: structured error with category and is_retryable. Default values on failure = silent failure = coordinator makes uninformed decisions on fabricated data. Structured errors enable intelligent recovery decisions.",
+    "tag": "Decision Rule"
+  },
+  {
+    "id": "d6-f05", "domain": "d6",
+    "front": "Signal word 'independent tasks' or 'no dependencies between' → which principle?",
+    "back": "Principle: Parallelize independent work. Option that wins: parallel execution. Sequential execution of independent tasks is artificial serialization — multiplies latency unnecessarily. The test: 'Does B need A's result?' No → parallelize. Yes → chain.",
+    "tag": "Decision Rule"
+  },
+  {
+    "id": "d6-f06", "domain": "d6",
+    "front": "Signal word 'same session review' → which principle and fix?",
+    "back": "Principle: Independence eliminates bias. Fix: fresh Claude instance — completely separate API call with no generation context. Tell the reviewer 'Do not assume this code is correct.' Same-session review inherits generation reasoning and misses bugs the generator introduced.",
+    "tag": "Decision Rule"
+  },
+  {
+    "id": "d6-f07", "domain": "d6",
+    "front": "Scenario 1 (Agentic Coding): which domains are most heavily tested?",
+    "back": "D1 (heavy): agent loops, plan mode, task decomposition, coordinator trap. D3 (heavy): CLAUDE.md hierarchy, slash commands, CI/CD integration with -p flag. D4 (moderate): few-shot for code style, multi-instance review. Most likely trap: prompt guidance vs programmatic enforcement.",
+    "tag": "Exam Trap"
+  },
+  {
+    "id": "d6-f08", "domain": "d6",
+    "front": "Scenario 2 (Document Processing): which domains and most likely trap?",
+    "back": "D4 (heavy): schemas, tool_choice, few-shot, retry patterns. D5 (heavy): validation layers, confidence routing, Batch API, human review. D2 (moderate): extraction tool design. Most likely trap: auto vs any vs forced tool_choice, or using Batch API for a latency-sensitive pipeline.",
+    "tag": "Exam Trap"
+  },
+  {
+    "id": "d6-f09", "domain": "d6",
+    "front": "Scenario 3 (Customer Support): which domains and most likely trap?",
+    "back": "D1 (heavy): loop control, hook enforcement for compliance, human-in-the-loop triggers. D2 (heavy): tool scoping, structured errors, circuit breaker. D5 (moderate): confidence routing, persistent facts block. Most likely trap: prompt-based identity verification instead of PreToolUse hook.",
+    "tag": "Exam Trap"
+  },
+  {
+    "id": "d6-f10", "domain": "d6",
+    "front": "Scenario 4 (Research): which domains and most likely trap?",
+    "back": "D1 (heavy): coordinator-subagent, parallel research streams, hub-and-spoke. D5 (heavy): source attribution, conflict detection, partial failure disclosure. Most likely trap: coordinator trap — decomposing 'competitive landscape' into only known competitors, missing entire categories.",
+    "tag": "Exam Trap"
+  },
+  {
+    "id": "d6-f11", "domain": "d6",
+    "front": "Scenario 5 (Code Review): which domains and most likely trap?",
+    "back": "D3 (heavy): CI/CD integration, -p flag, specialized review stages, --allowedTools. D4 (heavy): multi-instance review, per-file vs all-at-once, confidence. D5 (moderate): confidence thresholds. Most likely trap: same session self-review vs independent instance.",
+    "tag": "Exam Trap"
+  },
+  {
+    "id": "d6-f12", "domain": "d6",
+    "front": "Scenario 6 (Data Extraction): which domains and most likely trap?",
+    "back": "D4 (heavy): schemas, few-shot, two-layer validation, retry patterns. D5 (heavy): Batch API, stratified sampling, human review routing. D2 (moderate): tool schemas and error handling. Most likely trap: Batch API for a blocking pipeline, or missing the schema (syntax) vs semantic validation distinction.",
+    "tag": "Exam Trap"
+  },
+  {
+    "id": "d6-f13", "domain": "d6",
+    "front": "What is the exam passing score and how many questions can you miss?",
+    "back": "720/1000 = 72% passing. 60 questions total → 43-44 correct to pass → can miss 16-17 questions. 4 of 6 scenarios selected randomly. ~15 questions per scenario. This is a mastery test, not a perfection test. Know all 6 scenarios — you can't predict which 4 appear.",
+    "tag": "Fact"
+  },
+  {
+    "id": "d6-f14", "domain": "d6",
+    "front": "What is the 2-minute question process for the exam?",
+    "back": "15s: read scenario setup — what's being built, what's the problem. 15s: identify domain(s). 20s: read all 4 options. 20s: eliminate 2 clearly wrong. 30s: apply principle to remaining 2 using signal words. 5s: answer and flag if uncertain. Total: 2 minutes. Flag and move — return to flagged if time permits.",
+    "tag": "Decision Rule"
+  },
+  {
+    "id": "d6-f15", "domain": "d6",
+    "front": "What is the D4+D5 efficiency insight: how does structured output reduce context pressure?",
+    "back": "JSON output is 40-60% more compact than equivalent prose. Downstream steps receive clean parseable data — no re-extraction step needed. Confidence embedded in schema = routing without extra API call. Schema validation prevents retry turns from filling context. D4 structure feeds D5 efficiency directly.",
+    "tag": "Exam Trap"
+  }
+]

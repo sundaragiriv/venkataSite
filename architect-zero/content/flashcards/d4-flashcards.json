@@ -1,0 +1,92 @@
+[
+  {
+    "id": "d4-f01", "domain": "d4",
+    "front": "What is the key difference between explicit and vague criteria?",
+    "back": "Explicit: specific, verifiable, objective. 'Functions over 40 lines = Medium.' Vague: subjective, interpretable. 'Write readable code.' Explicit criteria produce consistent results across reviewers and runs. Vague criteria produce variable results based on Claude's interpretation.",
+    "tag": "Decision Rule"
+  },
+  {
+    "id": "d4-f02", "domain": "d4",
+    "front": "What does JSON schema validation guarantee and NOT guarantee?",
+    "back": "Guarantees: correct types, required fields present, enum values valid, patterns match. Does NOT guarantee: correct values (a number 999 passes if the real value was 4999), values from the source document (fabricated plausible values pass), semantic correctness. Schema = syntax only.",
+    "tag": "Exam Trap"
+  },
+  {
+    "id": "d4-f03", "domain": "d4",
+    "front": "What are the three required components of an effective retry prompt?",
+    "back": "(1) Original document — Claude needs the source to re-extract. (2) Previous failed output — Claude needs to see what it got wrong. (3) Specific error descriptions — field name + what was extracted + what's expected. Missing any component produces identical wrong output.",
+    "tag": "Fact"
+  },
+  {
+    "id": "d4-f04", "domain": "d4",
+    "front": "When should you NOT retry a failed extraction?",
+    "back": "When the source document doesn't contain the information. Retrying causes Claude to fabricate a plausible value to satisfy the required field. 'Field not found in source document' errors are non-retryable. Return null or route to human review instead.",
+    "tag": "Decision Rule"
+  },
+  {
+    "id": "d4-f05", "domain": "d4",
+    "front": "What few-shot examples have the highest value?",
+    "back": "Cases where Claude FAILS without examples — the specific ambiguous cases, look-alike distinctions, boundary conditions. Obvious standard cases add zero value (Claude handles them without examples). The example value = how much it improves accuracy for a specific failure pattern.",
+    "tag": "Decision Rule"
+  },
+  {
+    "id": "d4-f06", "domain": "d4",
+    "front": "What is the enum + 'other' pattern for?",
+    "back": "Handles categorization where the category might be novel/unknown. enum: ['USD', 'EUR', 'GBP', 'other']. Claude returns 'other' for unknown values rather than fabricating a listed value. Pair with a nullable detail field: 'If other, describe what it is.'",
+    "tag": "Fact"
+  },
+  {
+    "id": "d4-f07", "domain": "d4",
+    "front": "What does the Batch API provide and when can you NOT use it?",
+    "back": "50% cost reduction. Up to 24-hour processing. NO guaranteed latency SLA. Use for: overnight jobs, non-urgent bulk processing, backfills. NEVER for: CI/CD pipeline steps, user-blocking workflows, real-time features, anything with a latency requirement.",
+    "tag": "Exam Trap"
+  },
+  {
+    "id": "d4-f08", "domain": "d4",
+    "front": "Why does self-review fail and what is the fix?",
+    "back": "Same session retains generation reasoning context — Claude remembers why it made each decision and is less likely to question them. Fix: completely separate API call (independent instance) with NO knowledge of the generation process. Tell the reviewer 'Do not assume this code is correct.'",
+    "tag": "Exam Trap"
+  },
+  {
+    "id": "d4-f09", "domain": "d4",
+    "front": "What is severity inflation and what does it cause?",
+    "back": "Too many findings classified at Critical/High severity. When CRITICAL is common, it loses meaning — developers treat all Critical findings as medium priority. Target distribution: ~5% Critical, ~20% High, ~50% Medium, ~25% Low. Calibrate criteria when distribution is skewed.",
+    "tag": "Anti-Pattern"
+  },
+  {
+    "id": "d4-f10", "domain": "d4",
+    "front": "Why do false positives matter more than false negatives for code review adoption?",
+    "back": "False positives train developers to ignore the tool. If 70% of findings are wrong, developers learn to dismiss all findings including real ones. False negatives (missed issues) are bad but don't destroy the tool's utility. Signal-to-noise ratio drives adoption.",
+    "tag": "Decision Rule"
+  },
+  {
+    "id": "d4-f11", "domain": "d4",
+    "front": "What is the nullable field pattern and why is it critical?",
+    "back": "type: ['string', 'null'] makes a field nullable. Required fields with no source data cause fabrication. Optional/nullable fields allow Claude to return null when data is absent. Rule: only mark fields required if they ALWAYS exist in source documents.",
+    "tag": "Fact"
+  },
+  {
+    "id": "d4-f12", "domain": "d4",
+    "front": "What is the custom_id field in Batch API and why is it essential?",
+    "back": "YOUR correlation key — maps batch requests to responses. Enables partial failure recovery: identify the specific failed request custom_ids and resubmit ONLY those. Without custom_id you cannot identify which requests failed and must resubmit the entire batch.",
+    "tag": "Fact"
+  },
+  {
+    "id": "d4-f13", "domain": "d4",
+    "front": "What is the optimal few-shot example count?",
+    "back": "2-4 examples: sweet spot. 1 example teaches format but not judgment. 5-7 examples: useful for complex tasks with many edge cases. 8+ examples: risk of overfitting — Claude pattern-matches examples rather than reasoning. Each example should teach exactly ONE judgment call.",
+    "tag": "Fact"
+  },
+  {
+    "id": "d4-f14", "domain": "d4",
+    "front": "What is the two-layer validation pattern?",
+    "back": "Layer 1 (syntax): schema validation — correct types, required fields, enum values. Layer 2 (semantic): business rules — values cross-checked against source, line items sum matching total, vendor name present in document. Both layers catch different error types. Neither alone is sufficient.",
+    "tag": "Fact"
+  },
+  {
+    "id": "d4-f15", "domain": "d4",
+    "front": "When should you use tool_choice: 'any' vs forced?",
+    "back": "any: document type unknown, multiple extraction schemas exist — Claude reads and selects the appropriate schema. Forced: document type already known (pre-classified) — force the matching schema. Any requires all candidate schemas in the tools array; tool descriptions drive schema selection.",
+    "tag": "Decision Rule"
+  }
+]

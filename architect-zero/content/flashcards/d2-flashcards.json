@@ -1,0 +1,92 @@
+[
+  {
+    "id": "d2-f01", "domain": "d2",
+    "front": "What are the three MCP primitives and their purposes?",
+    "back": "Resources: read-only data sources with URI (customer://C-123). Tools: actions that DO things (reads AND writes). Prompts: reusable workflow templates. Key distinction: Resources signal read-only data; Tools signal actions including writes.",
+    "tag": "Fact"
+  },
+  {
+    "id": "d2-f02", "domain": "d2",
+    "front": "What is the most common cause of wrong tool selection in agents?",
+    "back": "Vague or overlapping tool descriptions. Claude cannot distinguish which tool to use when descriptions are similar ('gets customer data' vs 'gets order data'). Fix: explicit differentiation in description — 'Use for X. NOT for Y — use get_order for Y.'",
+    "tag": "Anti-Pattern"
+  },
+  {
+    "id": "d2-f03", "domain": "d2",
+    "front": "What must a structured tool error response include?",
+    "back": "error_category (transient/validation/permission/business), is_retryable (boolean), error_message (human-readable). Without these, the coordinator cannot make intelligent retry decisions. Silent failure (empty dict or default values) is the worst pattern.",
+    "tag": "Fact"
+  },
+  {
+    "id": "d2-f04", "domain": "d2",
+    "front": "What does a PostToolUse hook do and when should you use one?",
+    "back": "Transforms tool results BEFORE Claude receives them. Use for: normalizing heterogeneous data sources, trimming verbose results, extracting only relevant fields, adding computed fields. Keeps Claude's context clean without modifying tool implementation.",
+    "tag": "Decision Rule"
+  },
+  {
+    "id": "d2-f05", "domain": "d2",
+    "front": "What is the maximum reliable number of tools per agent and why?",
+    "back": "4-5 tools per agent. Above this, tool selection reliability degrades significantly. At 15+ tools, wrong tool calls become frequent. Fix: specialized subagents with scoped tool sets (intake: 3 tools, billing: 3 tools, technical: 3 tools) rather than one agent with all 15.",
+    "tag": "Fact"
+  },
+  {
+    "id": "d2-f06", "domain": "d2",
+    "front": "What is the difference between transient and permanent tool errors?",
+    "back": "Transient: timeout, rate limit, temporary unavailability — retry with backoff. Permanent: permission error, validation error, business rule violation — do NOT retry (authorization hasn't changed, input is still wrong). is_retryable in the error response encodes this distinction.",
+    "tag": "Decision Rule"
+  },
+  {
+    "id": "d2-f07", "domain": "d2",
+    "front": "What does tool_choice: 'auto' vs 'any' vs forced mean?",
+    "back": "auto: Claude decides whether to call a tool or return text. any: Claude MUST call a tool, picks which. forced: Claude MUST call this specific tool. For extraction pipelines: auto risks text responses. Unknown doc type → any. Known doc type → forced.",
+    "tag": "Decision Rule"
+  },
+  {
+    "id": "d2-f08", "domain": "d2",
+    "front": "Why should tools NOT handle their own retries?",
+    "back": "The coordinator/loop decides retry strategy based on error type and system state. If tools retry internally and fail silently, the coordinator receives a delayed error with no context. Subagents report errors; coordinators decide recovery strategy.",
+    "tag": "Anti-Pattern"
+  },
+  {
+    "id": "d2-f09", "domain": "d2",
+    "front": "What is the circuit breaker pattern for tools?",
+    "back": "After N consecutive failures (e.g., 5), stop attempting and fail fast with CircuitOpenError. After a reset timeout, try once (half-open). If success: close circuit. If fail: stay open. Prevents cascading failures and resource exhaustion from sustained service outages.",
+    "tag": "Fact"
+  },
+  {
+    "id": "d2-f10", "domain": "d2",
+    "front": "What is scoped tool access and why does it matter?",
+    "back": "Each agent role receives ONLY the tools required for its specific tasks. Intake: get_customer, get_order, create_ticket. Billing: get_customer, payment_history, process_refund. Benefits: (1) improves selection reliability, (2) reduces blast radius if agent misbehaves, (3) enforces minimum footprint.",
+    "tag": "Decision Rule"
+  },
+  {
+    "id": "d2-f11", "domain": "d2",
+    "front": "What is silent failure and why is it the worst error pattern?",
+    "back": "Returning empty dict {} or default values on failure instead of a structured error. The coordinator cannot distinguish 'no results' from 'lookup failed'. It makes uninformed decisions or worse — presents fabricated default values as real data. Always return structured errors.",
+    "tag": "Anti-Pattern"
+  },
+  {
+    "id": "d2-f12", "domain": "d2",
+    "front": "What MCP transport types exist and when does each apply?",
+    "back": "stdio: for local/same-machine tools (Claude Code subprocesses). SSE/HTTP: for remote tools served over the network. stdio is simpler with lower latency for local tools. SSE/HTTP enables tool servers that multiple Claude instances can use concurrently.",
+    "tag": "Fact"
+  },
+  {
+    "id": "d2-f13", "domain": "d2",
+    "front": "How should a tool description differentiate two similar tools?",
+    "back": "Include explicit negative guidance: 'Use this tool for customer profile data (name, tier, contact). NOT for order information — use get_order for orders.' The description must distinguish this tool from its nearest neighbor to prevent confusion.",
+    "tag": "Decision Rule"
+  },
+  {
+    "id": "d2-f14", "domain": "d2",
+    "front": "What is graceful degradation for tool failures?",
+    "back": "Return partial results clearly labeled as incomplete rather than failing entirely. Include: _incomplete: true, _missing: [{component, error}], _note explaining what's missing. Coordinator gets an accurate picture rather than a crash or fabricated complete result.",
+    "tag": "Fact"
+  },
+  {
+    "id": "d2-f15", "domain": "d2",
+    "front": "What is the PostToolUse normalization hook pattern?",
+    "back": "A hook that runs after every tool call, before Claude sees the result. Used to normalize heterogeneous source systems into consistent field names. Example: source A returns 'cust_id', source B returns 'customer_id' → hook normalizes both to 'customer_id'. Claude always sees consistent schema.",
+    "tag": "Fact"
+  }
+]

@@ -1,0 +1,750 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Architect Zero"><meta name="theme-color" content="#04040a"><link rel="manifest" href="/manifest.webmanifest"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><title>Output Validation — Two Layers, Specific Feedback, Retry Logic — Architect Zero</title><meta name="description" content="Architect Zero — an LMS for technical certifications. First series: Claude Certified Architect (CCA) exam prep. 114 lessons, 108 quiz questions, 90 flashcards, free."><link rel="canonical" href="https://venkata.info/architect-zero/learn/d4/d4-t5-1-validation/"><!-- OpenGraph (Facebook, LinkedIn, Slack, Discord) --><meta property="og:title" content="Output Validation — Two Layers, Specific Feedback, Retry Logic — Architect Zero"><meta property="og:description" content="Architect Zero — an LMS for technical certifications. First series: Claude Certified Architect (CCA) exam prep. 114 lessons, 108 quiz questions, 90 flashcards, free."><meta property="og:url" content="https://venkata.info/architect-zero/learn/d4/d4-t5-1-validation/"><meta property="og:type" content="website"><meta property="og:site_name" content="venkata.info"><meta property="og:image" content="https://venkata.info/Avatar.jpeg"><meta property="og:image:alt" content="Architect Zero — an LMS platform for technical certifications"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Output Validation — Two Layers, Specific Feedback, Retry Logic — Architect Zero"><meta name="twitter:description" content="Architect Zero — an LMS for technical certifications. First series: Claude Certified Architect (CCA) exam prep. 114 lessons, 108 quiz questions, 90 flashcards, free."><meta name="twitter:image" content="https://venkata.info/Avatar.jpeg"><!-- JSON-LD structured data --><style>
+    body.az-gating #app,
+    body.az-gating #level-up-overlay { visibility: hidden; }
+    .az-gate-overlay {
+      position: fixed;
+      inset: 0;
+      background: #04040a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #6a6a9a;
+    }
+    body:not(.az-gating) .az-gate-overlay { display: none; }
+  </style><script>
+    // Synchronous session check on first paint. Authed users skip the
+    // "Loading..." overlay; unauthed users stay gated until the async
+    // module script redirects them to sign-in.
+    (function () {
+      try {
+        var path = window.location.pathname;
+        if (!path.endsWith('/')) path += '/';
+        var bypass = path.indexOf('/architect-zero/auth/') !== -1
+                  || path.indexOf('/architect-zero/_dev/') !== -1;
+        var hasSession = false;
+        for (var i = 0; i < localStorage.length; i++) {
+          var k = localStorage.key(i);
+          if (k && /^sb-.*-auth-token$/.test(k)) {
+            var v = localStorage.getItem(k);
+            if (v && v.indexOf('access_token') !== -1) { hasSession = true; break; }
+          }
+        }
+        if (bypass || hasSession) {
+          if (document.body) document.body.classList.remove('az-gating');
+          else document.addEventListener('DOMContentLoaded', function () { document.body.classList.remove('az-gating'); });
+        }
+      } catch (e) { /* localStorage blocked — fall through to async gate */ }
+    })();
+  </script><style>.brand-ambient{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}.brand-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(59,130,246,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,.05) 1px,transparent 1px);background-size:64px 64px;-webkit-mask-image:linear-gradient(180deg,black,transparent 82%);mask-image:linear-gradient(180deg,black,transparent 82%);opacity:.3}.brand-orb{position:absolute;border-radius:50%;filter:blur(14px);opacity:.4;animation:brandOrbFloat 28s var(--ease-soft) infinite alternate}.brand-orb-1{width:680px;height:680px;top:-300px;right:-200px;background:conic-gradient(from 120deg,rgba(59,130,246,.1),rgba(37,99,235,.04),transparent,rgba(59,130,246,.1))}.brand-orb-2{width:460px;height:460px;bottom:-200px;left:-160px;background:conic-gradient(from 250deg,rgba(37,99,235,.08),transparent,rgba(59,130,246,.04),rgba(37,99,235,.08));animation-delay:-11s}.brand-orb-3{width:360px;height:360px;top:40%;left:56%;background:radial-gradient(circle,rgba(59,130,246,.04),transparent 68%);animation-delay:-18s}.brand-noise{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.055'/%3E%3C/svg%3E");opacity:.4}.bubble{position:absolute;bottom:-10vh;left:var(--x);width:var(--size);height:var(--size);border-radius:50%;background:radial-gradient(circle at 30% 30%,currentColor 0%,transparent 70%);color:var(--brand);opacity:var(--opacity);filter:blur(.5px);animation:bubbleRise var(--duration) linear infinite;animation-delay:var(--delay);will-change:transform;pointer-events:none}body.brand-page .bubble{color:var(--brand)}body:not(.brand-page) .bubble{color:var(--electric)}.brand-ambient-az .brand-grid-bg{background-image:linear-gradient(rgba(6,182,212,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(6,182,212,.07) 1px,transparent 1px);opacity:.34}.brand-ambient-az .brand-orb{opacity:0;animation:none}.brand-ambient-az .brand-orb-1{opacity:1;top:-260px;right:-220px;width:620px;height:620px;background:radial-gradient(circle,rgba(6,182,212,.05),transparent 68%);filter:blur(0)}.brand-ambient-lesson .brand-grid-bg{background-image:linear-gradient(color-mix(in srgb,var(--domain-color) 12%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--domain-color) 12%,transparent) 1px,transparent 1px);background-size:56px 56px;opacity:.22}.brand-ambient-lesson .brand-orb{opacity:0;animation:none}.brand-ambient-lesson .brand-orb-1{opacity:1;top:-220px;right:-180px;width:520px;height:520px;background:radial-gradient(circle,color-mix(in srgb,var(--domain-color) 10%,transparent),transparent 70%);filter:blur(0)}@keyframes bubbleRise{0%{transform:translateZ(0) scale(1)}50%{transform:translate3d(var(--drift),-60vh,0) scale(1.05)}to{transform:translate3d(0,-120vh,0) scale(.9)}}@keyframes brandOrbFloat{0%{transform:translateZ(0) rotate(0)}to{transform:translate3d(34px,-24px,0) rotate(18deg)}}@media (prefers-reduced-motion: reduce){.brand-ambient .brand-orb{animation:none}.bubble{animation:none;opacity:0}}
+.astro-route-announcer{position:absolute;left:0;top:0;clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden;white-space:nowrap;width:1px;height:1px}
+</style>
+<link rel="stylesheet" href="/_astro/_dev_.D4cQMj11.css">
+<link rel="stylesheet" href="/_astro/_lesson_.BMY1Drsm.css">
+<style>.social-row[data-astro-cid-dv46nlzh]{display:flex;align-items:center;gap:14px;list-style:none;margin:0;padding:0}.social-row[data-astro-cid-dv46nlzh] a[data-astro-cid-dv46nlzh]{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;color:var(--muted);text-decoration:none;transition:color .15s ease,background .15s ease,transform .15s var(--ease-out)}.social-row[data-astro-cid-dv46nlzh] a[data-astro-cid-dv46nlzh]:hover{color:var(--brand);background:var(--bg-3);transform:translateY(-1px)}.social-row-bright[data-astro-cid-dv46nlzh] a[data-astro-cid-dv46nlzh]{color:var(--subtle)}.social-row-bright[data-astro-cid-dv46nlzh] a[data-astro-cid-dv46nlzh]:hover{color:var(--white)}
+</style>
+<link rel="stylesheet" href="/_astro/callback.-mX-cyqo.css">
+<link rel="stylesheet" href="/_astro/_lesson_.D0sk1el9.css"><script type="module" src="/_astro/hoisted.DI1H0H3N.js"></script></head> <body class="az-gating"> <div class="az-gate-overlay" aria-hidden="true">Loading...</div> <div id="app"> <!-- ══════════════════════════════════
+       SIDEBAR — desktop only
+       ══════════════════════════════════ --> <aside id="sidebar"> <!-- Umbrella back-link --> <a href="/" class="sidebar-umbrella" aria-label="Back to venkata.info"> <span aria-hidden="true">&larr;</span> <span>venkata.info</span> </a> <!-- Logo --> <a href="/architect-zero/" class="sidebar-logo"> <svg width="28" height="28" viewBox="0 0 32 32" fill="none" class="sidebar-logo-mark"> <polygon points="16,2 30,28 2,28" stroke="#06b6d4" stroke-width="2.5" fill="none" stroke-linejoin="round"></polygon> <line x1="8" y1="20" x2="24" y2="20" stroke="#06b6d4" stroke-width="2"></line> <circle cx="16" cy="16" r="3.5" stroke="white" stroke-width="1.5" fill="none"></circle> <circle cx="16" cy="16" r="1.5" fill="#06b6d4"></circle> </svg> <div class="sidebar-logo-text"> <div class="sidebar-logo-name">ARCHITECT</div> <div class="sidebar-logo-zero">ZERO</div> </div> </a> <!-- Series pill --> <div class="sidebar-channel"> <span class="sidebar-channel-dot"></span>
+CCA Series · 01
+</div> <!-- XP block --> <div class="sidebar-xp-block"> <div class="sidebar-xp-top"> <span id="sb-level" class="sidebar-level-label">Lv.1 Curious</span> <span id="sb-xp" class="sidebar-xp-val">0 XP</span> </div> <div class="sidebar-xp-track"> <div class="sidebar-xp-fill" id="sb-xp-fill"></div> </div> <div id="sb-next" class="sidebar-xp-next">200 XP → Explorer</div> </div> <!-- Divider --> <div class="sidebar-divider"></div> <!-- Navigation --> <nav class="sidebar-nav"> <a href="/architect-zero/" class="sidebar-link "> <span class="sidebar-link-icon">◈</span> <span class="sidebar-link-label">Dashboard</span> </a><a href="/architect-zero/learn" class="sidebar-link is-active"> <span class="sidebar-link-icon">▤</span> <span class="sidebar-link-label">Learn</span> </a><a href="/architect-zero/academy" class="sidebar-link "> <span class="sidebar-link-icon">✦</span> <span class="sidebar-link-label">Academy</span> </a><a href="/architect-zero/quiz" class="sidebar-link "> <span class="sidebar-link-icon">◉</span> <span class="sidebar-link-label">Quiz</span> </a><a href="/architect-zero/flashcards" class="sidebar-link "> <span class="sidebar-link-icon">◫</span> <span class="sidebar-link-label">Flashcards</span> </a><a href="/architect-zero/progress" class="sidebar-link "> <span class="sidebar-link-icon">◑</span> <span class="sidebar-link-label">Progress</span> </a> </nav> <!-- Footer --> <div class="sidebar-footer"> <div class="sidebar-streak"> <span>🔥</span> <span id="sb-streak">0 day streak</span> </div> <div class="sidebar-exam-tag">CCA Certified Architect</div> <div class="sidebar-account-row"> <a href="/architect-zero/auth/account" class="sidebar-account" id="sb-account" aria-label="Account"> <span class="sidebar-account-avatar" id="sb-avatar" aria-hidden="true">?</span> <span class="sidebar-account-name" id="sb-name">Account</span> </a> <button id="sb-signout" class="sidebar-signout" type="button" aria-label="Sign out" title="Sign out"> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"> <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path> <polyline points="16 17 21 12 16 7"></polyline> <line x1="21" y1="12" x2="9" y2="12"></line> </svg> </button> </div> </div> </aside> <!-- ══════════════════════════════════
+       MAIN AREA
+       ══════════════════════════════════ --> <div id="main-wrap"> <!-- TOP BAR — mobile only, hidden on desktop --> <header id="topbar"> <div class="topbar-left"> <a href="/" class="topbar-umbrella" aria-label="venkata.info">venkata.info</a> <a href="/architect-zero/" class="topbar-logo">
+ARCHITECT <span class="text-electric">ZERO</span> </a> </div> <div class="topbar-right"> <span id="tb-level" class="topbar-level">Lv.1</span> <span id="tb-xp" class="topbar-xp">0 XP</span> <button id="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Menu">☰</button> </div> <div class="topbar-xp-track"> <div class="topbar-xp-fill" id="tb-xp-fill"></div> </div> </header> <!-- MAIN CONTENT --> <main id="content">  <div class="course-shell" data-astro-cid-ih36j56i> <div class="brand-ambient brand-ambient-lesson" style="--domain-color:#f59e0b;" aria-hidden="true"> <div class="brand-grid-bg"></div> <div class="brand-orb brand-orb-1"></div> <div class="brand-orb brand-orb-2"></div> <div class="brand-orb brand-orb-3"></div>  <div class="brand-noise"></div> </div>  <div class="course-shell-rail" id="course-rail-wrap" data-astro-cid-ih36j56i> <aside class="course-rail" data-domain-id="d4" data-astro-cid-dtdni7v3> <div class="course-rail-head" data-astro-cid-dtdni7v3> <a href="/architect-zero/learn/d4" class="course-rail-domain" style="border-left:3px solid #f59e0b" data-astro-cid-dtdni7v3> <span class="course-rail-code" style="color:#f59e0b" data-astro-cid-dtdni7v3>D4</span> <span class="course-rail-title" data-astro-cid-dtdni7v3>Prompt Engineering &amp; Structured Output</span> </a> <div class="course-rail-progress" data-astro-cid-dtdni7v3> <div class="course-rail-progress-text" data-astro-cid-dtdni7v3> <span class="course-rail-done" data-rail-done="0" data-astro-cid-dtdni7v3>0</span> <span class="course-rail-progress-total" data-astro-cid-dtdni7v3> / 18 lessons</span> </div> <div class="course-rail-bar" data-astro-cid-dtdni7v3> <div class="course-rail-fill" style="background:#f59e0b" data-astro-cid-dtdni7v3></div> </div> </div> </div> <div class="course-rail-sections" data-astro-cid-dtdni7v3> <details class="course-section" data-section-ref="T4.1" data-astro-cid-dtdni7v3> <summary class="course-section-head" data-astro-cid-dtdni7v3> <span class="course-section-ref" style="color:#f59e0b" data-astro-cid-dtdni7v3> T4.1 </span> <span class="course-section-title" data-astro-cid-dtdni7v3>Explicit Criteria Design</span> <span class="course-section-meta" data-astro-cid-dtdni7v3> <span class="course-section-count" data-section-count="T4.1" data-astro-cid-dtdni7v3>
+0/3 </span> <span class="course-section-chev" data-astro-cid-dtdni7v3>›</span> </span> </summary> <div class="course-section-body" data-astro-cid-dtdni7v3> <a href="/architect-zero/learn/d4/d4-t1-1-explicit-criteria" class="course-lesson " data-lesson-id="d4-t1-1-explicit-criteria" style="" data-astro-cid-dtdni7v3> <span class="course-lesson-marker" data-astro-cid-dtdni7v3> <span class="course-lesson-num" data-astro-cid-dtdni7v3>1</span> <span class="course-lesson-check" style="color:#f59e0b" data-astro-cid-dtdni7v3>✓</span> </span> <span class="course-lesson-info" data-astro-cid-dtdni7v3> <span class="course-lesson-title" data-astro-cid-dtdni7v3>Explicit Criteria Design — Specific Instructions Over Vague Guidance</span> <span class="course-lesson-meta-row" data-astro-cid-dtdni7v3> <span class="course-lesson-dur" data-astro-cid-dtdni7v3>9 min</span> <span class="course-lesson-xp" data-astro-cid-dtdni7v3>+35 XP</span> </span> </span> </a><a href="/architect-zero/learn/d4/d4-t1-2-false-positives" class="course-lesson " data-lesson-id="d4-t1-2-false-positives" style="" data-astro-cid-dtdni7v3> <span class="course-lesson-marker" data-astro-cid-dtdni7v3> <span class="course-lesson-num" data-astro-cid-dtdni7v3>2</span> <span class="course-lesson-check" style="color:#f59e0b" data-astro-cid-dtdni7v3>✓</span> </span> <span class="course-lesson-info" data-astro-cid-dtdni7v3> <span class="course-lesson-title" data-astro-cid-dtdni7v3>False Positives — Why Over-Flagging Kills Adoption</span> <span class="course-lesson-meta-row" data-astro-cid-dtdni7v3> <span class="course-lesson-dur" data-astro-cid-dtdni7v3>6 min</span> <span class="course-lesson-xp" data-astro-cid-dtdni7v3>+25 XP</span> </span> </span> </a><a href="/architect-zero/learn/d4/d4-t1-3-severity-design" class="course-lesson " data-lesson-id="d4-t1-3-severity-design" style="" data-astro-cid-dtdni7v3> <span class="course-lesson-marker" data-astro-cid-dtdni7v3> <span class="course-lesson-num" data-astro-cid-dtdni7v3>3</span> <span class="course-lesson-check" style="color:#f59e0b" data-astro-cid-dtdni7v3>✓</span> </span> <span class="course-lesson-info" data-astro-cid-dtdni7v3> <span class="course-lesson-title" data-astro-cid-dtdni7v3>Severity Design — Four Levels, Clear Actions, Concrete Examples</span> <span class="course-lesson-meta-row" data-astro-cid-dtdni7v3> <span class="course-lesson-dur" data-astro-cid-dtdni7v3>6 min</span> <span class="course-lesson-xp" data-astro-cid-dtdni7v3>+25 XP</span> </span> </span> </a> </div> </details><details class="course-section" data-section-ref="T4.2" data-astro-cid-dtdni7v3> <summary class="course-section-head" data-astro-cid-dtdni7v3> <span class="course-section-ref" style="color:#f59e0b" data-astro-cid-dtdni7v3> T4.2 </span> <span class="course-section-title" data-astro-cid-dtdni7v3>Few-Shot Example Design</span> <span class="course-section-meta" data-astro-cid-dtdni7v3> <span class="course-section-count" data-section-count="T4.2" data-astro-cid-dtdni7v3>
+0/3 </span> <span class="course-section-chev" data-astro-cid-dtdni7v3>›</span> </span> </summary> <div class="course-section-body" data-astro-cid-dtdni7v3> <a href="/architect-zero/learn/d4/d4-t2-1-fewshot-basics" class="course-lesson " data-lesson-id="d4-t2-1-fewshot-basics" style="" data-astro-cid-dtdni7v3> <span class="course-lesson-marker" data-astro-cid-dtdni7v3> <span class="course-lesson-num" data-astro-cid-dtdni7v3>1</span> <span class="course-lesson-check" style="color:#f59e0b" data-astro-cid-dtdni7v3>✓</span> </span> <span class="course-lesson-info" data-astro-cid-dtdni7v3> <span class="course-lesson-title" data-astro-cid-dtdni7v3>Few-Shot Example Design — Teaching Claude By Showing</span> <span class="course-lesson-meta-row" data-astro-cid-dtdni7v3> <span class="course-lesson-dur" data-astro-cid-dtdni7v3>9 min</span> <span class="course-lesson-xp" data-astro-cid-dtdni7v3>+35 XP</span> </span> </span> </a><a href="/architect-zero/learn/d4/d4-t2-2-example-targeting" class="course-lesson " data-lesson-id="d4-t2-2-example-targeting" style="" data-astro-cid-dtdni7v3> <span class="course-lesson-marker" data-astro-cid-dtdni7v3> <span class="course-lesson-num" data-astro-cid-dtdni7v3>2</span> <span class="course-lesson-check" style="color:#f59e0b" data-astro-cid-dtdni7v3>✓</span> </span> <span class="course-lesson-info" data-astro-cid-dtdni7v3> <span class="course-lesson-title" data-astro-cid-dtdni7v3>Example Targeting — Choosing Examples for Maximum Impact</span> <span class="course-lesson-meta-row" data-astro-cid-dtdni7v3> <span class="course-lesson-dur" data-astro-cid-dtdni7v3>7 min</span> <span class="course-lesson-xp" data-astro-cid-dtdni7v3>+25 XP</span> </span> </span> </a><a href="/architect-zero/learn/d4/d4-t2-3-format-examples" class="course-lesson " data-lesson-id="d4-t2-3-format-examples" style="" data-astro-cid-dtdni7v3> <span class="course-lesson-marker" data-astro-cid-dtdni7v3> <span class="course-lesson-num" data-astro-cid-dtdni7v3>3</span> <span class="course-lesson-check" style="color:#f59e0b" data-astro-cid-dtdni7v3>✓</span> </span> <span class="course-lesson-info" data-astro-cid-dtdni7v3> <span class="course-lesson-title" data-astro-cid-dtdni7v3>Format Examples — Controlling Output Structure with Few-Shot</span> <span class="course-lesson-meta-row" data-astro-cid-dtdni7v3> <span class="course-lesson-dur" data-astro-cid-dtdni7v3>6 min</span> <span class="course-lesson-xp" data-astro-cid-dtdni7v3>+25 XP</span> </span> </span> </a> </div> </details><details class="course-section" data-section-ref="T4.3" data-astro-cid-dtdni7v3> <summary class="course-section-head" data-astro-cid-dtdni7v3> <span class="course-section-ref" style="color:#f59e0b" data-astro-cid-dtdni7v3> T4.3 </span> <span class="course-section-title" data-astro-cid-dtdni7v3>JSON Schema &amp; tool_use Output</span> <span class="course-section-meta" data-astro-cid-dtdni7v3> <span class="course-section-count" data-section-count="T4.3" data-astro-cid-dtdni7v3>
+0/3 </span> <span class="course-section-chev" data-astro-cid-dtdni7v3>›</span> </span> </summary> <div class="course-section-body" data-astro-cid-dtdni7v3> <a href="/architect-zero/learn/d4/d4-t3-1-json-schemas" class="course-lesson " data-lesson-id="d4-t3-1-json-schemas" style="" data-astro-cid-dtdni7v3> <span class="course-lesson-marker" data-astro-cid-dtdni7v3> <span class="course-lesson-num" data-astro-cid-dtdni7v3>1</span> <span class="course-lesson-check" style="color:#f59e0b" data-astro-cid-dtdni7v3>✓</span> </span> <span class="course-lesson-info" data-astro-cid-dtdni7v3> <span class="course-lesson-title" data-astro-cid-dtdni7v3>JSON Schema for Structured Output — Eliminating Syntax Errors</span> <span class="course-lesson-meta-row" data-astro-cid-dtdni7v3> <span class="course-lesson-dur" data-astro-cid-dtdni7v3>10 min</span> <span class="course-lesson-xp" data-astro-cid-dtdni7v3>+40 XP</span> </span> </span> </a><a href="/architect-zero/learn/d4/d4-t3-2-tool-choice-output" class="course-lesson " data-lesson-id="d4-t3-2-tool-choice-output" style="" data-astro-cid-dtdni7v3> <span class="course-lesson-marker" data-astro-cid-dtdni7v3> <span class="course-lesson-num" data-astro-cid-dtdni7v3>2</span> <span class="course-lesson-check" style="color:#f59e0b" data-astro-cid-dtdni7v3>✓</span> </span> <span class="course-lesson-info" data-astro-cid-dtdni7v3> <span class="course-lesson-title" data-astro-cid-dtdni7v3>tool_choice for Structured Output — auto vs any vs forced</span> <span class="course-lesson-meta-row" data-astro-cid-dtdni7v3> <span class="course-lesson-dur" data-astro-cid-dtdni7v3>7 min</span> <span class="course-lesson-xp" data-astro-cid-dtdni7v3>+30 XP</span> </span> </span> </a><a href="/architect-zero/learn/d4/d4-t3-3-schema-patterns" class="course-lesson " data-lesson-id="d4-t3-3-schema-patterns" style="" data-astro-cid-dtdni7v3> <span class="course-lesson-marker" data-astro-cid-dtdni7v3> <span class="course-lesson-num" data-astro-cid-dtdni7v3>3</span> <span class="course-lesson-check" style="color:#f59e0b" data-astro-cid-dtdni7v3>✓</span> </span> <span class="course-lesson-info" data-astro-cid-dtdni7v3> <span class="course-lesson-title" data-astro-cid-dtdni7v3>Advanced Schema Patterns — Handling Real-World Complexity</span> <span class="course-lesson-meta-row" data-astro-cid-dtdni7v3> <span class="course-lesson-dur" data-astro-cid-dtdni7v3>7 min</span> <span class="course-lesson-xp" data-astro-cid-dtdni7v3>+25 XP</span> </span> </span> </a> </div> </details><details class="course-section" data-section-ref="T4.4" data-astro-cid-dtdni7v3> <summary class="course-section-head" data-astro-cid-dtdni7v3> <span class="course-section-ref" style="color:#f59e0b" data-astro-cid-dtdni7v3> T4.4 </span> <span class="course-section-title" data-astro-cid-dtdni7v3>Prompt Chaining</span> <span class="course-section-meta" data-astro-cid-dtdni7v3> <span class="course-section-count" data-section-count="T4.4" data-astro-cid-dtdni7v3>
+0/3 </span> <span class="course-section-chev" data-astro-cid-dtdni7v3>›</span> </span> </summary> <div class="course-section-body" data-astro-cid-dtdni7v3> <a href="/architect-zero/learn/d4/d4-t4-1-chaining-basics" class="course-lesson " data-lesson-id="d4-t4-1-chaining-basics" style="" data-astro-cid-dtdni7v3> <span class="course-lesson-marker" data-astro-cid-dtdni7v3> <span class="course-lesson-num" data-astro-cid-dtdni7v3>1</span> <span class="course-lesson-check" style="color:#f59e0b" data-astro-cid-dtdni7v3>✓</span> </span> <span class="course-lesson-info" data-astro-cid-dtdni7v3> <span class="course-lesson-title" data-astro-cid-dtdni7v3>Prompt Chaining — Multi-Step Reasoning Workflows</span> <span class="course-lesson-meta-row" data-astro-cid-dtdni7v3> <span class="course-lesson-dur" data-astro-cid-dtdni7v3>8 min</span> <span class="course-lesson-xp" data-astro-cid-dtdni7v3>+30 XP</span> </span> </span> </a><a href="/architect-zero/learn/d4/d4-t4-2-chain-patterns" class="course-lesson " data-lesson-id="d4-t4-2-chain-patterns" style="" data-astro-cid-dtdni7v3> <span class="course-lesson-marker" data-astro-cid-dtdni7v3> <span class="course-lesson-num" data-astro-cid-dtdni7v3>2</span> <span class="course-lesson-check" style="color:#f59e0b" data-astro-cid-dtdni7v3>✓</span> </span> <span class="course-lesson-info" data-astro-cid-dtdni7v3> <span class="course-lesson-title" data-astro-cid-dtdni7v3>Chain Patterns — Per-File, Reduce, and Verification Chains</span> <span class="course-lesson-meta-row" data-astro-cid-dtdni7v3> <span class="course-lesson-dur" data-astro-cid-dtdni7v3>7 min</span> <span class="course-lesson-xp" data-astro-cid-dtdni7v3>+25 XP</span> </span> </span> </a><a href="/architect-zero/learn/d4/d4-t4-3-chain-reliability" class="course-lesson " data-lesson-id="d4-t4-3-chain-reliability" style="" data-astro-cid-dtdni7v3> <span class="course-lesson-marker" data-astro-cid-dtdni7v3> <span class="course-lesson-num" data-astro-cid-dtdni7v3>3</span> <span class="course-lesson-check" style="color:#f59e0b" data-astro-cid-dtdni7v3>✓</span> </span> <span class="course-lesson-info" data-astro-cid-dtdni7v3> <span class="course-lesson-title" data-astro-cid-dtdni7v3>Chain Reliability — Validation Gates Between Steps</span> <span class="course-lesson-meta-row" data-astro-cid-dtdni7v3> <span class="course-lesson-dur" data-astro-cid-dtdni7v3>6 min</span> <span class="course-lesson-xp" data-astro-cid-dtdni7v3>+25 XP</span> </span> </span> </a> </div> </details><details class="course-section" data-section-ref="T4.5" open data-astro-cid-dtdni7v3> <summary class="course-section-head" data-astro-cid-dtdni7v3> <span class="course-section-ref" style="color:#f59e0b" data-astro-cid-dtdni7v3> T4.5 </span> <span class="course-section-title" data-astro-cid-dtdni7v3>Output Validation &amp; Retry</span> <span class="course-section-meta" data-astro-cid-dtdni7v3> <span class="course-section-count" data-section-count="T4.5" data-astro-cid-dtdni7v3>
+0/3 </span> <span class="course-section-chev" data-astro-cid-dtdni7v3>›</span> </span> </summary> <div class="course-section-body" data-astro-cid-dtdni7v3> <a href="/architect-zero/learn/d4/d4-t5-1-validation" class="course-lesson is-current" data-lesson-id="d4-t5-1-validation" style="border-left-color:#f59e0b" data-astro-cid-dtdni7v3> <span class="course-lesson-marker" data-astro-cid-dtdni7v3> <span class="course-lesson-num" data-astro-cid-dtdni7v3>1</span> <span class="course-lesson-check" style="color:#f59e0b" data-astro-cid-dtdni7v3>✓</span> </span> <span class="course-lesson-info" data-astro-cid-dtdni7v3> <span class="course-lesson-title" data-astro-cid-dtdni7v3>Output Validation — Two Layers, Specific Feedback, Retry Logic</span> <span class="course-lesson-meta-row" data-astro-cid-dtdni7v3> <span class="course-lesson-dur" data-astro-cid-dtdni7v3>8 min</span> <span class="course-lesson-xp" data-astro-cid-dtdni7v3>+30 XP</span> </span> </span> </a><a href="/architect-zero/learn/d4/d4-t5-2-retry-patterns" class="course-lesson " data-lesson-id="d4-t5-2-retry-patterns" style="" data-astro-cid-dtdni7v3> <span class="course-lesson-marker" data-astro-cid-dtdni7v3> <span class="course-lesson-num" data-astro-cid-dtdni7v3>2</span> <span class="course-lesson-check" style="color:#f59e0b" data-astro-cid-dtdni7v3>✓</span> </span> <span class="course-lesson-info" data-astro-cid-dtdni7v3> <span class="course-lesson-title" data-astro-cid-dtdni7v3>Retry Patterns — Three-Component Retry for Effective Error Recovery</span> <span class="course-lesson-meta-row" data-astro-cid-dtdni7v3> <span class="course-lesson-dur" data-astro-cid-dtdni7v3>6 min</span> <span class="course-lesson-xp" data-astro-cid-dtdni7v3>+25 XP</span> </span> </span> </a><a href="/architect-zero/learn/d4/d4-t5-3-batch-processing" class="course-lesson " data-lesson-id="d4-t5-3-batch-processing" style="" data-astro-cid-dtdni7v3> <span class="course-lesson-marker" data-astro-cid-dtdni7v3> <span class="course-lesson-num" data-astro-cid-dtdni7v3>3</span> <span class="course-lesson-check" style="color:#f59e0b" data-astro-cid-dtdni7v3>✓</span> </span> <span class="course-lesson-info" data-astro-cid-dtdni7v3> <span class="course-lesson-title" data-astro-cid-dtdni7v3>Batch Processing — Message Batches API for High-Volume Work</span> <span class="course-lesson-meta-row" data-astro-cid-dtdni7v3> <span class="course-lesson-dur" data-astro-cid-dtdni7v3>7 min</span> <span class="course-lesson-xp" data-astro-cid-dtdni7v3>+30 XP</span> </span> </span> </a> </div> </details><details class="course-section" data-section-ref="T4.6" data-astro-cid-dtdni7v3> <summary class="course-section-head" data-astro-cid-dtdni7v3> <span class="course-section-ref" style="color:#f59e0b" data-astro-cid-dtdni7v3> T4.6 </span> <span class="course-section-title" data-astro-cid-dtdni7v3>Multi-Instance Review Architecture</span> <span class="course-section-meta" data-astro-cid-dtdni7v3> <span class="course-section-count" data-section-count="T4.6" data-astro-cid-dtdni7v3>
+0/3 </span> <span class="course-section-chev" data-astro-cid-dtdni7v3>›</span> </span> </summary> <div class="course-section-body" data-astro-cid-dtdni7v3> <a href="/architect-zero/learn/d4/d4-t6-1-review-arch" class="course-lesson " data-lesson-id="d4-t6-1-review-arch" style="" data-astro-cid-dtdni7v3> <span class="course-lesson-marker" data-astro-cid-dtdni7v3> <span class="course-lesson-num" data-astro-cid-dtdni7v3>1</span> <span class="course-lesson-check" style="color:#f59e0b" data-astro-cid-dtdni7v3>✓</span> </span> <span class="course-lesson-info" data-astro-cid-dtdni7v3> <span class="course-lesson-title" data-astro-cid-dtdni7v3>Multi-Instance Review — Why Self-Review Fails</span> <span class="course-lesson-meta-row" data-astro-cid-dtdni7v3> <span class="course-lesson-dur" data-astro-cid-dtdni7v3>8 min</span> <span class="course-lesson-xp" data-astro-cid-dtdni7v3>+35 XP</span> </span> </span> </a><a href="/architect-zero/learn/d4/d4-t6-2-multi-pass" class="course-lesson " data-lesson-id="d4-t6-2-multi-pass" style="" data-astro-cid-dtdni7v3> <span class="course-lesson-marker" data-astro-cid-dtdni7v3> <span class="course-lesson-num" data-astro-cid-dtdni7v3>2</span> <span class="course-lesson-check" style="color:#f59e0b" data-astro-cid-dtdni7v3>✓</span> </span> <span class="course-lesson-info" data-astro-cid-dtdni7v3> <span class="course-lesson-title" data-astro-cid-dtdni7v3>Multi-Pass Review — Preventing Attention Dilution</span> <span class="course-lesson-meta-row" data-astro-cid-dtdni7v3> <span class="course-lesson-dur" data-astro-cid-dtdni7v3>6 min</span> <span class="course-lesson-xp" data-astro-cid-dtdni7v3>+25 XP</span> </span> </span> </a><a href="/architect-zero/learn/d4/d4-t6-3-confidence-scoring" class="course-lesson " data-lesson-id="d4-t6-3-confidence-scoring" style="" data-astro-cid-dtdni7v3> <span class="course-lesson-marker" data-astro-cid-dtdni7v3> <span class="course-lesson-num" data-astro-cid-dtdni7v3>3</span> <span class="course-lesson-check" style="color:#f59e0b" data-astro-cid-dtdni7v3>✓</span> </span> <span class="course-lesson-info" data-astro-cid-dtdni7v3> <span class="course-lesson-title" data-astro-cid-dtdni7v3>Confidence Scoring — Routing Based on Model Certainty</span> <span class="course-lesson-meta-row" data-astro-cid-dtdni7v3> <span class="course-lesson-dur" data-astro-cid-dtdni7v3>7 min</span> <span class="course-lesson-xp" data-astro-cid-dtdni7v3>+30 XP</span> </span> </span> </a> </div> </details> </div> </aside>   </div> <main class="course-shell-main" data-astro-cid-ih36j56i> <button class="course-shell-rail-toggle" id="course-rail-toggle" aria-label="Open course menu" data-astro-cid-ih36j56i> <span class="course-shell-rail-toggle-icon" data-astro-cid-ih36j56i>📚</span> <span class="course-shell-rail-toggle-text" data-astro-cid-ih36j56i>
+Lesson 13 of 18 </span> <span class="course-shell-rail-toggle-chev" data-astro-cid-ih36j56i>›</span> </button> <nav class="lesson-topnav" data-astro-cid-ih36j56i> <a href="/architect-zero/learn" class="lesson-topnav-link" data-astro-cid-ih36j56i>Learn</a> <span class="lesson-topnav-sep" data-astro-cid-ih36j56i>›</span> <a href="/architect-zero/learn/d4" class="lesson-topnav-link" style="color:#f59e0b" data-astro-cid-ih36j56i> D4 · Prompt Engineering &amp; Structured Output </a>  <span class="lesson-topnav-sep" data-astro-cid-ih36j56i>›</span> <span class="lesson-topnav-ref" style="color:#f59e0b99" data-astro-cid-ih36j56i>T4.5</span>  </nav> <h1 class="lesson-heading" data-astro-cid-ih36j56i>Output Validation — Two Layers, Specific Feedback, Retry Logic</h1> <div class="lesson-chips" data-astro-cid-ih36j56i> <span class="lesson-chip" style="background:#f59e0b18;color:#f59e0b;border:1px solid #f59e0b33" data-astro-cid-ih36j56i> Core </span> <span class="lesson-chip-muted" data-astro-cid-ih36j56i>8 min</span> <span class="lesson-chip-muted" data-astro-cid-ih36j56i>+30 XP</span> </div> <div id="lesson-meta-data" data-lesson-id="d4-t5-1-validation" data-lesson-xp="30" style="display:none" data-astro-cid-ih36j56i></div> <div class="lesson-step-tabs" data-accent="#f59e0b" style="border-bottom:1px solid #f59e0b22" data-astro-cid-ih36j56i> <button class="lesson-step-btn" id="tab-analogy" data-tab-key="analogy" onclick="switchTab('analogy')" style="background:#f59e0b;border-color:#f59e0b;color:#04040a" data-astro-cid-ih36j56i> 💡 Analogy </button><button class="lesson-step-btn" id="tab-concept" data-tab-key="concept" onclick="switchTab('concept')" style="background:transparent;border-color:#f59e0b44;color:#9898c8" data-astro-cid-ih36j56i> 📖 Concept </button><button class="lesson-step-btn" id="tab-technical" data-tab-key="technical" onclick="switchTab('technical')" style="background:transparent;border-color:#f59e0b44;color:#9898c8" data-astro-cid-ih36j56i> ⚙️ Technical </button> </div> <!-- ── ANALOGY ── --> <div id="panel-analogy" class="lesson-panel" data-astro-cid-ih36j56i> <div class="analogy-box" style="background:#f59e0b0d;border:1px solid #f59e0b30" data-astro-cid-ih36j56i> <div style="font-size:32px;margin-bottom:12px" data-astro-cid-ih36j56i>💡</div> <div class="analogy-label" style="color:#f59e0b" data-astro-cid-ih36j56i>THE ANALOGY</div> <p class="analogy-text" data-astro-cid-ih36j56i>A bank&#39;s multi-layer transaction validation. Layer 1: format check (is this a valid transaction structure?). Layer 2: business rule check (does the customer have sufficient funds?). Each layer catches different error types — neither alone is sufficient.</p> </div> <div class="exam-trap-box" data-astro-cid-ih36j56i> <div class="exam-trap-label" data-astro-cid-ih36j56i>⚠️ EXAM TRAP — The Wrong Answer People Choose</div> <p class="exam-trap-text" data-astro-cid-ih36j56i>Thinking JSON schema validation is sufficient for production quality. Schema catches syntax errors. Business rule validation catches semantic errors — values that are syntactically valid but factually wrong. Both layers are required.</p> </div> <div class="key-points-box" data-astro-cid-ih36j56i> <div class="key-points-label" data-astro-cid-ih36j56i>KEY POINTS</div> <div class="key-points-list" data-astro-cid-ih36j56i> <div class="key-point" data-astro-cid-ih36j56i> <span class="key-point-num" style="color:#f59e0b" data-astro-cid-ih36j56i>1</span> <span class="key-point-text" data-astro-cid-ih36j56i>Layer 1: Schema/syntax validation — catches wrong types, missing required fields, invalid enum values.</span> </div><div class="key-point" data-astro-cid-ih36j56i> <span class="key-point-num" style="color:#f59e0b" data-astro-cid-ih36j56i>2</span> <span class="key-point-text" data-astro-cid-ih36j56i>Layer 2: Semantic/business rule validation — catches wrong values that pass the schema.</span> </div><div class="key-point" data-astro-cid-ih36j56i> <span class="key-point-num" style="color:#f59e0b" data-astro-cid-ih36j56i>3</span> <span class="key-point-text" data-astro-cid-ih36j56i>Retry-with-error-feedback: original document + failed output + SPECIFIC errors → retry prompt.</span> </div><div class="key-point" data-astro-cid-ih36j56i> <span class="key-point-num" style="color:#f59e0b" data-astro-cid-ih36j56i>4</span> <span class="key-point-text" data-astro-cid-ih36j56i>Retry works for format errors. It does NOT work when source document lacks the information — that produces fabrication.</span> </div><div class="key-point" data-astro-cid-ih36j56i> <span class="key-point-num" style="color:#f59e0b" data-astro-cid-ih36j56i>5</span> <span class="key-point-text" data-astro-cid-ih36j56i>Cap retries at 2-3 before routing to human review — unlimited retries waste cost.</span> </div> </div> </div> <button class="lesson-advance-btn" style="background:#f59e0b;border-color:#f59e0b" onclick="switchTab('concept')" data-astro-cid-ih36j56i>
+Read the Concept →
+</button> </div> <!-- ── CONCEPT ── --> <div id="panel-concept" class="lesson-panel hidden" data-astro-cid-ih36j56i> <div class="prose-lesson" data-astro-cid-ih36j56i> <h2 id="two-validation-layers">Two Validation Layers</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> TwoLayerValidator</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> validate_syntax</span><span style="color:#E1E4E8">(self, output: </span><span style="color:#79B8FF">dict</span><span style="color:#E1E4E8">) -> </span><span style="color:#79B8FF">dict</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#9ECBFF">        """Layer 1: Schema/syntax — wrong types, missing fields"""</span></span>
+<span class="line"><span style="color:#E1E4E8">        errors </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> []</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#F97583"> not</span><span style="color:#79B8FF"> isinstance</span><span style="color:#E1E4E8">(output.get(</span><span style="color:#9ECBFF">"total_amount"</span><span style="color:#E1E4E8">), (</span><span style="color:#79B8FF">int</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">float</span><span style="color:#E1E4E8">)):</span></span>
+<span class="line"><span style="color:#E1E4E8">            errors.append({</span></span>
+<span class="line"><span style="color:#9ECBFF">                "field"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"total_amount"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">                "error"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Must be a decimal number in dollars"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">                "got"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">repr</span><span style="color:#E1E4E8">(output.get(</span><span style="color:#9ECBFF">"total_amount"</span><span style="color:#E1E4E8">)),</span></span>
+<span class="line"><span style="color:#9ECBFF">                "expected_example"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">4999.00</span></span>
+<span class="line"><span style="color:#E1E4E8">            })</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#F97583"> not</span><span style="color:#79B8FF"> isinstance</span><span style="color:#E1E4E8">(output.get(</span><span style="color:#9ECBFF">"line_items"</span><span style="color:#E1E4E8">), </span><span style="color:#79B8FF">list</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#E1E4E8">            errors.append({</span></span>
+<span class="line"><span style="color:#9ECBFF">                "field"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"line_items"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">                "error"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Must be an array"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">                "got"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">type</span><span style="color:#E1E4E8">(output.get(</span><span style="color:#9ECBFF">"line_items"</span><span style="color:#E1E4E8">)).</span><span style="color:#79B8FF">__name__</span></span>
+<span class="line"><span style="color:#E1E4E8">            })</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> {</span><span style="color:#9ECBFF">"valid"</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">not</span><span style="color:#E1E4E8"> errors, </span><span style="color:#9ECBFF">"errors"</span><span style="color:#E1E4E8">: errors}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> validate_semantics</span><span style="color:#E1E4E8">(self, output: </span><span style="color:#79B8FF">dict</span><span style="color:#E1E4E8">, source: </span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">) -> </span><span style="color:#79B8FF">dict</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#9ECBFF">        """Layer 2: Business rules — valid types but wrong values"""</span></span>
+<span class="line"><span style="color:#E1E4E8">        errors </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> []</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        # Cross-check: vendor name must appear in source document</span></span>
+<span class="line"><span style="color:#E1E4E8">        vendor </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> output.get(</span><span style="color:#9ECBFF">"vendor_name"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">""</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> vendor </span><span style="color:#F97583">and</span><span style="color:#E1E4E8"> vendor.lower() </span><span style="color:#F97583">not</span><span style="color:#F97583"> in</span><span style="color:#E1E4E8"> source.lower():</span></span>
+<span class="line"><span style="color:#E1E4E8">            errors.append({</span></span>
+<span class="line"><span style="color:#9ECBFF">                "field"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"vendor_name"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">                "error"</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">f</span><span style="color:#9ECBFF">"'</span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">vendor</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">' not found in source document"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">                "likely_cause"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"May have extracted wrong entity"</span></span>
+<span class="line"><span style="color:#E1E4E8">            })</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        # Cross-check: line item totals must match invoice total</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> output.get(</span><span style="color:#9ECBFF">"line_items"</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#E1E4E8">            line_sum </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> sum</span><span style="color:#E1E4E8">(i.get(</span><span style="color:#9ECBFF">"total"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">for</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> output[</span><span style="color:#9ECBFF">"line_items"</span><span style="color:#E1E4E8">])</span></span>
+<span class="line"><span style="color:#E1E4E8">            total </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> output.get(</span><span style="color:#9ECBFF">"total_amount"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#79B8FF"> abs</span><span style="color:#E1E4E8">(line_sum </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> total) </span><span style="color:#F97583">></span><span style="color:#79B8FF"> 0.02</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">                errors.append({</span></span>
+<span class="line"><span style="color:#9ECBFF">                    "field"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"total_amount"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">                    "error"</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">f</span><span style="color:#9ECBFF">"Line items sum </span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">line_sum</span><span style="color:#F97583">:.2f</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF"> ≠ total </span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">total</span><span style="color:#F97583">:.2f</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">                    "hint"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Check for tax or discount not captured in line items"</span></span>
+<span class="line"><span style="color:#E1E4E8">                })</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> {</span><span style="color:#9ECBFF">"valid"</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">not</span><span style="color:#E1E4E8"> errors, </span><span style="color:#9ECBFF">"errors"</span><span style="color:#E1E4E8">: errors}</span></span>
+<span class="line"></span></code></pre>
+<h2 id="the-complete-retry-prompt">The Complete Retry Prompt</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> build_retry_prompt</span><span style="color:#E1E4E8">(document: </span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">, failed_output: </span><span style="color:#79B8FF">dict</span><span style="color:#E1E4E8">, errors: </span><span style="color:#79B8FF">list</span><span style="color:#E1E4E8">) -> </span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#9ECBFF">    """Three required components: document + failed output + specific errors."""</span></span>
+<span class="line"><span style="color:#E1E4E8">    error_text </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "</span><span style="color:#79B8FF">\n</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">.join(</span></span>
+<span class="line"><span style="color:#F97583">        f</span><span style="color:#9ECBFF">"• </span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">e[</span><span style="color:#9ECBFF">'field'</span><span style="color:#E1E4E8">]</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">: </span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">e[</span><span style="color:#9ECBFF">'error'</span><span style="color:#E1E4E8">]</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">"</span></span>
+<span class="line"><span style="color:#F97583">        +</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">f</span><span style="color:#9ECBFF">"</span><span style="color:#79B8FF">\n</span><span style="color:#9ECBFF">  Got: </span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">e.get(</span><span style="color:#9ECBFF">'got'</span><span style="color:#E1E4E8">)</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">"</span><span style="color:#F97583"> if</span><span style="color:#9ECBFF"> "got"</span><span style="color:#F97583"> in</span><span style="color:#E1E4E8"> e </span><span style="color:#F97583">else</span><span style="color:#9ECBFF"> ""</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">        +</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">f</span><span style="color:#9ECBFF">"</span><span style="color:#79B8FF">\n</span><span style="color:#9ECBFF">  Expected: </span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">e.get(</span><span style="color:#9ECBFF">'expected_example'</span><span style="color:#E1E4E8">)</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">"</span><span style="color:#F97583"> if</span><span style="color:#9ECBFF"> "expected_example"</span><span style="color:#F97583"> in</span><span style="color:#E1E4E8"> e </span><span style="color:#F97583">else</span><span style="color:#9ECBFF"> ""</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">        for</span><span style="color:#E1E4E8"> e </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> errors</span></span>
+<span class="line"><span style="color:#E1E4E8">    )</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#F97583"> f</span><span style="color:#9ECBFF">"""Previous extraction failed validation. Fix the specific errors below.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">ORIGINAL DOCUMENT:</span></span>
+<span class="line"><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">document</span><span style="color:#79B8FF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">YOUR PREVIOUS (INCORRECT) EXTRACTION:</span></span>
+<span class="line"><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">json.dumps(failed_output, </span><span style="color:#FFAB70">indent</span><span style="color:#F97583">=</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">)</span><span style="color:#79B8FF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">ERRORS TO FIX:</span></span>
+<span class="line"><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">error_text</span><span style="color:#79B8FF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">Re-extract fixing only these errors. Do not change fields that were correct.</span></span>
+<span class="line"><span style="color:#9ECBFF">If a value is not in the document, return null — do not invent values."""</span></span>
+<span class="line"></span></code></pre>
+<h2 id="when-not-to-retry">When NOT to Retry</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> should_retry</span><span style="color:#E1E4E8">(error: </span><span style="color:#79B8FF">dict</span><span style="color:#E1E4E8">) -> </span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#9ECBFF">    """Format errors: retryable. Missing data: not retryable (would fabricate)."""</span></span>
+<span class="line"><span style="color:#E1E4E8">    not_retryable_phrases </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [</span></span>
+<span class="line"><span style="color:#9ECBFF">        "not found in source"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">        "not in the document"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">        "document does not contain"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">        "absent from"</span></span>
+<span class="line"><span style="color:#E1E4E8">    ]</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#F97583"> not</span><span style="color:#79B8FF"> any</span><span style="color:#E1E4E8">(p </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> error.get(</span><span style="color:#9ECBFF">"error"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">""</span><span style="color:#E1E4E8">).lower() </span><span style="color:#F97583">for</span><span style="color:#E1E4E8"> p </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> not_retryable_phrases)</span></span>
+<span class="line"></span></code></pre>
+<h2 id="key-takeaways">Key Takeaways</h2>
+<ol>
+<li><strong>Layer 1: syntax</strong> (types, fields), <strong>Layer 2: semantics</strong> (values, cross-checks)</li>
+<li><strong>Retry prompt needs all three</strong>: document + failed output + specific errors</li>
+<li><strong>Specific errors</strong> — field name + what you got + what’s expected</li>
+<li><strong>Never retry missing-data errors</strong> — would produce fabrication</li>
+<li><strong>Cap at 2-3 retries</strong> — escalate to human review after</li>
+</ol>
+<hr>
+<p>id: “d4-t5-2-retry-patterns”
+title: “Retry Patterns — Effective Error Recovery for Extraction Pipelines”
+domain: “d4”
+taskRef: “T4.5”
+order: 14
+xp: 25
+tag: “Core”
+duration: “6 min”
+analogy: “A proofreader marking up a draft. They don’t say ‘this is wrong’ — they mark each specific error with the correction needed. The author addresses each marked issue precisely. Claude’s retry loop works the same way: marked errors → targeted corrections.”
+examTrap: “Retrying with the original prompt unchanged. An unchanged prompt produces an identical wrong output. The retry must include: original document, failed output, AND specific error descriptions — all three.”
+keyPoints:</p>
+<ul>
+<li>“Three required retry components: original document, failed output, specific errors.”</li>
+<li>“Without the failed output: Claude doesn’t know what it got wrong.”</li>
+<li>“Without specific errors: Claude doesn’t know what to fix.”</li>
+<li>“Without the original document: Claude can’t re-extract correctly.”</li>
+<li>“Error specificity: field name + current value + expected format.”
+antiPatterns:</li>
+<li>“Retrying with only the original prompt — same input → same wrong output”</li>
+<li>“Only sending errors without the failed output — Claude doesn’t know what changed”</li>
+<li>“Vague errors: ‘date format invalid’ vs ‘invoice_date must be YYYY-MM-DD, got January 15 2024’”</li>
+<li>“Retrying non-retryable errors (missing data) — fabrication results”
+tbChallenge: “Your extractor returned invoice_date as ‘Jan 15, 2024’ instead of ‘2024-01-15’. Write the retry prompt with all three required components. Make the error description specific enough that Claude knows exactly what to change.”</li>
+</ul>
+<hr>
+<h2 id="the-anatomy-of-a-good-retry">The Anatomy of a Good Retry</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#6A737D"># What must be in the retry prompt:</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">retry_prompt </span><span style="color:#F97583">=</span><span style="color:#F97583"> f</span><span style="color:#9ECBFF">"""</span></span>
+<span class="line"><span style="color:#9ECBFF">[COMPONENT 1: WHY WE'RE RETRYING]</span></span>
+<span class="line"><span style="color:#9ECBFF">Your previous extraction had validation errors. Please fix the specific issues below.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">[COMPONENT 2: ORIGINAL DOCUMENT — so Claude can re-extract]</span></span>
+<span class="line"><span style="color:#9ECBFF">ORIGINAL DOCUMENT:</span></span>
+<span class="line"><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">original_document</span><span style="color:#79B8FF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">[COMPONENT 3: WHAT CLAUDE GOT — so it knows what to change]</span></span>
+<span class="line"><span style="color:#9ECBFF">YOUR PREVIOUS EXTRACTION (INCORRECT):</span></span>
+<span class="line"><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">json.dumps(failed_output, </span><span style="color:#FFAB70">indent</span><span style="color:#F97583">=</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">)</span><span style="color:#79B8FF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">[COMPONENT 4: WHAT'S WRONG — specific, field-level, with examples]</span></span>
+<span class="line"><span style="color:#9ECBFF">ERRORS TO FIX:</span></span>
+<span class="line"><span style="color:#9ECBFF">• invoice_date: Must be ISO format YYYY-MM-DD</span></span>
+<span class="line"><span style="color:#9ECBFF">  Got: "Jan 15, 2024"</span></span>
+<span class="line"><span style="color:#9ECBFF">  Expected: "2024-01-15"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">• total_amount: Must be a decimal number, not a string with currency symbol</span></span>
+<span class="line"><span style="color:#9ECBFF">  Got: "$4,999.00"</span></span>
+<span class="line"><span style="color:#9ECBFF">  Expected: 4999.00</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">[INSTRUCTION]</span></span>
+<span class="line"><span style="color:#9ECBFF">Fix only the listed errors. Do not modify fields that were correct.</span></span>
+<span class="line"><span style="color:#9ECBFF">If a value is not in the document, return null — do not invent values.</span></span>
+<span class="line"><span style="color:#9ECBFF">"""</span></span>
+<span class="line"></span></code></pre>
+<h2 id="specific-vs-vague-error-messages">Specific vs Vague Error Messages</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#6A737D"># ❌ Vague — Claude doesn't know what to change</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span><span style="color:#9ECBFF">"field"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"invoice_date"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"error"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Invalid format"</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># ✅ Specific — Claude knows exactly what to do</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#9ECBFF">    "field"</span><span style="color:#E1E4E8">:    </span><span style="color:#9ECBFF">"invoice_date"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    "error"</span><span style="color:#E1E4E8">:    </span><span style="color:#9ECBFF">"Must be ISO format YYYY-MM-DD"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    "got"</span><span style="color:#E1E4E8">:      </span><span style="color:#9ECBFF">"Jan 15, 2024"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    "expected"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"2024-01-15"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    "hint"</span><span style="color:#E1E4E8">:     </span><span style="color:#9ECBFF">"Convert the written-out month name to a two-digit number"</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre>
+<h2 id="retry-decision-flow">Retry Decision Flow</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">async</span><span style="color:#F97583"> def</span><span style="color:#B392F0"> extract_with_retry</span><span style="color:#E1E4E8">(document: </span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">, max_retries: </span><span style="color:#79B8FF">int</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">) -> </span><span style="color:#79B8FF">dict</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    last_output, last_errors </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> None</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">None</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> attempt </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(max_retries </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#E1E4E8">        output </span><span style="color:#F97583">=</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> extract(document, </span><span style="color:#FFAB70">retry_context</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">(last_output, last_errors))</span></span>
+<span class="line"><span style="color:#E1E4E8">        syntax_ok </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> validate_syntax(output)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#F97583"> not</span><span style="color:#E1E4E8"> syntax_ok[</span><span style="color:#9ECBFF">"valid"</span><span style="color:#E1E4E8">]:</span></span>
+<span class="line"><span style="color:#E1E4E8">            retryable </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [e </span><span style="color:#F97583">for</span><span style="color:#E1E4E8"> e </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> syntax_ok[</span><span style="color:#9ECBFF">"errors"</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">if</span><span style="color:#E1E4E8"> should_retry(e)]</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#E1E4E8"> retryable </span><span style="color:#F97583">and</span><span style="color:#E1E4E8"> attempt </span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8"> max_retries:</span></span>
+<span class="line"><span style="color:#E1E4E8">                last_output, last_errors </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> output, retryable</span></span>
+<span class="line"><span style="color:#F97583">                continue</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#E1E4E8"> {</span><span style="color:#9ECBFF">"status"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"needs_review"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"output"</span><span style="color:#E1E4E8">: output}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">        semantic_ok </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> validate_semantics(output, document)</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#F97583"> not</span><span style="color:#E1E4E8"> semantic_ok[</span><span style="color:#9ECBFF">"valid"</span><span style="color:#E1E4E8">]:</span></span>
+<span class="line"><span style="color:#E1E4E8">            retryable </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [e </span><span style="color:#F97583">for</span><span style="color:#E1E4E8"> e </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> semantic_ok[</span><span style="color:#9ECBFF">"errors"</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">if</span><span style="color:#E1E4E8"> should_retry(e)]</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#E1E4E8"> retryable </span><span style="color:#F97583">and</span><span style="color:#E1E4E8"> attempt </span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8"> max_retries:</span></span>
+<span class="line"><span style="color:#E1E4E8">                last_output, last_errors </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> output, retryable</span></span>
+<span class="line"><span style="color:#F97583">                continue</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#E1E4E8"> {</span><span style="color:#9ECBFF">"status"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"needs_review"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"output"</span><span style="color:#E1E4E8">: output}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> {</span><span style="color:#9ECBFF">"status"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"success"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"output"</span><span style="color:#E1E4E8">: output, </span><span style="color:#9ECBFF">"attempts"</span><span style="color:#E1E4E8">: attempt </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> {</span><span style="color:#9ECBFF">"status"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"needs_review"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"output"</span><span style="color:#E1E4E8">: last_output, </span><span style="color:#9ECBFF">"reason"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"max_retries"</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre>
+<h2 id="key-takeaways-1">Key Takeaways</h2>
+<ol>
+<li><strong>All three components</strong> in retry: document + failed output + specific errors</li>
+<li><strong>Specific errors</strong> — field + got + expected + hint</li>
+<li><strong>Retry only retryable errors</strong> — not missing-data errors</li>
+<li><strong>Cap retries</strong> — 2-3 max, then human review</li>
+<li><strong>“Do not change correct fields”</strong> — targeted correction</li>
+</ol>
+<hr>
+<p>id: “d4-t5-3-batch-processing”
+title: “Batch Processing — Message Batches API for High-Volume Extraction”
+domain: “d4”
+taskRef: “T4.5”
+order: 15
+xp: 30
+tag: ”⚡ Exam Tested”
+duration: “7 min”
+analogy: “Overnight cloud photo processing vs in-store same-day printing. Cloud batch is 50% cheaper and you can submit thousands at once — but you get results the next morning. In-store costs more but you get results in an hour. The Batch API is the overnight option.”
+examTrap: “Using Batch API for anything with a latency requirement. Batch API has NO guaranteed SLA — up to 24 hours. Using it for pre-merge checks, real-time features, or blocking workflows is an architectural error the exam specifically tests.”
+keyPoints:</p>
+<ul>
+<li>“Batch API: 50% cost reduction. Up to 24-hour processing. No latency SLA whatsoever.”</li>
+<li>“Use for: nightly batch jobs, backfills, cost optimization on non-urgent large volumes.”</li>
+<li>“Never use for: CI/CD pipeline checks, user-blocking features, real-time requirements.”</li>
+<li>“custom_id correlates your requests with responses — essential for partial failure recovery.”</li>
+<li>“Partial failure: resubmit only failed requests by custom_id — not the entire batch.”
+antiPatterns:</li>
+<li>“Batch API for pre-merge CI/CD checks — pipeline waits up to 24 hours”</li>
+<li>“No custom_id — can’t identify which requests succeeded or failed”</li>
+<li>“Resubmitting entire batch on partial failure — wastes 50% cost saving”</li>
+<li>“No status polling — assuming synchronous completion”
+tbChallenge: “You have 50,000 invoices to process overnight. Some will fail validation. Design the complete Batch API strategy: request structure, custom_id scheme, polling, and partial failure recovery.”</li>
+</ul>
+<hr>
+<h2 id="batch-api-vs-real-time-the-decision">Batch API vs Real-Time: The Decision</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>Has a latency requirement?          → Real-time API</span></span>
+<span class="line"><span>User is waiting for result?         → Real-time API</span></span>
+<span class="line"><span>CI/CD pipeline check?               → Real-time API</span></span>
+<span class="line"><span>Results needed within the hour?     → Real-time API</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Non-urgent processing (overnight OK)?    → Batch API</span></span>
+<span class="line"><span>Cost is a primary concern?               → Batch API</span></span>
+<span class="line"><span>Volume > 1,000 requests per job?         → Consider Batch API</span></span>
+<span class="line"><span></span></span></code></pre>
+<h2 id="complete-batch-workflow">Complete Batch Workflow</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> anthropic, time, json</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">client </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> anthropic.Anthropic()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 1. Prepare requests with custom_ids</span></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> build_batch_requests</span><span style="color:#E1E4E8">(invoices: </span><span style="color:#79B8FF">dict</span><span style="color:#E1E4E8">) -> </span><span style="color:#79B8FF">list</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> [</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#9ECBFF">            "custom_id"</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">f</span><span style="color:#9ECBFF">"inv-</span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">inv_id</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">,   </span><span style="color:#6A737D"># YOUR correlation key</span></span>
+<span class="line"><span style="color:#9ECBFF">            "params"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#9ECBFF">                "model"</span><span style="color:#E1E4E8">:      </span><span style="color:#9ECBFF">"claude-sonnet-4-6"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">                "max_tokens"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">2048</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">                "tools"</span><span style="color:#E1E4E8">:       [invoice_extraction_tool],</span></span>
+<span class="line"><span style="color:#9ECBFF">                "tool_choice"</span><span style="color:#E1E4E8">: {</span><span style="color:#9ECBFF">"type"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"tool"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"name"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"extract_invoice"</span><span style="color:#E1E4E8">},</span></span>
+<span class="line"><span style="color:#9ECBFF">                "messages"</span><span style="color:#E1E4E8">: [{</span></span>
+<span class="line"><span style="color:#9ECBFF">                    "role"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"user"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">                    "content"</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">f</span><span style="color:#9ECBFF">"Extract invoice data:</span><span style="color:#79B8FF">\n{</span><span style="color:#E1E4E8">inv_text</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">"</span></span>
+<span class="line"><span style="color:#E1E4E8">                }]</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#F97583">        for</span><span style="color:#E1E4E8"> inv_id, inv_text </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> invoices.items()</span></span>
+<span class="line"><span style="color:#E1E4E8">    ]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 2. Submit</span></span>
+<span class="line"><span style="color:#E1E4E8">requests </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> build_batch_requests(invoices)</span></span>
+<span class="line"><span style="color:#E1E4E8">batch </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> client.beta.messages.batches.create(</span><span style="color:#FFAB70">requests</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">requests)</span></span>
+<span class="line"><span style="color:#E1E4E8">batch_id </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> batch.id</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">f</span><span style="color:#9ECBFF">"Submitted batch </span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">batch_id</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF"> with </span><span style="color:#79B8FF">{len</span><span style="color:#E1E4E8">(requests)</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF"> requests"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 3. Poll for completion</span></span>
+<span class="line"><span style="color:#F97583">while</span><span style="color:#79B8FF"> True</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    status </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> client.beta.messages.batches.retrieve(batch_id)</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> status.processing_status </span><span style="color:#F97583">==</span><span style="color:#9ECBFF"> "ended"</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#F97583">        break</span></span>
+<span class="line"><span style="color:#79B8FF">    print</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">f</span><span style="color:#9ECBFF">"Processing... </span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">status.request_counts</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    time.sleep(</span><span style="color:#79B8FF">60</span><span style="color:#E1E4E8">)  </span><span style="color:#6A737D"># Poll every minute</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 4. Process results and identify failures</span></span>
+<span class="line"><span style="color:#E1E4E8">successful, failed </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [], []</span></span>
+<span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> result </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> client.beta.messages.batches.results(batch_id):</span></span>
+<span class="line"><span style="color:#E1E4E8">    inv_id </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> result.custom_id.replace(</span><span style="color:#9ECBFF">"inv-"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">""</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> result.result.type </span><span style="color:#F97583">==</span><span style="color:#9ECBFF"> "succeeded"</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">        extraction </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> parse_tool_result(result.result.message)</span></span>
+<span class="line"><span style="color:#E1E4E8">        successful.append({</span><span style="color:#9ECBFF">"id"</span><span style="color:#E1E4E8">: inv_id, </span><span style="color:#9ECBFF">"data"</span><span style="color:#E1E4E8">: extraction})</span></span>
+<span class="line"><span style="color:#F97583">    else</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">        failed.append({</span><span style="color:#9ECBFF">"id"</span><span style="color:#E1E4E8">: inv_id, </span><span style="color:#9ECBFF">"custom_id"</span><span style="color:#E1E4E8">: result.custom_id,</span></span>
+<span class="line"><span style="color:#9ECBFF">                        "error"</span><span style="color:#E1E4E8">: result.result.error.type})</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 5. Resubmit ONLY failed requests</span></span>
+<span class="line"><span style="color:#F97583">if</span><span style="color:#E1E4E8"> failed:</span></span>
+<span class="line"><span style="color:#E1E4E8">    failed_ids </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {f[</span><span style="color:#9ECBFF">"custom_id"</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">for</span><span style="color:#E1E4E8"> f </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> failed}</span></span>
+<span class="line"><span style="color:#E1E4E8">    retry_requests </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [r </span><span style="color:#F97583">for</span><span style="color:#E1E4E8"> r </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> requests </span><span style="color:#F97583">if</span><span style="color:#E1E4E8"> r[</span><span style="color:#9ECBFF">"custom_id"</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> failed_ids]</span></span>
+<span class="line"><span style="color:#E1E4E8">    retry_batch </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> client.beta.messages.batches.create(</span><span style="color:#FFAB70">requests</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">retry_requests)</span></span>
+<span class="line"><span style="color:#79B8FF">    print</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">f</span><span style="color:#9ECBFF">"Resubmitting </span><span style="color:#79B8FF">{len</span><span style="color:#E1E4E8">(retry_requests)</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF"> failed requests as </span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">retry_batch.id</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span></code></pre>
+<h2 id="key-takeaways-2">Key Takeaways</h2>
+<ol>
+<li><strong>50% cheaper, up to 24h</strong> — non-urgent work only</li>
+<li><strong>Never for latency-sensitive workflows</strong> — CI/CD, user-blocking</li>
+<li><strong>custom_id is essential</strong> — enables partial failure recovery</li>
+<li><strong>Resubmit only failures</strong> — don’t resubmit successful requests</li>
+<li><strong>Poll for completion</strong> — Batch API is asynchronous</li>
+</ol>
+<hr>
+<p>id: “d4-t6-1-review-arch”
+title: “Multi-Instance Review Architecture — Why Self-Review Fails”
+domain: “d4”
+taskRef: “T4.6”
+order: 16
+xp: 35
+tag: ”⚡ Exam Tested”
+duration: “8 min”
+analogy: “Proofreading your own writing. You wrote it — your brain autocorrects as you read. You see what you intended, not what’s there. A fresh reader has no such bias. Claude reviewing its own code has the same blind spot: it retains the reasoning context from generation.”
+examTrap: “Thinking ‘ask Claude to review carefully’ is equivalent to independent review. It’s not. The model retains its reasoning from generation regardless of how you phrase the review request. The fix is a completely separate API call with no generation context whatsoever.”
+keyPoints:</p>
+<ul>
+<li>“Self-review limitation: Claude retains reasoning context from generation — biased toward validating its own decisions.”</li>
+<li>“Independent review: fresh Claude API call with NO knowledge of how the code was generated.”</li>
+<li>“Tell the reviewer explicitly: ‘Do not assume this code is correct. Your job is to find errors.’”</li>
+<li>“Multi-pass: per-file reviews (parallel, full attention) → cross-file integration (sequential).”</li>
+<li>“Confidence self-reporting alongside findings enables routing decisions.”
+antiPatterns:</li>
+<li>“Same session for generation and review — reviewer inherits generator’s reasoning”</li>
+<li>“Passing generation conversation context to reviewer — same effect as same session”</li>
+<li>“One massive review of all files — attention dilution misses issues”</li>
+<li>“Reviewer not told to assume code might be wrong — defaults to confirmation mode”
+tbChallenge: “Explain to a skeptical colleague why the same Claude instance reviewing its own code is biased. What specifically is different about an independent instance, and how would you measure whether it catches more bugs?”</li>
+</ul>
+<hr>
+<h2 id="why-self-review-fails">Why Self-Review Fails</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#6A737D"># THE PROBLEM: Same session retains reasoning context</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Generation session</span></span>
+<span class="line"><span style="color:#E1E4E8">response </span><span style="color:#F97583">=</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> call_claude(</span></span>
+<span class="line"><span style="color:#FFAB70">    messages</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">[</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span><span style="color:#9ECBFF">"role"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"user"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"content"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Implement auth middleware"</span><span style="color:#E1E4E8">},</span></span>
+<span class="line"><span style="color:#6A737D">        # ... multi-turn generation conversation</span></span>
+<span class="line"><span style="color:#6A737D">        # Claude built a mental model of WHY each decision was made</span></span>
+<span class="line"><span style="color:#E1E4E8">    ]</span></span>
+<span class="line"><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># ❌ Self-review in SAME session</span></span>
+<span class="line"><span style="color:#E1E4E8">review </span><span style="color:#F97583">=</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> call_claude(</span></span>
+<span class="line"><span style="color:#FFAB70">    messages</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">[</span></span>
+<span class="line"><span style="color:#6A737D">        # ... all previous generation turns ...</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span><span style="color:#9ECBFF">"role"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"assistant"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"content"</span><span style="color:#E1E4E8">: generated_code},</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span><span style="color:#9ECBFF">"role"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"user"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"content"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Review your code for bugs"</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#6A737D">        # Claude still has context explaining why each decision was "correct"</span></span>
+<span class="line"><span style="color:#6A737D">        # Much less likely to question those decisions</span></span>
+<span class="line"><span style="color:#E1E4E8">    ]</span></span>
+<span class="line"><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span></code></pre>
+<h2 id="the-independent-review-call">The Independent Review Call</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#6A737D"># ✅ Independent review: SEPARATE API CALL, no generation history</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">async</span><span style="color:#F97583"> def</span><span style="color:#B392F0"> independent_review</span><span style="color:#E1E4E8">(code: </span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">, task_description: </span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">) -> </span><span style="color:#79B8FF">dict</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    response </span><span style="color:#F97583">=</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> call_claude(</span></span>
+<span class="line"><span style="color:#FFAB70">        messages</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">[{</span></span>
+<span class="line"><span style="color:#9ECBFF">            "role"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"user"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">            "content"</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">f</span><span style="color:#9ECBFF">"""Review this implementation for bugs, security issues, and correctness.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">Task the code was meant to implement:</span></span>
+<span class="line"><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">task_description</span><span style="color:#79B8FF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">Code to review:</span></span>
+<span class="line"><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">code</span><span style="color:#79B8FF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">IMPORTANT: Do NOT assume this code is correct.</span></span>
+<span class="line"><span style="color:#9ECBFF">Assume there may be bugs, security vulnerabilities, or logic errors.</span></span>
+<span class="line"><span style="color:#9ECBFF">Your job is to find them — not to confirm the code works.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">Return: </span><span style="color:#79B8FF">{{</span><span style="color:#9ECBFF">findings: [</span><span style="color:#79B8FF">{{</span><span style="color:#9ECBFF">severity, description, line, fix</span><span style="color:#79B8FF">}}</span><span style="color:#9ECBFF">], overall_verdict: approved|needs_changes</span><span style="color:#79B8FF">}}</span><span style="color:#9ECBFF">"""</span></span>
+<span class="line"><span style="color:#E1E4E8">        }]</span></span>
+<span class="line"><span style="color:#6A737D">        # </span><span style="color:#F97583">NOTE</span><span style="color:#6A737D">: No generation messages included — completely fresh context</span></span>
+<span class="line"><span style="color:#E1E4E8">    )</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> parse_findings(response)</span></span>
+<span class="line"></span></code></pre>
+<h2 id="multi-pass-architecture">Multi-Pass Architecture</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">async</span><span style="color:#F97583"> def</span><span style="color:#B392F0"> review_pr</span><span style="color:#E1E4E8">(changed_files: list[</span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">]) -> </span><span style="color:#79B8FF">dict</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    # Pass 1: Per-file (parallel — full attention per file)</span></span>
+<span class="line"><span style="color:#E1E4E8">    per_file </span><span style="color:#F97583">=</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> asyncio.gather(</span><span style="color:#F97583">*</span><span style="color:#E1E4E8">[</span></span>
+<span class="line"><span style="color:#E1E4E8">        independent_review(</span></span>
+<span class="line"><span style="color:#FFAB70">            code</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">read_file(f),</span></span>
+<span class="line"><span style="color:#FFAB70">            task_description</span><span style="color:#F97583">=</span><span style="color:#F97583">f</span><span style="color:#9ECBFF">"File: </span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">f</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">"</span></span>
+<span class="line"><span style="color:#E1E4E8">        )</span></span>
+<span class="line"><span style="color:#F97583">        for</span><span style="color:#E1E4E8"> f </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> changed_files</span></span>
+<span class="line"><span style="color:#E1E4E8">    ])</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    # Pass 2: Cross-file integration (sequential — needs all per-file results)</span></span>
+<span class="line"><span style="color:#E1E4E8">    integration </span><span style="color:#F97583">=</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> call_claude(</span></span>
+<span class="line"><span style="color:#FFAB70">        messages</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">[{</span></span>
+<span class="line"><span style="color:#9ECBFF">            "role"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"user"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">            "content"</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">f</span><span style="color:#9ECBFF">"""Review cross-file integration issues ONLY.</span></span>
+<span class="line"><span style="color:#9ECBFF">Per-file reviews have already checked individual correctness.</span></span>
+<span class="line"><span style="color:#9ECBFF">Focus on: interface mismatches, shared state bugs, circular dependencies.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">Per-file findings:</span></span>
+<span class="line"><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">json.dumps(per_file)</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">"""</span></span>
+<span class="line"><span style="color:#E1E4E8">        }]</span></span>
+<span class="line"><span style="color:#E1E4E8">    )</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> {</span><span style="color:#9ECBFF">"per_file"</span><span style="color:#E1E4E8">: per_file, </span><span style="color:#9ECBFF">"integration"</span><span style="color:#E1E4E8">: integration}</span></span>
+<span class="line"></span></code></pre>
+<h2 id="confidence-self-report-for-routing">Confidence Self-Report for Routing</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#E1E4E8">review_schema </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#9ECBFF">    "findings"</span><span style="color:#E1E4E8">: [</span><span style="color:#79B8FF">...</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#9ECBFF">    "confidence"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#9ECBFF">        "overall"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"high|medium|low"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">        "uncertain_findings"</span><span style="color:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#E1E4E8">            {</span><span style="color:#9ECBFF">"finding_index"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"reason"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Context missing — may be intentional"</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">        ]</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Route uncertain findings to human verification</span></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> route_finding</span><span style="color:#E1E4E8">(finding: </span><span style="color:#79B8FF">dict</span><span style="color:#E1E4E8">, uncertainty: </span><span style="color:#79B8FF">list</span><span style="color:#E1E4E8">) -> </span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    uncertain_indices </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {u[</span><span style="color:#9ECBFF">"finding_index"</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">for</span><span style="color:#E1E4E8"> u </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> uncertainty}</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> finding[</span><span style="color:#9ECBFF">"severity"</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">==</span><span style="color:#9ECBFF"> "CRITICAL"</span><span style="color:#F97583"> and</span><span style="color:#E1E4E8"> finding[</span><span style="color:#9ECBFF">"index"</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">not</span><span style="color:#F97583"> in</span><span style="color:#E1E4E8"> uncertain_indices:</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#9ECBFF"> "block_merge"</span></span>
+<span class="line"><span style="color:#F97583">    elif</span><span style="color:#E1E4E8"> finding[</span><span style="color:#9ECBFF">"index"</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> uncertain_indices:</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#9ECBFF"> "human_verify"</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#9ECBFF"> "standard_review"</span></span>
+<span class="line"></span></code></pre>
+<h2 id="key-takeaways-3">Key Takeaways</h2>
+<ol>
+<li><strong>Self-review is biased</strong> — generation context remains in session</li>
+<li><strong>Independent review = separate API call, zero generation history</strong></li>
+<li><strong>Explicitly tell reviewer</strong> to assume code might be wrong</li>
+<li><strong>Per-file parallel, cross-file sequential</strong> — multi-pass prevents dilution</li>
+<li><strong>Confidence reporting</strong> enables intelligent finding routing</li>
+</ol>
+<hr>
+<p>id: “d4-t6-2-multi-pass”
+title: “Multi-Pass Review — Preventing Attention Dilution”
+domain: “d4”
+taskRef: “T4.6”
+order: 17
+xp: 25
+tag: “Core”
+duration: “6 min”
+analogy: “Medical specialist consultations vs one overworked generalist. The cardiologist reviews cardiac results with full attention. The neurologist reviews neurological results with full attention. A generalist reviewing all 20 test results simultaneously misses the interaction between result 7 and result 15.”
+examTrap: “Sending all changed files in one context to one Claude call. Attention dilution: reviewing 20 files simultaneously produces lower effective attention per file than reviewing each file individually.”
+keyPoints:</p>
+<ul>
+<li>“Attention dilution: reviewing many files at once reduces effective attention per file — issues get missed.”</li>
+<li>“Multi-pass: per-file reviews run in parallel (full attention per file), cross-file synthesis runs sequentially.”</li>
+<li>“Cross-file pass receives structured summaries from per-file reviews — not raw file contents.”</li>
+<li>“Contradictory findings between files are surfaced in the cross-file pass for human resolution.”</li>
+<li>“Per-file context window usage: one file = full context window. Twenty files = 1/20th effective attention.”
+antiPatterns:</li>
+<li>“All files in one context — attention dilution”</li>
+<li>“No cross-file pass — misses integration issues”</li>
+<li>“Cross-file pass receiving raw file contents — re-introduces dilution”</li>
+<li>“Contradictions left unresolved — leaves developers confused about which is correct”
+tbChallenge: “PR has 15 changed files. Per-file review of file_auth.ts says ‘getUser() returns null on error’. Per-file review of file_orders.ts says ‘getUser() throws UserNotFoundException’. How does the cross-file pass surface and handle this contradiction?”</li>
+</ul>
+<hr>
+<h2 id="the-dilution-problem-in-numbers">The Dilution Problem in Numbers</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>20 files, all-in-one context: ~200,000 tokens</span></span>
+<span class="line"><span>Per file, attention allocation: ~10,000 tokens effective per file</span></span>
+<span class="line"><span>Issues in file 14: compete with context from files 1-13</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>20 files, per-file reviews: 20 separate calls</span></span>
+<span class="line"><span>Per file, attention allocation: FULL context window per file</span></span>
+<span class="line"><span>Issues in file 14: receive full attention, not diluted by others</span></span>
+<span class="line"><span></span></span></code></pre>
+<h2 id="multi-pass-implementation">Multi-Pass Implementation</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">async</span><span style="color:#F97583"> def</span><span style="color:#B392F0"> multi_pass_review</span><span style="color:#E1E4E8">(files: list[</span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">]) -> </span><span style="color:#79B8FF">dict</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    # PASS 1: Per-file (parallel — full attention each)</span></span>
+<span class="line"><span style="color:#E1E4E8">    per_file_reviews </span><span style="color:#F97583">=</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> asyncio.gather(</span><span style="color:#F97583">*</span><span style="color:#E1E4E8">[</span></span>
+<span class="line"><span style="color:#E1E4E8">        call_claude(</span></span>
+<span class="line"><span style="color:#FFAB70">            messages</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">[{</span></span>
+<span class="line"><span style="color:#9ECBFF">                "role"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"user"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">                "content"</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">f</span><span style="color:#9ECBFF">"""Review </span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">filename</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF"> thoroughly.</span></span>
+<span class="line"><span style="color:#9ECBFF">Focus ONLY on this file — do not consider other files.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">read_file(filename)</span><span style="color:#79B8FF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">Return JSON:</span></span>
+<span class="line"><span style="color:#79B8FF">{{</span></span>
+<span class="line"><span style="color:#9ECBFF">  "file": "</span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">filename</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">",</span></span>
+<span class="line"><span style="color:#9ECBFF">  "issues": [...],</span></span>
+<span class="line"><span style="color:#9ECBFF">  "key_interfaces": ["function signatures, types exported"],</span></span>
+<span class="line"><span style="color:#9ECBFF">  "assumptions": ["what this file assumes about other code"]</span></span>
+<span class="line"><span style="color:#79B8FF">}}</span><span style="color:#9ECBFF">"""</span></span>
+<span class="line"><span style="color:#E1E4E8">            }]</span></span>
+<span class="line"><span style="color:#E1E4E8">        )</span></span>
+<span class="line"><span style="color:#F97583">        for</span><span style="color:#E1E4E8"> filename </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> files</span></span>
+<span class="line"><span style="color:#E1E4E8">    ])</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    # PASS 2: Cross-file synthesis (sequential — needs all pass 1 results)</span></span>
+<span class="line"><span style="color:#E1E4E8">    cross_file </span><span style="color:#F97583">=</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> call_claude(</span></span>
+<span class="line"><span style="color:#FFAB70">        messages</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">[{</span></span>
+<span class="line"><span style="color:#9ECBFF">            "role"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"user"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">            "content"</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">f</span><span style="color:#9ECBFF">"""Find cross-file integration issues ONLY.</span></span>
+<span class="line"><span style="color:#9ECBFF">Per-file reviewers have already checked individual correctness.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">Focus on:</span></span>
+<span class="line"><span style="color:#9ECBFF">1. Interface contract mismatches (A declares X, B expects Y)</span></span>
+<span class="line"><span style="color:#9ECBFF">2. Shared state inconsistencies</span></span>
+<span class="line"><span style="color:#9ECBFF">3. Contradictory assumptions between files</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">Per-file summaries:</span></span>
+<span class="line"><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">json.dumps(per_file_reviews, </span><span style="color:#FFAB70">indent</span><span style="color:#F97583">=</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">)</span><span style="color:#79B8FF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">Return: </span><span style="color:#79B8FF">{{</span><span style="color:#9ECBFF">contradictions: [...], integration_issues: [...]</span><span style="color:#79B8FF">}}</span><span style="color:#9ECBFF">"""</span></span>
+<span class="line"><span style="color:#E1E4E8">        }]</span></span>
+<span class="line"><span style="color:#E1E4E8">    )</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    # Surface contradictions for human resolution</span></span>
+<span class="line"><span style="color:#E1E4E8">    contradictions </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> parse_contradictions(cross_file)</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#9ECBFF">        "per_file"</span><span style="color:#E1E4E8">: per_file_reviews,</span></span>
+<span class="line"><span style="color:#9ECBFF">        "integration"</span><span style="color:#E1E4E8">: cross_file,</span></span>
+<span class="line"><span style="color:#9ECBFF">        "needs_human_resolution"</span><span style="color:#E1E4E8">: contradictions</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span></code></pre>
+<h2 id="resolving-contradictions">Resolving Contradictions</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#6A737D"># The cross-file pass finds:</span></span>
+<span class="line"><span style="color:#6A737D"># file_auth.ts assumes getUser() returns null on error</span></span>
+<span class="line"><span style="color:#6A737D"># file_orders.ts assumes getUser() throws UserNotFoundException</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">contradiction </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#9ECBFF">    "type"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"interface_contract_mismatch"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    "function"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"getUser()"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    "files"</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">"file_auth.ts"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"file_orders.ts"</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#9ECBFF">    "conflict"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#9ECBFF">        "file_auth.ts"</span><span style="color:#E1E4E8">:   </span><span style="color:#9ECBFF">"Handles null return — assumes returns null on error"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">        "file_orders.ts"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Catches UserNotFoundException — assumes throws on error"</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#9ECBFF">    "human_question"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Which behavior is correct? file_auth.ts or file_orders.ts must be updated."</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre>
+<h2 id="key-takeaways-4">Key Takeaways</h2>
+<ol>
+<li><strong>Attention dilution is real</strong> — per-file reviews catch more</li>
+<li><strong>Parallel per-file, sequential cross-file</strong> — the pattern</li>
+<li><strong>Cross-file receives summaries</strong>, not raw files</li>
+<li><strong>Contradictions surface in cross-file pass</strong> — route to human</li>
+<li><strong>Two passes minimum</strong> — per-file + integration</li>
+</ol>
+<hr>
+<p>id: “d4-t6-3-confidence-scoring”
+title: “Confidence Scoring — Routing Decisions Based on Model Certainty”
+domain: “d4”
+taskRef: “T4.6”
+order: 18
+xp: 30
+tag: “Core”
+duration: “7 min”
+analogy: “A doctor’s referral system. Confident diagnosis → prescribe and discharge. Uncertain → refer to specialist. Alarmed → send to emergency. The routing decision is based on confidence, not just the finding. The patient doesn’t wait while the doctor mulls over everything.”
+examTrap: “Treating confidence scoring as binary accept/reject. The exam tests that confidence enables ROUTING — high confidence auto-processes, medium spot-checks, low routes to human — not just pass/fail.”
+keyPoints:</p>
+<ul>
+<li>“Confidence scoring: Claude self-reports certainty alongside each finding or extraction.”</li>
+<li>“Three routing tiers: high → auto-process, medium → spot-check sample, low → human review.”</li>
+<li>“Field-level confidence: individual fields in one extraction can have different confidence levels.”</li>
+<li>“Calibration: measure whether self-reported confidence correlates with actual accuracy via stratified sampling.”</li>
+<li>“Recalibrate routing thresholds when calibration shows miscalibration.”
+antiPatterns:</li>
+<li>“Binary confidence (confident/not) — loses routing granularity”</li>
+<li>“No routing logic — what does the system do with the confidence score?”</li>
+<li>“Uncalibrated confidence — assuming self-reported confidence is accurate without measuring”</li>
+<li>“Same human review process for all low-confidence fields — critical fields need faster escalation”
+tbChallenge: “An extraction reports: vendor_name (high confidence), invoice_date (high confidence), total_amount (low confidence). What does the routing logic do — and how is this different from an all-low-confidence extraction?”</li>
+</ul>
+<hr>
+<h2 id="field-level-confidence-schema">Field-Level Confidence Schema</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#E1E4E8">extraction_schema_with_confidence </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#9ECBFF">    "properties"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#9ECBFF">        "vendor_name"</span><span style="color:#E1E4E8">:   {</span><span style="color:#9ECBFF">"type"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"string"</span><span style="color:#E1E4E8">},</span></span>
+<span class="line"><span style="color:#9ECBFF">        "invoice_date"</span><span style="color:#E1E4E8">:  {</span><span style="color:#9ECBFF">"type"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"string"</span><span style="color:#E1E4E8">},</span></span>
+<span class="line"><span style="color:#9ECBFF">        "total_amount"</span><span style="color:#E1E4E8">:  {</span><span style="color:#9ECBFF">"type"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"number"</span><span style="color:#E1E4E8">},</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">        "confidence"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#9ECBFF">            "type"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"object"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">            "properties"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#9ECBFF">                "overall"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#9ECBFF">                    "type"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"string"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">                    "enum"</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">"high"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"medium"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"low"</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">                },</span></span>
+<span class="line"><span style="color:#9ECBFF">                "low_confidence_fields"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#9ECBFF">                    "type"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"array"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">                    "description"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Fields where Claude is uncertain. Empty array if all high confidence."</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">                    "items"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#9ECBFF">                        "type"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"object"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">                        "properties"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#9ECBFF">                            "field"</span><span style="color:#E1E4E8">:  {</span><span style="color:#9ECBFF">"type"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"string"</span><span style="color:#E1E4E8">},</span></span>
+<span class="line"><span style="color:#9ECBFF">                            "reason"</span><span style="color:#E1E4E8">: {</span><span style="color:#9ECBFF">"type"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"string"</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">                        }</span></span>
+<span class="line"><span style="color:#E1E4E8">                    }</span></span>
+<span class="line"><span style="color:#E1E4E8">                }</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Example output:</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#9ECBFF">    "vendor_name"</span><span style="color:#E1E4E8">:  </span><span style="color:#9ECBFF">"Acme Corp"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    "invoice_date"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"2024-01-15"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    "total_amount"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">4999.00</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    "confidence"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#9ECBFF">        "overall"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"medium"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">        "low_confidence_fields"</span><span style="color:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#E1E4E8">            {</span></span>
+<span class="line"><span style="color:#9ECBFF">                "field"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"total_amount"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">                "reason"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Document has multiple amount figures; unclear which is the final total"</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#E1E4E8">        ]</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre>
+<h2 id="routing-logic">Routing Logic</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#6A737D"># Critical financial fields that always escalate on low confidence</span></span>
+<span class="line"><span style="color:#79B8FF">CRITICAL_FIELDS</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span><span style="color:#9ECBFF">"total_amount"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"invoice_number"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"due_date"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"vendor_name"</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> route</span><span style="color:#E1E4E8">(extraction: </span><span style="color:#79B8FF">dict</span><span style="color:#E1E4E8">) -> </span><span style="color:#79B8FF">dict</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    conf </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> extraction.get(</span><span style="color:#9ECBFF">"confidence"</span><span style="color:#E1E4E8">, {})</span></span>
+<span class="line"><span style="color:#E1E4E8">    overall </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> conf.get(</span><span style="color:#9ECBFF">"overall"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"low"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    low_fields </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> conf.get(</span><span style="color:#9ECBFF">"low_confidence_fields"</span><span style="color:#E1E4E8">, [])</span></span>
+<span class="line"><span style="color:#E1E4E8">    low_critical </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [f </span><span style="color:#F97583">for</span><span style="color:#E1E4E8"> f </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> low_fields </span><span style="color:#F97583">if</span><span style="color:#E1E4E8"> f[</span><span style="color:#9ECBFF">"field"</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> CRITICAL_FIELDS</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> overall </span><span style="color:#F97583">==</span><span style="color:#9ECBFF"> "high"</span><span style="color:#F97583"> and</span><span style="color:#F97583"> not</span><span style="color:#E1E4E8"> low_fields:</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> {</span><span style="color:#9ECBFF">"route"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"auto_process"</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> low_critical:</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#9ECBFF">            "route"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"human_review"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">            "priority"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"high"</span><span style="color:#E1E4E8">,  </span><span style="color:#6A737D"># Critical field uncertain → prioritize</span></span>
+<span class="line"><span style="color:#9ECBFF">            "focus"</span><span style="color:#E1E4E8">: [f[</span><span style="color:#9ECBFF">"field"</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">for</span><span style="color:#E1E4E8"> f </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> low_critical]</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> overall </span><span style="color:#F97583">==</span><span style="color:#9ECBFF"> "low"</span><span style="color:#F97583"> or</span><span style="color:#79B8FF"> len</span><span style="color:#E1E4E8">(low_fields) </span><span style="color:#F97583">></span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> {</span><span style="color:#9ECBFF">"route"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"human_review"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"priority"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"standard"</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    # medium overall, few non-critical low-confidence fields</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#9ECBFF">        "route"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"spot_check"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">        "check_fields"</span><span style="color:#E1E4E8">: [f[</span><span style="color:#9ECBFF">"field"</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">for</span><span style="color:#E1E4E8"> f </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> low_fields]</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span></code></pre>
+<h2 id="calibration-via-stratified-sampling">Calibration via Stratified Sampling</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> calibrate</span><span style="color:#E1E4E8">(sample_results: list[</span><span style="color:#79B8FF">dict</span><span style="color:#E1E4E8">]) -> </span><span style="color:#79B8FF">dict</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#9ECBFF">    """Measure whether confidence tiers match actual accuracy."""</span></span>
+<span class="line"><span style="color:#E1E4E8">    tiers </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span><span style="color:#9ECBFF">"high"</span><span style="color:#E1E4E8">: [], </span><span style="color:#9ECBFF">"medium"</span><span style="color:#E1E4E8">: [], </span><span style="color:#9ECBFF">"low"</span><span style="color:#E1E4E8">: []}</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> r </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> sample_results:</span></span>
+<span class="line"><span style="color:#E1E4E8">        tier </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> r[</span><span style="color:#9ECBFF">"confidence"</span><span style="color:#E1E4E8">][</span><span style="color:#9ECBFF">"overall"</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">        tiers[tier].append(r[</span><span style="color:#9ECBFF">"human_verified_correct"</span><span style="color:#E1E4E8">])</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    calibration </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {}</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> tier, results </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> tiers.items():</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> results:</span></span>
+<span class="line"><span style="color:#E1E4E8">            accuracy </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> sum</span><span style="color:#E1E4E8">(results) </span><span style="color:#F97583">/</span><span style="color:#79B8FF"> len</span><span style="color:#E1E4E8">(results)</span></span>
+<span class="line"><span style="color:#E1E4E8">            calibration[tier] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#9ECBFF">                "n"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">len</span><span style="color:#E1E4E8">(results),</span></span>
+<span class="line"><span style="color:#9ECBFF">                "accuracy"</span><span style="color:#E1E4E8">: accuracy,</span></span>
+<span class="line"><span style="color:#9ECBFF">                "well_calibrated"</span><span style="color:#E1E4E8">: accuracy </span><span style="color:#F97583">></span><span style="color:#79B8FF"> 0.9</span><span style="color:#F97583"> if</span><span style="color:#E1E4E8"> tier </span><span style="color:#F97583">==</span><span style="color:#9ECBFF"> "high"</span></span>
+<span class="line"><span style="color:#F97583">                    else</span><span style="color:#79B8FF"> 0.7</span><span style="color:#F97583"> &#x3C;</span><span style="color:#E1E4E8"> accuracy </span><span style="color:#F97583">&#x3C;=</span><span style="color:#79B8FF"> 0.9</span><span style="color:#F97583"> if</span><span style="color:#E1E4E8"> tier </span><span style="color:#F97583">==</span><span style="color:#9ECBFF"> "medium"</span></span>
+<span class="line"><span style="color:#F97583">                    else</span><span style="color:#E1E4E8"> accuracy </span><span style="color:#F97583">&#x3C;=</span><span style="color:#79B8FF"> 0.7</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> calibration</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># If high-confidence is only 72% accurate:</span></span>
+<span class="line"><span style="color:#6A737D"># → Claude's "high" is actually "medium"</span></span>
+<span class="line"><span style="color:#6A737D"># → Update routing: treat "high" as "medium" until recalibrated</span></span>
+<span class="line"></span></code></pre>
+<h2 id="key-takeaways-5">Key Takeaways</h2>
+<ol>
+<li><strong>Confidence enables routing</strong> — three tiers, three different actions</li>
+<li><strong>Field-level confidence</strong> — individual fields can route differently</li>
+<li><strong>Critical fields</strong> — always escalate to human review when uncertain</li>
+<li><strong>Calibrate</strong> — verify self-reported confidence matches actual accuracy</li>
+<li><strong>Recalibrate thresholds</strong> when miscalibration is detected</li>
+</ol> </div> <button class="lesson-advance-btn" style="background:#f59e0b;border-color:#f59e0b;margin-top:24px" onclick="switchTab('technical')" data-astro-cid-ih36j56i>
+Go Technical →
+</button> </div> <!-- ── TECHNICAL ── --> <div id="panel-technical" class="lesson-panel hidden" data-astro-cid-ih36j56i> <div class="anti-patterns-box" data-astro-cid-ih36j56i> <div class="anti-patterns-label" data-astro-cid-ih36j56i>ANTI-PATTERNS — DO NOT DO THESE</div> <div class="anti-pattern-item" data-astro-cid-ih36j56i> <span class="anti-pattern-x" data-astro-cid-ih36j56i>✗</span> <span class="anti-pattern-text" data-astro-cid-ih36j56i>Schema validation only — misses semantic errors</span> </div><div class="anti-pattern-item" data-astro-cid-ih36j56i> <span class="anti-pattern-x" data-astro-cid-ih36j56i>✗</span> <span class="anti-pattern-text" data-astro-cid-ih36j56i>Retrying when source document doesn&#39;t contain the information — leads to fabrication</span> </div><div class="anti-pattern-item" data-astro-cid-ih36j56i> <span class="anti-pattern-x" data-astro-cid-ih36j56i>✗</span> <span class="anti-pattern-text" data-astro-cid-ih36j56i>Vague retry feedback: &#39;invalid output&#39; — Claude can&#39;t fix this</span> </div><div class="anti-pattern-item" data-astro-cid-ih36j56i> <span class="anti-pattern-x" data-astro-cid-ih36j56i>✗</span> <span class="anti-pattern-text" data-astro-cid-ih36j56i>Unlimited retries — cost explodes on consistently bad documents</span> </div> </div> <div class="lesson-meta-detail" data-astro-cid-ih36j56i> <div class="lesson-meta-detail-label" data-astro-cid-ih36j56i>Domain</div> <div class="lesson-meta-detail-val" data-astro-cid-ih36j56i>D4 — Prompt Engineering &amp; Structured Output</div>  <div class="lesson-meta-detail-label" data-astro-cid-ih36j56i>Task Statement</div> <div class="lesson-meta-detail-val" data-astro-cid-ih36j56i>T4.5</div>  <div class="lesson-meta-detail-label" data-astro-cid-ih36j56i>XP Value</div> <div class="lesson-meta-detail-val" data-astro-cid-ih36j56i>+30 XP</div> </div> <div id="complete-section" style="margin-top:20px" data-astro-cid-ih36j56i> <button id="complete-btn" class="lesson-advance-btn" style="background:#f59e0b;border-color:#f59e0b" onclick="completeLesson('d4-t5-1-validation', 30)" data-astro-cid-ih36j56i>
+✓ Mark Complete · +30 XP
+</button> <div id="complete-done" class="lesson-done-msg hidden" style="color:#f59e0b" data-astro-cid-ih36j56i>
+✓ Complete · 30 XP earned
+</div> </div> <div class="lesson-prevnext" data-astro-cid-ih36j56i> <a href="/architect-zero/learn/d4/d4-t4-3-chain-reliability" class="lesson-prevnext-btn" data-astro-cid-ih36j56i>
+← Chain Reliability — Validation Gates Between Steps </a> <a href="/architect-zero/learn/d4/d4-t5-2-retry-patterns" class="lesson-prevnext-btn lesson-prevnext-next" style="background:#f59e0b15;border-color:#f59e0b44;color:#f59e0b" data-astro-cid-ih36j56i> Retry Patterns — Three-Component Retry for Effective Error Recovery →
+</a> </div> <a href="/architect-zero/learn/d4" class="lesson-back-domain" data-astro-cid-ih36j56i>
+← Back to D4 overview
+</a> </div> </main> </div> <div class="course-shell-backdrop" id="course-rail-backdrop" data-astro-cid-ih36j56i></div>  </main> <footer class="az-footer" data-astro-cid-7xli4tas> <div class="az-footer-inner" data-astro-cid-7xli4tas> <div class="az-footer-brand" data-astro-cid-7xli4tas> <a href="/" class="az-footer-umbrella" data-astro-cid-7xli4tas>venkata.info</a> <span class="az-footer-sep" data-astro-cid-7xli4tas>||</span> <a href="/architect-zero/" class="az-footer-brand-name" data-astro-cid-7xli4tas>ARCHITECT <span data-astro-cid-7xli4tas>ZERO</span></a> </div> <nav class="az-footer-links" aria-label="Footer" data-astro-cid-7xli4tas> <a href="/contact/" data-astro-cid-7xli4tas>Contact</a> <a href="/privacy/" data-astro-cid-7xli4tas>Privacy</a> <a href="/terms/" data-astro-cid-7xli4tas>Terms</a> </nav> <div class="az-footer-social" data-astro-cid-7xli4tas><ul class="social-row social-row-muted" aria-label="Social channels" data-astro-cid-dv46nlzh> <li data-astro-cid-dv46nlzh> <a href="https://linkedin.com/in/sundaragiri" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn" data-astro-cid-dv46nlzh> <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" data-astro-cid-dv46nlzh><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.063 2.063 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> </a> </li><li data-astro-cid-dv46nlzh> <a href="https://youtube.com/@architectZero-LMS" target="_blank" rel="noopener noreferrer" aria-label="YouTube" title="YouTube" data-astro-cid-dv46nlzh> <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" data-astro-cid-dv46nlzh><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg> </a> </li><li data-astro-cid-dv46nlzh> <a href="https://x.com/architectzero" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)" title="X (Twitter)" data-astro-cid-dv46nlzh> <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" data-astro-cid-dv46nlzh><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.45-6.231zM17.083 19.77h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg> </a> </li> </ul> </div> <div class="az-footer-copy" data-astro-cid-7xli4tas>© 2026 Venkata Sundaragiri</div> </div> </footer>  </div> <!-- ══════════════════════════════════
+       BOTTOM NAV — mobile only
+       ══════════════════════════════════ --> <nav id="bottom-nav"> <a href="/architect-zero/" class="bottom-link "> <span class="bottom-icon">🏠</span> <span class="bottom-label">Dashboard</span> </a><a href="/architect-zero/learn" class="bottom-link is-active"> <span class="bottom-icon">📚</span> <span class="bottom-label">Learn</span> </a><a href="/architect-zero/academy" class="bottom-link "> <span class="bottom-icon">🎓</span> <span class="bottom-label">Academy</span> </a><a href="/architect-zero/quiz" class="bottom-link "> <span class="bottom-icon">🎯</span> <span class="bottom-label">Quiz</span> </a><a href="/architect-zero/flashcards" class="bottom-link "> <span class="bottom-icon">🃏</span> <span class="bottom-label">Flashcards</span> </a><a href="/architect-zero/progress" class="bottom-link "> <span class="bottom-icon">📈</span> <span class="bottom-label">Progress</span> </a> </nav> <!-- MOBILE MENU OVERLAY --> <div id="mobile-menu" style="display:none"> <div class="mobile-menu-header"> <span class="font-display text-white tracking-widest" style="font-size:18px">
+ARCHITECT <span class="text-electric">ZERO</span> </span> <button onclick="toggleMobileMenu()" style="background:none;border:none;color:#6a6a9a;font-size:20px;cursor:pointer">✕</button> </div> <a href="/architect-zero/" class="mobile-menu-link " onclick="toggleMobileMenu()"> <span>🏠</span> <span>Dashboard</span> </a><a href="/architect-zero/learn" class="mobile-menu-link is-active" onclick="toggleMobileMenu()"> <span>📚</span> <span>Learn</span> </a><a href="/architect-zero/academy" class="mobile-menu-link " onclick="toggleMobileMenu()"> <span>🎓</span> <span>Academy</span> </a><a href="/architect-zero/quiz" class="mobile-menu-link " onclick="toggleMobileMenu()"> <span>🎯</span> <span>Quiz</span> </a><a href="/architect-zero/flashcards" class="mobile-menu-link " onclick="toggleMobileMenu()"> <span>🃏</span> <span>Flashcards</span> </a><a href="/architect-zero/progress" class="mobile-menu-link " onclick="toggleMobileMenu()"> <span>📈</span> <span>Progress</span> </a> </div> </div> <!-- IMPORT PROMPT (shown after sign-in when local progress exists but cloud is empty) --> <div id="az-import-prompt" class="az-import-prompt" role="dialog" aria-labelledby="az-import-title" hidden data-astro-cid-wm2oyh6n> <div class="az-import-card" data-astro-cid-wm2oyh6n> <div class="az-import-eyebrow" data-astro-cid-wm2oyh6n>Welcome back</div> <h2 id="az-import-title" data-astro-cid-wm2oyh6n>Import your study progress?</h2> <p data-astro-cid-wm2oyh6n>We found existing progress on this device that hasn't been linked to an account.</p> <ul id="az-import-list" class="az-import-list" data-astro-cid-wm2oyh6n></ul> <p class="az-import-fine" data-astro-cid-wm2oyh6n>Choose Import to save it to your account and sync across devices. Choose Start fresh to discard local progress and begin clean.</p> <div class="az-import-actions" data-astro-cid-wm2oyh6n> <button type="button" id="az-import-skip" class="az-import-btn-secondary" data-astro-cid-wm2oyh6n>Start fresh</button> <button type="button" id="az-import-confirm" class="az-import-btn-primary" data-astro-cid-wm2oyh6n>Import</button> </div> </div> </div>  <!-- LEVEL UP OVERLAY --> <div id="level-up-overlay" style="display:none;position:fixed;inset:0;background:#04040a;z-index:200;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px"> <div style="font-size:72px;margin-bottom:16px">🎉</div> <div id="lu-label" style="font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;font-family:'JetBrains Mono',monospace">Level Up!</div> <div style="font-size:28px;font-weight:900;color:white;margin-bottom:4px">You're now a</div> <div id="lu-title" style="font-size:40px;font-weight:900;font-family:'Bebas Neue',Impact,sans-serif;letter-spacing:2px;margin-bottom:32px">Architect</div> <button onclick="document.getElementById('level-up-overlay').style.display='none'" style="background:#06b6d4;border:none;color:#04040a;padding:14px 48px;border-radius:8px;font-size:16px;font-weight:800;cursor:pointer">
+Keep Going →
+</button> </div>  <!-- AUTH GATE -->   </body> </html>  

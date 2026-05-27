@@ -1,0 +1,92 @@
+[
+  {
+    "id": "d5-f01", "domain": "d5",
+    "front": "What is the lost-in-the-middle effect?",
+    "back": "Claude's attention is non-uniform across long contexts: high at the START (system prompt), high at the END (recent message), LOW in the MIDDLE. Critical instructions buried in a large context receive less attention and are applied inconsistently. Fix: keep key instructions in system prompt or near the current message.",
+    "tag": "Exam Trap"
+  },
+  {
+    "id": "d5-f02", "domain": "d5",
+    "front": "What is the persistent facts block pattern?",
+    "back": "A structured block of confirmed key facts injected NEAR THE CURRENT MESSAGE on every turn. Ensures critical facts are always in high-attention end position regardless of conversation length. Contains: customer ID, verified status, tier, active issue, decisions made. Prevents relying on facts from 20 turns ago.",
+    "tag": "Decision Rule"
+  },
+  {
+    "id": "d5-f03", "domain": "d5",
+    "front": "What fills context window fastest in multi-turn agent sessions?",
+    "back": "In order: (1) Database query results with full rows, (2) Large file contents, (3) Verbose API responses, (4) Web search full pages, (5) Accumulated conversation history. Tool results are the fastest filler — trim aggressively before adding to conversation.",
+    "tag": "Fact"
+  },
+  {
+    "id": "d5-f04", "domain": "d5",
+    "front": "What is the structured error return pattern for subagents?",
+    "back": "Every subagent result has the same envelope: {status, task_id, result (if success), error_category, error_message, is_retryable, partial_data}. Same structure for success and failure. Coordinator needs consistent structure to make recovery decisions. Silent failure (empty dict) breaks recovery.",
+    "tag": "Fact"
+  },
+  {
+    "id": "d5-f05", "domain": "d5",
+    "front": "What is confidence calibration and how is it measured?",
+    "back": "Measuring whether self-reported confidence tiers match actual accuracy. Method: stratified sample (50+ per tier) → human verifies accuracy → compare against expected range (high >90%, medium 70-90%, low <70%). Overconfident: accuracy below range → treat tier as lower. Underconfident: accuracy above range → treat tier as higher.",
+    "tag": "Fact"
+  },
+  {
+    "id": "d5-f06", "domain": "d5",
+    "front": "What are the three confidence routing tiers and their actions?",
+    "back": "High confidence → auto-process (immediately). Medium confidence → spot-check (sample 10%, verify selected items). Low confidence → human review (full verification before processing). Critical fields (amount, ID) always escalate to human review regardless of overall confidence tier.",
+    "tag": "Decision Rule"
+  },
+  {
+    "id": "d5-f07", "domain": "d5",
+    "front": "What is the partial failure synthesis pattern?",
+    "back": "When some subagents fail permanently: synthesize from successful results, explicitly label what's missing, set confidence to 'medium' (not 'high') due to known gaps, include a Data Limitations section. Never present partial results as complete. Never fabricate data for missing areas.",
+    "tag": "Decision Rule"
+  },
+  {
+    "id": "d5-f08", "domain": "d5",
+    "front": "What is stratified sampling vs random sampling for quality validation?",
+    "back": "Random: every document has equal probability → under-represents rare high-risk categories (low-confidence extractions). Stratified: sample proportionally from each stratum (confidence tier, document type, amount range) → ensures every category is represented. Minimum 30-50 per stratum for significance.",
+    "tag": "Fact"
+  },
+  {
+    "id": "d5-f09", "domain": "d5",
+    "front": "What is the circuit breaker pattern and when does it trigger?",
+    "back": "After N consecutive failures (e.g., 5), stop attempting and fail fast — return CircuitOpenError immediately instead of making another call. After a timeout (e.g., 60s), try once more (half-open). Prevents cascading failures and resource exhaustion during sustained service outages.",
+    "tag": "Fact"
+  },
+  {
+    "id": "d5-f10", "domain": "d5",
+    "front": "What should and shouldn't be summarized when compacting agent context?",
+    "back": "SUMMARIZE: narrative content, reasoning chains, exploratory findings (prose form OK). NEVER SUMMARIZE: exact values (amounts, IDs, dates), boolean flags (verified: true), enum states (tier: premium). Precision is lost when structured data is converted to prose. Keep facts exact, summarize narrative.",
+    "tag": "Decision Rule"
+  },
+  {
+    "id": "d5-f11", "domain": "d5",
+    "front": "What makes a human escalation handoff effective?",
+    "back": "Reviewer should decide in under 2 minutes. Required: situation summary, customer context, request details, why escalated, agent's recommendation, and decision options with consequences. Include source document for verification. NOT: raw conversation transcript. Structure enables fast decisions.",
+    "tag": "Fact"
+  },
+  {
+    "id": "d5-f12", "domain": "d5",
+    "front": "What is source attribution and why is it a reliability requirement?",
+    "back": "Every factual claim in synthesized output must be traceable to a specific named source with publication date. Reliability requirement: readers need to verify claims and assess source quality. 'Studies show' is not attribution. Required: named organization, report/publication, date, methodology where relevant.",
+    "tag": "Fact"
+  },
+  {
+    "id": "d5-f13", "domain": "d5",
+    "front": "How should conflicting sources be handled in synthesis?",
+    "back": "Present BOTH values with BOTH citations. Never choose one over the other without explanation. Explain the likely cause of discrepancy (different definitions, time periods, methodologies, populations). Leave resolution to the reader. Never average conflicting values without noting it's an average.",
+    "tag": "Decision Rule"
+  },
+  {
+    "id": "d5-f14", "domain": "d5",
+    "front": "What is the tool result trimming pattern?",
+    "back": "Before appending tool results to conversation, extract only what Claude needs for its next decision. Example: customer lookup returns 47 fields → PostToolUse hook extracts {name, tier, verified} → Claude sees 3 fields. Full result stored externally if needed later. Dramatically reduces context consumption.",
+    "tag": "Decision Rule"
+  },
+  {
+    "id": "d5-f15", "domain": "d5",
+    "front": "What is crash recovery state and how should it be structured?",
+    "back": "Structured state for resuming after failure: {run_id, original_goal, current_phase, completed_tasks, failed_tasks, confirmed_facts (exact values), decisions_made, remaining_tasks}. NOT raw conversation history. Checkpointed after every significant operation. Rehydrated via to_briefing_prompt() — injected as context on restart.",
+    "tag": "Fact"
+  }
+]

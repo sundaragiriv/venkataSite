@@ -1,0 +1,434 @@
+[
+  {
+    "id": "s3-q01",
+    "scenario": "S3",
+    "scenarioName": "Customer Support Agent",
+    "domain": "d1",
+    "difficulty": "Hard",
+    "taskRef": "T1.4",
+    "question": "A customer support agent must verify customer identity before processing any refund. This requirement appears in the system prompt. A PreToolUse hook blocking process_refund until get_customer has been called is also available. Which approach provides stronger compliance assurance?",
+    "options": [
+      "The system prompt — it applies globally and Claude will follow it consistently",
+      "The PreToolUse hook — it provides deterministic enforcement regardless of Claude's behavior",
+      "Both are equivalent — the system prompt and hook together provide double coverage",
+      "The system prompt — hooks add latency and should only be used for external service calls"
+    ],
+    "correct": 1,
+    "xp": 20,
+    "explanation": "The PreToolUse hook provides deterministic enforcement — it blocks process_refund 100% of the time if get_customer hasn't been called, regardless of what the system prompt says. The system prompt is probabilistic — Claude follows it in the vast majority of cases but has a non-zero failure rate. For financial compliance, deterministic wins.",
+    "whyWrong": [
+      "System prompts are probabilistic — LLMs have a non-zero failure rate even for explicit instructions",
+      "This is the correct answer",
+      "They are NOT equivalent — hooks are deterministic, prompts are probabilistic. The hook provides stronger assurance.",
+      "Latency is a real tradeoff but doesn't change the correctness comparison — for compliance, determinism wins"
+    ]
+  },
+  {
+    "id": "s3-q02",
+    "scenario": "S3",
+    "scenarioName": "Customer Support Agent",
+    "domain": "d2",
+    "difficulty": "Medium",
+    "taskRef": "T2.1",
+    "question": "A customer support agent has access to 15 tools. The team notices it frequently calls the wrong tool. What is the most likely root cause?",
+    "options": [
+      "The agent's system prompt is not specific enough about the task",
+      "The tool descriptions are vague or overlapping — Claude can't reliably distinguish which tool to use",
+      "The agent needs a higher temperature setting for better tool selection",
+      "15 tools is too many — the agent should call a different API for some operations"
+    ],
+    "correct": 1,
+    "xp": 15,
+    "explanation": "At 15 tools, Claude's tool selection reliability degrades significantly. The primary fix is D2: improve tool descriptions with explicit differentiation ('use this for X, NOT for Y — for Y use get_order instead'). The secondary fix is scoping: give specialized subagents 3-5 tools each rather than 15 to one agent.",
+    "whyWrong": [
+      "The system prompt guides behavior but wrong tool selection is primarily a tool description problem",
+      "This is the correct answer",
+      "Temperature affects randomness in text generation, not the reliability of tool description matching",
+      "15 tools in one agent is the problem but a different API is not the solution — scoped subagents are"
+    ]
+  },
+  {
+    "id": "s3-q03",
+    "scenario": "S3",
+    "scenarioName": "Customer Support Agent",
+    "domain": "d2",
+    "difficulty": "Hard",
+    "taskRef": "T2.4",
+    "question": "A customer support tool returns an error when attempting to look up an order. The error response contains only: {'error': 'Lookup failed'}. What is missing and why does it matter?",
+    "options": [
+      "A user-friendly error message — the agent needs to communicate the failure to the customer",
+      "Error category (transient/validation/permission/business) and isRetryable flag — without them the agent can't make intelligent recovery decisions",
+      "A retry mechanism built into the tool itself — the tool should handle its own retries",
+      "A stack trace for debugging purposes"
+    ],
+    "correct": 1,
+    "xp": 20,
+    "explanation": "Without error_category and isRetryable, the agent can't distinguish between a network timeout (should retry) and a permission error (should escalate). It either retries everything (wasting retries on permanent failures) or retries nothing (abandoning recoverable failures). Structured error context enables intelligent recovery decisions.",
+    "whyWrong": [
+      "Customer communication is important but the agent can't even decide HOW to respond without error categorization",
+      "This is the correct answer",
+      "Tools should not handle their own retries — the coordinator/loop decides retry strategy based on error type",
+      "Stack traces are for debugging, not for agent decision-making in production"
+    ]
+  },
+  {
+    "id": "s3-q04",
+    "scenario": "S3",
+    "scenarioName": "Customer Support Agent",
+    "domain": "d1",
+    "difficulty": "Medium",
+    "taskRef": "T1.5",
+    "question": "A customer support agent receives a request for a $750 refund. The automated refund limit is $500. What should the agent do?",
+    "options": [
+      "Deny the refund and explain the $500 limit to the customer",
+      "Process the refund for $500 and inform the customer the remaining $250 is ineligible",
+      "Escalate to a human agent with context: customer, request, amount over limit, and recommended action",
+      "Ask the customer to submit a formal exception request through a different channel"
+    ],
+    "correct": 2,
+    "xp": 15,
+    "explanation": "A $750 refund exceeds the automated limit ($500) — this is a valid escalation trigger (business rule breach). The agent escalates with a structured handoff: customer profile, refund request details, amount over limit, and the agent's recommendation. The human agent then decides to approve, partially approve, or deny.",
+    "whyWrong": [
+      "The agent shouldn't make a unilateral deny decision — policy exceptions may apply for Premium customers",
+      "Processing $500 and denying $250 without authorization isn't correct — the whole amount needs exception review",
+      "This is the correct answer",
+      "Redirecting to another channel creates friction and may not be appropriate — human escalation within the current interaction is better"
+    ]
+  },
+  {
+    "id": "s3-q05",
+    "scenario": "S3",
+    "scenarioName": "Customer Support Agent",
+    "domain": "d2",
+    "difficulty": "Medium",
+    "taskRef": "T2.3",
+    "question": "A customer support system has three agent roles: intake, billing specialist, and technical specialist. Which tool access design is correct?",
+    "options": [
+      "All three agents have access to all available tools to handle any situation that arises",
+      "Each agent receives only the tools required for their specific role — intake has fewer tools than specialists",
+      "Tools are granted based on customer tier — Premium customers unlock more agent tools",
+      "The billing specialist has all tools so they can handle escalations from intake without handoff"
+    ],
+    "correct": 1,
+    "xp": 15,
+    "explanation": "Minimum footprint principle: each agent role receives only the tools it needs. Intake needs: get_customer, get_order, create_ticket. Billing needs: get_customer, get_payment_history, process_refund. Technical needs: get_customer, check_service_status, reset_auth. This improves selection reliability and reduces blast radius.",
+    "whyWrong": [
+      "All-tools-to-all-agents violates minimum footprint and degrades tool selection reliability at scale",
+      "This is the correct answer",
+      "Customer tier doesn't determine agent tool access — agent role does",
+      "Giving billing specialists all tools to avoid handoffs violates minimum footprint — design proper handoff workflows instead"
+    ]
+  },
+  {
+    "id": "s3-q06",
+    "scenario": "S3",
+    "scenarioName": "Customer Support Agent",
+    "domain": "d1",
+    "difficulty": "Hard",
+    "taskRef": "T1.2",
+    "question": "A coordinator agent spawns intake, billing, and technical analysis subagents for a complex support case. The technical subagent needs the output from the intake subagent. How should this be implemented?",
+    "options": [
+      "Allow the technical subagent to directly query the intake subagent for its results",
+      "All three spawn in parallel — the technical subagent receives all its context in its initial prompt",
+      "Intake runs first; after it completes, the coordinator passes relevant intake results to the technical subagent's prompt",
+      "Both intake and technical subagents share a common memory store where they exchange data"
+    ],
+    "correct": 2,
+    "xp": 20,
+    "explanation": "In hub-and-spoke, subagents never communicate directly. If technical depends on intake results, they cannot run in parallel. The coordinator runs intake first, receives results, then spawns technical with those results explicitly passed in the prompt. Context isolation is total — technical starts blank and needs everything explicitly provided.",
+    "whyWrong": [
+      "Subagents never communicate directly — all communication routes through the coordinator",
+      "If technical needs intake results, they cannot be parallel — that's a sequential dependency",
+      "This is the correct answer",
+      "Shared memory between subagents is an anti-pattern — context isolation means no shared state"
+    ]
+  },
+  {
+    "id": "s3-q07",
+    "scenario": "S3",
+    "scenarioName": "Customer Support Agent",
+    "domain": "d5",
+    "difficulty": "Medium",
+    "taskRef": "T5.4",
+    "question": "A customer support agent has been running for 45 minutes handling a complex multi-step case. The agent's responses are becoming slower and less accurate. What is happening?",
+    "options": [
+      "The API rate limit is being approached — need to pause and resume later",
+      "The context window is filling with accumulated tool results and conversation history — active context management needed",
+      "The customer case is too complex for automated handling — escalate to human",
+      "The agent session has expired and needs to be restarted"
+    ],
+    "correct": 1,
+    "xp": 15,
+    "explanation": "Long sessions accumulate tool results and conversation turns. As the context fills, the lost-in-the-middle effect degrades accuracy and the API processes more tokens per call (slower). Solutions: trim tool results before appending, use the persistent facts block pattern, or compact the session if using Claude Code.",
+    "whyWrong": [
+      "Rate limits cause request failures with specific error codes — not gradual quality degradation",
+      "This is the correct answer",
+      "Complexity is not the issue — context window management is the issue",
+      "Sessions don't expire based on time — they degrade due to context window management"
+    ]
+  },
+  {
+    "id": "s3-q08",
+    "scenario": "S3",
+    "scenarioName": "Customer Support Agent",
+    "domain": "d5",
+    "difficulty": "Hard",
+    "taskRef": "T5.4",
+    "question": "A customer support agent establishes that a customer is Jane Smith, Premium tier, verified, with order #12345 for $399. This information was established 20 conversation turns ago. How should it be maintained?",
+    "options": [
+      "Trust that Claude remembers it — the conversation history contains it",
+      "Re-ask the customer to confirm their identity again to refresh Claude's attention",
+      "Use a persistent facts block injected near the current message, outside the main conversation history",
+      "Summarize the entire conversation so far and include it in every turn"
+    ],
+    "correct": 2,
+    "xp": 20,
+    "explanation": "The lost-in-the-middle effect means facts established 20 turns ago receive much less attention than recent content. The persistent facts block pattern: maintain a structured summary of confirmed facts and inject it NEAR THE END of every turn (before the current request). This ensures key facts are always in high-attention position.",
+    "whyWrong": [
+      "Facts buried 20 turns ago receive very low attention — the lost-in-the-middle effect degrades recall",
+      "Re-asking the customer for already-confirmed information is poor UX and destroys trust",
+      "This is the correct answer",
+      "Summarizing everything every turn is verbose and still risks the summary being in the middle of context"
+    ]
+  },
+  {
+    "id": "s3-q09",
+    "scenario": "S3",
+    "scenarioName": "Customer Support Agent",
+    "domain": "d2",
+    "difficulty": "Medium",
+    "taskRef": "T2.5",
+    "question": "A customer lookup tool returns a full customer record with 47 fields including audit history, system flags, and internal metadata. The agent only needs name, tier, and verified status. What should happen?",
+    "options": [
+      "Pass the full 47-field record — Claude will focus on relevant fields",
+      "A PostToolUse hook trims the result to relevant fields before Claude receives it",
+      "Filter fields in the tool schema using allowed_fields parameter",
+      "Split into two tools: get_customer_basic and get_customer_full"
+    ],
+    "correct": 1,
+    "xp": 15,
+    "explanation": "PostToolUse hooks transform tool results BEFORE Claude receives them. A normalization hook extracts name, tier, and verified_status from the 47-field record and returns only those. This reduces context consumption significantly and keeps Claude focused on relevant data. The full record is never sent to the conversation.",
+    "whyWrong": [
+      "Passing all 47 fields wastes context and dilutes Claude's attention on relevant fields",
+      "This is the correct answer",
+      "Tool schemas control INPUT parameters, not which OUTPUT fields are returned",
+      "Splitting tools doubles the API calls and tool definitions — PostToolUse normalization is more efficient"
+    ]
+  },
+  {
+    "id": "s3-q10",
+    "scenario": "S3",
+    "scenarioName": "Customer Support Agent",
+    "domain": "d1",
+    "difficulty": "Hard",
+    "taskRef": "T1.4",
+    "question": "A customer service agent receives ambiguous instructions from a supervisor: 'handle the difficult customer, use your judgment.' The agent is about to send an email to 500 customers. What should the agent do?",
+    "options": [
+      "Proceed based on its best interpretation of 'handle' — the supervisor authorized it",
+      "Pause and escalate — scope exceeded original instructions, irreversible high-blast-radius action requires human confirmation",
+      "Send the email to 10 customers first as a test batch, then proceed if no issues",
+      "Log the action and proceed — audit trail provides accountability"
+    ],
+    "correct": 1,
+    "xp": 20,
+    "explanation": "Two escalation triggers fire simultaneously: (1) scope exceeded — 'handle the customer' did not authorize bulk email to 500 customers, (2) irreversible high-blast-radius — sending 500 emails cannot be undone. The agent must pause and get explicit human confirmation with full context before proceeding.",
+    "whyWrong": [
+      "Supervisor authorization to 'handle a customer' is not authorization for a 500-person bulk email",
+      "This is the correct answer",
+      "A 10-customer test without explicit authorization is still scope violation — the irreversible action threshold has been crossed",
+      "An audit trail doesn't prevent harm — 500 wrong emails are sent regardless of logging"
+    ]
+  },
+  {
+    "id": "s3-q11",
+    "scenario": "S3",
+    "scenarioName": "Customer Support Agent",
+    "domain": "d2",
+    "difficulty": "Medium",
+    "taskRef": "T2.2",
+    "question": "A customer support MCP server exposes tools for: reading customer data, writing customer data, and deleting customer data. Which MCP primitive is most appropriate for read-only customer data access?",
+    "options": [
+      "Tool — because it requires an API call to retrieve data",
+      "Resource — because customer data is a read-only data source addressable by customer ID URI",
+      "Prompt — because customer data retrieval follows a standard workflow",
+      "Either Tool or Resource — they are interchangeable for data access"
+    ],
+    "correct": 1,
+    "xp": 15,
+    "explanation": "Resources are the correct MCP primitive for read-only data sources: they have URIs (customer://C-123456), are read-only, and signal to Claude that this is data to read rather than an action to take. Tools are for operations that DO things (including writes). Using Tools for read-only access works but is semantically incorrect.",
+    "whyWrong": [
+      "API implementation details don't determine primitive type — read-only data = Resource",
+      "This is the correct answer",
+      "Prompts are reusable workflow templates, not data access mechanisms",
+      "They are NOT interchangeable architecturally — Resources signal read-only data, Tools signal actions"
+    ]
+  },
+  {
+    "id": "s3-q12",
+    "scenario": "S3",
+    "scenarioName": "Customer Support Agent",
+    "domain": "d5",
+    "difficulty": "Medium",
+    "taskRef": "T5.2",
+    "question": "A customer support coordinator spawned 3 subagents: order lookup, payment history, and policy check. The payment history subagent returns {'result': None}. What is wrong with this response?",
+    "options": [
+      "Nothing — None is a valid JSON value indicating no payment history found",
+      "Silent failure — the coordinator cannot distinguish 'no payment history' from 'lookup failed'; structured error required",
+      "The subagent should retry before returning None",
+      "The coordinator should treat None as an empty result and continue without payment data"
+    ],
+    "correct": 1,
+    "xp": 15,
+    "explanation": "{'result': None} is a silent failure — the coordinator cannot distinguish between 'the customer has no payment history' (valid empty result) and 'the lookup failed' (error condition). The structured error must include error_category, error_message, and is_retryable so the coordinator can make an informed decision.",
+    "whyWrong": [
+      "None COULD mean no payment history but it COULD also mean failure — the coordinator can't tell which",
+      "This is the correct answer",
+      "Subagents don't decide retry strategy autonomously — they return structured results and the coordinator decides",
+      "Treating None as empty result is the silent-failure anti-pattern — coordinator makes uninformed decisions"
+    ]
+  },
+  {
+    "id": "s3-q13",
+    "scenario": "S3",
+    "scenarioName": "Customer Support Agent",
+    "domain": "d1",
+    "difficulty": "Hard",
+    "taskRef": "T1.2",
+    "question": "In a hub-and-spoke customer support system, what happens when a subagent encounters an unexpected situation requiring a policy decision?",
+    "options": [
+      "The subagent makes the policy decision autonomously using its best judgment",
+      "The subagent raises an exception that terminates the entire workflow",
+      "The subagent returns its findings and the ambiguous situation to the coordinator, which decides the appropriate action",
+      "The subagent queries other subagents directly for guidance"
+    ],
+    "correct": 2,
+    "xp": 20,
+    "explanation": "Hub-and-spoke: subagents report, coordinators decide. When a subagent encounters an ambiguous situation, it returns structured information to the coordinator: what it found, what the ambiguity is, and what the options are. The coordinator (or a human via escalation) makes the policy decision. Subagents don't make autonomous policy decisions.",
+    "whyWrong": [
+      "Autonomous subagent decisions bypass the coordinator and break the observable coordination model",
+      "Exceptions that terminate the workflow are appropriate for system errors but not for policy ambiguities",
+      "This is the correct answer",
+      "Subagents never communicate directly — all communication routes through the coordinator"
+    ]
+  },
+  {
+    "id": "s3-q14",
+    "scenario": "S3",
+    "scenarioName": "Customer Support Agent",
+    "domain": "d2",
+    "difficulty": "Medium",
+    "taskRef": "T2.3",
+    "question": "The same customer data lookup tool is used by the intake agent, billing agent, and technical agent. Three different source systems have different field names for customer ID. Where should normalization happen?",
+    "options": [
+      "In each agent's system prompt — instruct Claude to handle the field name variations",
+      "In a PostToolUse normalization hook — normalizes before Claude receives the result",
+      "In the tool schema description — document all three field name variants",
+      "In each subagent's processing logic — each agent handles its own normalization"
+    ],
+    "correct": 1,
+    "xp": 15,
+    "explanation": "PostToolUse hooks are the correct mechanism for normalizing heterogeneous tool results. They transform raw results BEFORE Claude receives them — Claude always sees consistent field names regardless of source system. This is transparent to Claude and doesn't require system prompt complexity or per-agent handling.",
+    "whyWrong": [
+      "System prompt normalization adds complexity to every response and is probabilistic — Claude might not always handle variations correctly",
+      "This is the correct answer",
+      "Schema descriptions document input parameters, not how to handle output field name variations",
+      "Per-agent normalization duplicates logic and creates inconsistency risk when field names change"
+    ]
+  },
+  {
+    "id": "s3-q15",
+    "scenario": "S3",
+    "scenarioName": "Customer Support Agent",
+    "domain": "d1",
+    "difficulty": "Hard",
+    "taskRef": "T1.1",
+    "question": "A customer support agent loop calls get_customer and receives the result. It then checks if 'customer found' appears in the response text. If yes, it proceeds. What is wrong?",
+    "options": [
+      "The agent should check the HTTP status code instead of the response text",
+      "Text parsing for completion/success is an anti-pattern — check the stop_reason and result structure instead",
+      "The agent should call get_customer a second time to confirm the result",
+      "The response text check is fine but should use regex for reliability"
+    ],
+    "correct": 1,
+    "xp": 20,
+    "explanation": "Parsing natural language text from tool results for control flow is fragile — Claude might say 'the customer was found in our system' or 'located customer record' or many other phrasings. The correct approach: check stop_reason for loop control, and check the structured result fields (e.g., result['customer_id'] is not None) for data validation.",
+    "whyWrong": [
+      "HTTP status codes are for the API itself — tool results have their own structure",
+      "This is the correct answer",
+      "Double-calling the tool wastes API cost and doesn't fix the fundamental anti-pattern",
+      "Regex is still text parsing — the same fragility applies regardless of the pattern used"
+    ]
+  },
+  {
+    "id": "s3-q16",
+    "scenario": "S3",
+    "scenarioName": "Customer Support Agent",
+    "domain": "d5",
+    "difficulty": "Medium",
+    "taskRef": "T5.5",
+    "question": "A customer support escalation reaches a human reviewer. The reviewer sees only: 'Customer requested refund - needs review.' What is missing from an effective escalation handoff?",
+    "options": [
+      "The customer's email address and phone number",
+      "Structured context: customer profile, request details, why escalated, agent's recommendation, and decision options with consequences",
+      "A transcript of the entire conversation with the customer",
+      "The escalation reason in code format for the case management system"
+    ],
+    "correct": 1,
+    "xp": 15,
+    "explanation": "An effective handoff enables the reviewer to make an informed decision in under 2 minutes. Required components: customer profile summary, specific request details, reason for escalation, agent's recommendation, and decision options with their consequences. The raw conversation transcript is too verbose — the handoff must be a structured brief.",
+    "whyWrong": [
+      "Contact info is part of the customer profile but doesn't help the reviewer make the decision",
+      "This is the correct answer",
+      "Full transcript is too verbose — the handoff must be a structured summary enabling fast decisions",
+      "System codes help routing but don't help the human reviewer understand the situation"
+    ]
+  },
+  {
+    "id": "s3-q17",
+    "scenario": "S3",
+    "scenarioName": "Customer Support Agent",
+    "domain": "d2",
+    "difficulty": "Medium",
+    "taskRef": "T2.4",
+    "question": "A customer support tool returns a 503 Service Unavailable error. The agent retries 5 times, all failing. What should happen on the 6th attempt?",
+    "options": [
+      "Continue retrying with longer delays — 503 errors always resolve eventually",
+      "Trip the circuit breaker — stop trying and fail fast with a clear error to the coordinator",
+      "Switch to a backup tool that provides similar data",
+      "Escalate to a human who can manually perform the lookup"
+    ],
+    "correct": 1,
+    "xp": 15,
+    "explanation": "After 5 consecutive failures, the circuit breaker pattern applies: stop attempting and fail fast. The circuit breaker prevents cascading failures and wasted resources. The coordinator receives a CircuitOpenError, can attempt a fallback if available, or route to human review. Continuing to retry consumes resources and delays resolution.",
+    "whyWrong": [
+      "Indefinite retrying is the anti-pattern the circuit breaker prevents — it causes resource exhaustion",
+      "This is the correct answer",
+      "Fallback is the NEXT step after circuit breaker trips — but the circuit breaker should fire first",
+      "Human escalation may be the ultimate resolution but the circuit breaker mechanism should fire first"
+    ]
+  },
+  {
+    "id": "s3-q18",
+    "scenario": "S3",
+    "scenarioName": "Customer Support Agent",
+    "domain": "d1",
+    "difficulty": "Hard",
+    "taskRef": "T1.6",
+    "question": "A customer support session crashes after 30 minutes. On restart, it processes the customer's case from the beginning, asking them to re-verify identity. What went wrong?",
+    "options": [
+      "The session token expired — need longer token TTL",
+      "No crash recovery — state was not checkpointed, so the session restarts without prior context",
+      "The agent's memory was cleared by the crash — need in-memory state backup",
+      "The customer's session timed out on their end"
+    ],
+    "correct": 1,
+    "xp": 20,
+    "explanation": "Crash recovery requires checkpointing: saving the agent's state (verified facts, decisions made, current task) after each significant operation. Without checkpoints, a crash loses all session progress. On restart, the agent has no knowledge of the verification that occurred — leading to the customer being asked to re-verify a second time.",
+    "whyWrong": [
+      "Token expiry causes authentication errors, not loss of session progress",
+      "This is the correct answer",
+      "In-memory backup still loses state on crash — persistent storage (database, file) is required",
+      "Customer session timeout is a different issue from agent-side crash recovery"
+    ]
+  }
+]
