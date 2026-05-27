@@ -5,14 +5,18 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import { VitePWA } from 'vite-plugin-pwa';
 
+import cloudflare from "@astrojs/cloudflare";
+
 export default defineConfig({
   site: 'https://venkata.info',
+
   integrations: [
     react(),
     tailwind({ applyBaseStyles: false }),
     mdx(),
     sitemap(),
   ],
+
   vite: {
     plugins: [
       VitePWA({
@@ -56,4 +60,7 @@ export default defineConfig({
       }),
     ],
   },
+
+  output: "hybrid",
+  adapter: cloudflare()
 });

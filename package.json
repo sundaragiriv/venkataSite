@@ -6,11 +6,14 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
+    "preview": "npm run build && wrangler dev",
     "sync": "astro sync",
-    "build:dev": "astro build"
+    "build:dev": "astro build",
+    "deploy": "npm run build && wrangler deploy",
+    "cf-typegen": "wrangler types"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "11",
     "@astrojs/mdx": "^3.1.0",
     "@astrojs/react": "^3.6.0",
     "@astrojs/sitemap": "^3.2.1",
@@ -30,7 +33,8 @@
     "@types/react-dom": "^18.3.7",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3",
-    "vite": "5.4.21"
+    "vite": "5.4.21",
+    "wrangler": "^4.95.0"
   },
   "overrides": {
     "rollup": "4.34.9",
