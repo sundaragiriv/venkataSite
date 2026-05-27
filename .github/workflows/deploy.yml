@@ -26,6 +26,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Diagnose Supabase secrets reachability
+        env:
+          PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
+          PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
+        run: |
+          if [ -z "$PUBLIC_SUPABASE_URL" ]; then echo "URL: EMPTY"; else echo "URL: set (length=${#PUBLIC_SUPABASE_URL})"; fi
+          if [ -z "$PUBLIC_SUPABASE_ANON_KEY" ]; then echo "KEY: EMPTY"; else echo "KEY: set (length=${#PUBLIC_SUPABASE_ANON_KEY})"; fi
+
       - name: Build
         run: npm run build
         env:
