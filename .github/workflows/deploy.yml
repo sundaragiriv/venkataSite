@@ -43,14 +43,13 @@ jobs:
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git checkout --orphan gh-pages
           git rm -rf .
-          # Remove every untracked file/dir except the build output.
-          # Without this, node_modules/, .astro/ cache, etc. get swept into
-          # the orphan commit by `git add -A` (because we just deleted the
-          # .gitignore in `git rm -rf .`).
-          # -ff (force twice) is required to descend into directories that
-          # contain their own .git (some npm deps install with one); plain
-          # -f leaves those untouched and node_modules survives.
-          git clean -ffdx -e dist
+          # Explicitly remove the build-time untracked dirs. `git clean` was
+          # tried (-fdx and -ffdx) but neither actually removed node_modules
+          # on the runner — likely because it had a hashes-with-leading-hyphen
+          # or nested .git surprise we couldn't predict from outside. Naming
+          # the dirs is boring but predictable; the .gitignore is gone after
+          # `git rm -rf .`, so `git add -A` would otherwise sweep these in.
+          rm -rf node_modules .astro
           # cp -r dist/. .  copies everything INCLUDING dotfiles like .nojekyll
           # (cp -r dist/* . skips dotfiles, which causes GitHub Pages to run
           # Jekyll and strip the _astro/ folder because Jekyll excludes
